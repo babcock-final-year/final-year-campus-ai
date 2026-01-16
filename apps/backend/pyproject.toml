@@ -1,0 +1,66 @@
+[project]
+name = "backend"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "flask>=3.1.2",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.13",
+]
+
+[tool.ruff]
+# Target modern Python (matches requires-python)
+target-version = "py313"
+# Reasonable line length; adjust if you have a repo-wide standard
+line-length = 100
+# Avoid linting common noise directories
+exclude = [
+    ".venv",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".turbo",
+    "__pycache__",
+    "node_modules",
+    "dist",
+    "build",
+]
+
+[tool.ruff.lint]
+# "select" here is a sensible default set (errors + common pitfalls + style).
+# Extend/adjust as your codebase evolves.
+select = [
+    "E",   # pycodestyle errors
+    "F",   # pyflakes
+    "W",   # pycodestyle warnings
+    "I",   # isort (import sorting)
+    "B",   # flake8-bugbear
+    "UP",  # pyupgrade
+    "SIM", # flake8-simplify
+]
+# Keep the noise down on common incompatibilities with formatters or pragmatic style
+ignore = [
+    "E203", # whitespace before ':', conflicts with formatter expectations
+    "E501", # line length handled by formatter; keep as soft limit
+]
+
+# If you want unused imports to be auto-fixable (commonly desired)
+fixable = ["ALL"]
+unfixable = []
+
+[tool.ruff.lint.isort]
+# Keep imports deterministic and clean
+combine-as-imports = true
+force-sort-within-sections = true
+
+[tool.ruff.format]
+# Use Ruff's formatter. If you prefer single quotes, flip this to "single".
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+skip-magic-trailing-comma = false
