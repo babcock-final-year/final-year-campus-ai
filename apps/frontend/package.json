@@ -1,16 +1,4 @@
 {
-	"name": "frontend",
-	"type": "module",
-	"version": "0.0.0",
-	"private": true,
-	"scripts": {
-		"dev": "vinxi dev",
-		"build": "vinxi build",
-		"start": "vinxi start",
-		"format": "biome format --staged --write",
-		"test": "vitest",
-		"lint": "biome lint --staged --write"
-	},
 	"dependencies": {
 		"@solidjs/router": "^0.15.0",
 		"@solidjs/start": "^1.1.0",
@@ -24,5 +12,17 @@
 	},
 	"engines": {
 		"node": ">=22"
-	}
+	},
+	"name": "frontend",
+	"private": true,
+	"scripts": {
+		"build": "vinxi build",
+		"dev": "vinxi dev",
+		"format": "biome format ./ --write",
+		"lint": "biome lint ./ --write",
+		"start": "vinxi start",
+		"test": "vitest"
+	},
+	"type": "module",
+	"version": "0.0.0"
 }

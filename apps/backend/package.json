@@ -1,20 +1,20 @@
 {
-  "name": "backend",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "build": "bun run check && bun run test",
-    "setup": "uv sync --dev",
-    "setup:prod": "uv sync --no-dev",
-    "run": "uv run python -m flask --app app run --host 0.0.0.0 --port 5000",
-    "dev": "uv run python -m flask --app app run --host 0.0.0.0 --port 5000 --debug",
-    "start": "uv run python -m flask --app app run --host 0.0.0.0 --port ${PORT:-5000}",
-    "lint": "uv run ruff check .",
-    "lint:fix": "uv run ruff check . --fix",
-    "format": "uv run ruff format .",
-    "format:check": "uv run ruff format . --check",
-    "check": "bun run format:check && bun run lint",
-    "test": "uv run python -m unittest discover -s . -p \"test*.py\"",
-    "clean": "rm -rf .ruff_cache .pytest_cache __pycache__ .mypy_cache"
-  }
+	"name": "backend",
+	"private": true,
+	"scripts": {
+		"build": "echo 'No build for server code. Skipping...'",
+		"check": "bun run format:check && bun run lint",
+		"clean": "rm -rf .ruff_cache .pytest_cache __pycache__ .mypy_cache",
+		"dev": "uv run python -m flask --app app run --host 0.0.0.0 --port 5000 --debug",
+		"format": "uv run ruff format .",
+		"format:check": "uv run ruff format . --check",
+		"lint": "uv run ruff check .",
+		"lint:fix": "uv run ruff check . --fix",
+		"run": "uv run python -m flask --app app run --host 0.0.0.0 --port 5000",
+		"setup": "uv sync --dev",
+		"setup:prod": "uv sync --no-dev",
+		"start": "uv run python -m flask --app app run --host 0.0.0.0 --port ${PORT:-5000}",
+		"test": "uv run python -m unittest discover -s . -p \"test*.py\""
+	},
+	"version": "0.0.0"
 }
