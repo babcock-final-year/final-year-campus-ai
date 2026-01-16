@@ -7,9 +7,9 @@
 		"dev": "vinxi dev",
 		"build": "vinxi build",
 		"start": "vinxi start",
-		"format": "biome format",
+		"format": "biome format --staged --write",
 		"test": "vitest",
-		"lint": "biome lint"
+		"lint": "biome lint --staged --write"
 	},
 	"dependencies": {
 		"@solidjs/router": "^0.15.0",
