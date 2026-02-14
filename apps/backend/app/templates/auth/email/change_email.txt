@@ -1,0 +1,10 @@
+Hello {{ user.full_name }},
+
+We received a request to change your UniPal account email to this address. To confirm this change, please click the link below:
+
+http://localhost:3000/verify-email-change?token={{ token }}
+
+If you did not initiate this request, please contact our support team immediately.
+
+Regards,
+The UniPal Team
