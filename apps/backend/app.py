@@ -1,26 +1,25 @@
-from __future__ import annotations
-
 import os
+import unittest
+from dotenv import load_dotenv
+from app import create_app, db
+from app.models import User, Chat, Message, Complaint
+from flask_migrate import Migrate
 
-from flask import Flask, jsonify
+load_dotenv()
 
+# Create the application instance
+app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+migrate = Migrate(app, db)
 
-def create_app() -> Flask:
-    app = Flask(__name__)
+@app.shell_context_processor
+def make_shell_context():
+    return dict(db=db, User=User, Chat=Chat, Message=Message, Complaint=Complaint)
 
-    @app.get("/health")
-    def health():
-        return jsonify(status="ok")
+@app.cli.command()
+def test():
+    """Run the unit tests."""
+    tests = unittest.TestLoader().discover('tests')
+    unittest.TextTestRunner(verbosity=2).run(tests)
 
-    return app
-
-
-def main() -> None:
-    app = create_app()
-    port = int(os.environ.get("PORT", "5000"))
-    debug = os.environ.get("FLASK_DEBUG", "0") == "1"
-    app.run(host="0.0.0.0", port=port, debug=debug)
-
-
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
