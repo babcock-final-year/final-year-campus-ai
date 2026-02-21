@@ -46,8 +46,8 @@ export default function SignInPage() {
 							<FieldTextInput
 								{...field}
 								icon={<UserRoundPlus class="opacity-50" />}
-								label="Matric Number"
-								placeholder="21/1234"
+								label="Username / Email"
+								placeholder="PotentialMan69"
 								type="text"
 							/>
 						)}
