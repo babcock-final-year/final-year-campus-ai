@@ -25,10 +25,10 @@ export default function Home() {
 	return (
 		<div class="hero size-full overflow-auto bg-linear-to-b from-sky-900 to-blue-950 p-8">
 			<div class="hero-content flex-col gap-6 text-center sm:flex-row">
-				<AppLogo class="*:hidden *:h-auto *:w-2xs *:rounded-lg *:fill-primary-content *:text-shadow *:sm:block" />
+				<AppLogo class="hidden *:h-auto *:w-2xs *:fill-primary-content sm:block" />
 
 				<div>
-					<AppLogo class="*:block *:h-auto *:w-24 *:place-self-center *:rounded-lg *:fill-primary-content *:sm:hidden" />
+					<AppLogo class="mx-auto block size-fit *:h-auto *:w-24 *:place-self-center *:fill-primary-content sm:hidden" />
 
 					<h1 class="py-4 font-bold text-5xl text-primary-content">Unipal</h1>
 
