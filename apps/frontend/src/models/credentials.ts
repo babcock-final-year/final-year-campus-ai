@@ -11,3 +11,16 @@ export const MatricNumberSchema = v.pipe(
 );
 export type MatricNumberInput = v.InferInput<typeof MatricNumberSchema>;
 export type MatricNumberOutput = v.InferOutput<typeof MatricNumberSchema>;
+
+export const SignInCredentialsSchema = v.object({
+	/** Password */
+	pass: v.string(),
+	/** Matric number as username */
+	user: MatricNumberSchema,
+});
+export type SignInCredentialsInput = v.InferInput<
+	typeof SignInCredentialsSchema
+>;
+export type SignInCredentialsOutput = v.InferOutput<
+	typeof SignInCredentialsSchema
+>;
