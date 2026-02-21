@@ -3,7 +3,8 @@
 @plugin "daisyui" {
 	themes:
 		unipal-light --default,
-		night --prefersdark;
+		/* TODO: Add a proper dark mode*/
+		unipal-light --prefersdark;
 }
 @plugin "daisyui/theme" {
 	name: "unipal-light";
