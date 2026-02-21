@@ -6,6 +6,7 @@ import {
 	SYMBOL_REGEX,
 	UPPER_CASE_REGEX,
 } from "~/constants/regex";
+import { NonEmptyStringSchema } from "./shared";
 
 export const MatricNumberSchema = v.pipe(
 	v.string("Matric number must be a string"),
@@ -19,7 +20,7 @@ export type MatricNumberInput = v.InferInput<typeof MatricNumberSchema>;
 export type MatricNumberOutput = v.InferOutput<typeof MatricNumberSchema>;
 
 export const PasswordSchema = v.pipe(
-	v.string(),
+	NonEmptyStringSchema,
 	v.minLength(10, "Password too short."),
 	v.maxLength(31, "Password too long."),
 	v.regex(UPPER_CASE_REGEX, "Password must have an uppercase character."),
@@ -31,7 +32,7 @@ export const PasswordSchema = v.pipe(
 export const SignInCredentialsSchema = v.object({
 	pass: PasswordSchema,
 	/** Username or email :p */
-	user: v.string(),
+	user: NonEmptyStringSchema,
 });
 export type SignInCredentialsInput = v.InferInput<
 	typeof SignInCredentialsSchema
