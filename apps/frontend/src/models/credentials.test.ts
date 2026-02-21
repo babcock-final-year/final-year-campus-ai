@@ -25,7 +25,7 @@ describe("MatricNumberSchema", () => {
 		expect(bad.success).toBe(false);
 	});
 
-	it("is acts as a runtime check/type guard", () => {
+	it("acts as a runtime check/type guard", () => {
 		expect(v.is(MatricNumberSchema, "00/0000")).toBe(true);
 		expect(v.is(MatricNumberSchema, "00/000")).toBe(false);
 		expect(v.is(MatricNumberSchema, 123)).toBe(false);
@@ -33,33 +33,41 @@ describe("MatricNumberSchema", () => {
 });
 
 describe("SignInCredentialsSchema", () => {
-	it("parses valid credentials", () => {
-		const input = { pass: "supersecret", user: "22/0039" };
+	it("parses valid credentials (generic username + password)", () => {
+		// password meets complexity: >=10 chars, uppercase, lowercase, digit, symbol
+		const input = { pass: "Secur3P@ss!", user: "alice" };
 		const output = v.parse(SignInCredentialsSchema, input);
 		expect(output).toEqual(input);
 	});
 
 	it("throws on invalid credential shapes or values", () => {
 		const invalids = [
-			{ pass: "x", user: "2/0039" }, // invalid matric format
-			{ pass: "x", user: "22-0039" }, // invalid matric format
-			{ user: "22/0039" }, // missing pass
-			{ pass: "secret" }, // missing user
-			{ pass: "secret", user: 123 }, // wrong user type
+			{ pass: "x", user: "alice" }, // too short / lacks complexity
+			{ pass: "nouppercase1!", user: "alice" }, // missing uppercase
+			{ pass: "NOLOWERCASE1!", user: "alice" }, // missing lowercase
+			{ pass: "NoNumber!!", user: "alice" }, // missing number
+			{ pass: "NoSymbol11", user: "alice" }, // missing symbol
+			{ user: "alice" }, // missing pass
+			{ pass: "Secur3P@ss!" }, // missing user
+			{ pass: "Secur3P@ss!", user: 123 }, // wrong user type
 		];
 		for (const bad of invalids) {
 			expect(() => v.parse(SignInCredentialsSchema, bad)).toThrow();
 		}
 	});
 
-	it("is works as a runtime guard", () => {
-		expect(v.is(SignInCredentialsSchema, { pass: "pw", user: "00/0000" })).toBe(
-			true,
-		);
-		expect(v.is(SignInCredentialsSchema, { pass: "pw", user: "00/000" })).toBe(
-			false,
-		); // bad matric
-		expect(v.is(SignInCredentialsSchema, { user: "00/0000" })).toBe(false); // missing pass
-		expect(v.is(SignInCredentialsSchema, { pass: "pw" })).toBe(false); // missing user
+	it("works as a runtime guard", () => {
+		expect(
+			v.is(SignInCredentialsSchema, { pass: "Secur3P@ss!", user: "bob" }),
+		).toBe(true);
+
+		// invalid password (too short / lacks complexity)
+		expect(
+			v.is(SignInCredentialsSchema, { pass: "short1!", user: "bob" }),
+		).toBe(false);
+
+		// missing fields
+		expect(v.is(SignInCredentialsSchema, { user: "bob" })).toBe(false);
+		expect(v.is(SignInCredentialsSchema, { pass: "Secur3P@ss!" })).toBe(false);
 	});
 });

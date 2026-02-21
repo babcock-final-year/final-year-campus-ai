@@ -1,5 +1,11 @@
 import * as v from "valibot";
-import { MATRIC_NUMBER_REGEX } from "~/constants/regex";
+import {
+	LOWER_CASE_REGEX,
+	MATRIC_NUMBER_REGEX,
+	NUMBER_REGEX,
+	SYMBOL_REGEX,
+	UPPER_CASE_REGEX,
+} from "~/constants/regex";
 
 export const MatricNumberSchema = v.pipe(
 	v.string("Matric number must be a string"),
@@ -12,11 +18,20 @@ export const MatricNumberSchema = v.pipe(
 export type MatricNumberInput = v.InferInput<typeof MatricNumberSchema>;
 export type MatricNumberOutput = v.InferOutput<typeof MatricNumberSchema>;
 
+export const PasswordSchema = v.pipe(
+	v.string(),
+	v.minLength(10, "Password too short."),
+	v.maxLength(31, "Password too long."),
+	v.regex(UPPER_CASE_REGEX, "Password must have an uppercase character."),
+	v.regex(LOWER_CASE_REGEX, "Password must have a lowercase character."),
+	v.regex(NUMBER_REGEX, "Password must have a number."),
+	v.regex(SYMBOL_REGEX, "Password must have a non-alphanumeric character."),
+);
+
 export const SignInCredentialsSchema = v.object({
-	/** Password */
-	pass: v.string(),
-	/** Matric number as username */
-	user: MatricNumberSchema,
+	pass: PasswordSchema,
+	/** Username or email :p */
+	user: v.string(),
 });
 export type SignInCredentialsInput = v.InferInput<
 	typeof SignInCredentialsSchema
