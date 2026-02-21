@@ -13,11 +13,11 @@
       },
     },
     "apps/backend": {
-      "name": "backend",
+      "name": "@apps/backend",
       "version": "0.0.0",
     },
     "apps/frontend": {
-      "name": "frontend",
+      "name": "@apps/frontend",
       "version": "0.0.0",
       "dependencies": {
         "@formisch/solid": "^0.9.2",
@@ -41,6 +41,10 @@
     },
   },
   "packages": {
+    "@apps/backend": ["@apps/backend@workspace:apps/backend"],
+
+    "@apps/frontend": ["@apps/frontend@workspace:apps/frontend"],
+
     "@babel/code-frame": ["@babel/code-frame@7.26.2", "", { "dependencies": { "@babel/helper-validator-identifier": "^7.25.9", "js-tokens": "^4.0.0", "picocolors": "^1.0.0" } }, "sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ=="],
 
     "@babel/compat-data": ["@babel/compat-data@7.29.0", "", {}, "sha512-T1NCJqT/j9+cn8fvkt7jtwbLBfLC/1y1c7NtCeXFRgzGTsafi68MRv8yzkYSapBnFA6L3U2VSc02ciDzoAJhJg=="],

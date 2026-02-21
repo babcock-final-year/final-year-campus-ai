@@ -1,5 +1,5 @@
 {
-	"name": "backend",
+	"name": "@apps/backend",
 	"private": true,
 	"scripts": {
 		"build": "echo 'No build for server code. Skipping...'",

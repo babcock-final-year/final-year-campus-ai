@@ -21,7 +21,7 @@
 	"engines": {
 		"node": ">=22"
 	},
-	"name": "frontend",
+	"name": "@apps/frontend",
 	"private": true,
 	"scripts": {
 		"build": "vinxi build",
