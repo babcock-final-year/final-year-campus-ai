@@ -5,7 +5,7 @@ export default function AppLogo(props: { class?: string }) {
 	return (
 		<div
 			class={clsx(
-				"rounded-box p-2 shadow-inner backdrop-brightness-95",
+				"size-fit rounded-box p-2 shadow-inner backdrop-brightness-95",
 				props.class,
 			)}
 			innerHTML={logoSvg}
