@@ -40,3 +40,15 @@ export type SignInCredentialsInput = v.InferInput<
 export type SignInCredentialsOutput = v.InferOutput<
 	typeof SignInCredentialsSchema
 >;
+
+export const SignUpCredentialsSchema = v.object({
+	email: v.pipe(NonEmptyStringSchema, v.email()),
+	pass: PasswordSchema,
+	username: NonEmptyStringSchema,
+});
+export type SignUpCredentialsInput = v.InferInput<
+	typeof SignInCredentialsSchema
+>;
+export type SignUpCredentialsOutput = v.InferOutput<
+	typeof SignInCredentialsSchema
+>;

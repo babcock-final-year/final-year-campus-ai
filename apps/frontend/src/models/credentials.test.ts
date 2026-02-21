@@ -1,6 +1,10 @@
 import * as v from "valibot";
 import { describe, expect, it } from "vitest";
-import { MatricNumberSchema, SignInCredentialsSchema } from "./credentials";
+import {
+	MatricNumberSchema,
+	SignInCredentialsSchema,
+	SignUpCredentialsSchema,
+} from "./credentials";
 
 describe("MatricNumberSchema", () => {
 	it("parses valid matric numbers", () => {
@@ -69,5 +73,80 @@ describe("SignInCredentialsSchema", () => {
 		// missing fields
 		expect(v.is(SignInCredentialsSchema, { user: "bob" })).toBe(false);
 		expect(v.is(SignInCredentialsSchema, { pass: "Secur3P@ss!" })).toBe(false);
+	});
+});
+
+describe("SignUpCredentialsSchema", () => {
+	it("parses valid signup credentials (username + email + password)", () => {
+		const input = {
+			email: "alice@example.com",
+			pass: "Secur3P@ss!",
+			username: "alice",
+		};
+		const output = v.parse(SignUpCredentialsSchema, input);
+		expect(output).toEqual(input);
+	});
+
+	it("throws on invalid signup shapes or values", () => {
+		const invalids = [
+			// password issues (same variants as sign-in)
+			{ email: "a@b.com", pass: "x", username: "alice" },
+			{ email: "a@b.com", pass: "nouppercase1!", username: "alice" },
+			{ email: "a@b.com", pass: "NOLOWERCASE1!", username: "alice" },
+			{ email: "a@b.com", pass: "NoNumber!!", username: "alice" },
+			{ email: "a@b.com", pass: "NoSymbol11", username: "alice" },
+
+			// email problems
+			{ email: "not-an-email", pass: "Secur3P@ss!", username: "alice" },
+			{ pass: "Secur3P@ss!", username: "alice" }, // missing email
+
+			// username problems
+			{ email: "alice@example.com", pass: "Secur3P@ss!" }, // missing username
+			{ email: "alice@example.com", pass: "Secur3P@ss!", username: 123 }, // wrong username type
+		];
+
+		for (const bad of invalids) {
+			expect(() => v.parse(SignUpCredentialsSchema, bad)).toThrow();
+		}
+	});
+
+	it("safeParse and is behave as runtime checks", () => {
+		const ok = v.safeParse(SignUpCredentialsSchema, {
+			email: "carol@domain.test",
+			pass: "Secur3P@ss!",
+			username: "carol",
+		});
+		expect(ok.success).toBe(true);
+		if (ok.success) expect(ok.output.username).toBe("carol");
+
+		const badEmail = v.safeParse(SignUpCredentialsSchema, {
+			email: "not-an-email",
+			pass: "Secur3P@ss!",
+			username: "carol",
+		});
+		expect(badEmail.success).toBe(false);
+
+		expect(
+			v.is(SignUpCredentialsSchema, {
+				email: "dave@host.org",
+				pass: "Secur3P@ss!",
+				username: "dave",
+			}),
+		).toBe(true);
+
+		expect(
+			v.is(SignUpCredentialsSchema, {
+				email: "dave@host.org",
+				pass: "short",
+				username: "dave",
+			}),
+		).toBe(false);
+
+		expect(
+			v.is(SignUpCredentialsSchema, {
+				email: "dave@host.org",
+				username: "dave",
+			}),
+		).toBe(false);
 	});
 });
