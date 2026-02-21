@@ -1,3 +1,5 @@
+import { Link } from "@kobalte/core/link";
+import { A } from "@solidjs/router";
 import {
 	CalendarDays,
 	FileText,
@@ -6,7 +8,6 @@ import {
 	UserRoundPlus,
 } from "lucide-solid";
 import type { JSXElement } from "solid-js";
-import BaseButton from "~/components/button/BaseButton";
 import AppLogo from "~/components/svg/AppLogo";
 
 function ListWithIcon(props: { children: JSXElement; icon: JSXElement }) {
@@ -49,12 +50,20 @@ export default function Home() {
 					</ul>
 
 					<div class="flex flex-col items-center justify-center gap-4 py-4">
-						<BaseButton class="btn-wide btn-lg [--btn-color:var(--color-primary-content)] [--btn-fg:var(--color-primary)]">
+						<Link
+							as={A}
+							class="btn btn-wide btn-lg [--btn-color:var(--color-primary-content)] [--btn-fg:var(--color-primary)]"
+							href="/sign-up"
+						>
 							Get Started <UserRoundPlus />
-						</BaseButton>
-						<BaseButton class="btn-ghost btn-wide btn-lg text-primary-content hover:text-base-content">
+						</Link>
+						<Link
+							as={A}
+							class="btn btn-ghost btn-wide btn-lg text-primary-content hover:text-base-content"
+							href="/sign-in"
+						>
 							Sign In <LogIn />
-						</BaseButton>
+						</Link>
 					</div>
 				</div>
 			</div>
