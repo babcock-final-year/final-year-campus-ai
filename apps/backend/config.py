@@ -1,6 +1,22 @@
 import os, secrets
+from dotenv import load_dotenv, find_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+dotenv_path = os.path.join(basedir, '.env')
+load_dotenv(find_dotenv(dotenv_path), override=False)
+
+# RAG
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
+GEMINI_EMBEDDINGS_MODEL = os.getenv("GEMINI_EMBEDDINGS_MODEL", "text-embedding-004")
+GEMINI_LLM_MODEL = os.getenv("GEMINI_LLM_MODEL", "gemini-3-pro")
+HF_EMBEDDINGS_MODEL = os.environ.get('HF_EMBEDDINGS_MODEL')
+HF_ACCESS_TOKEN = os.environ.get('HF_ACCESS_TOKEN')
+GROQ_API_KEY = os.environ.get('GROQ_API_KEY')
+GROQ_LLM_MODEL = os.getenv("GROQ_LLM_MODEL")
+DATA_DIRECTORY = os.path.join(basedir, os.environ.get('DATA_DIRECTORY') or 'data')
+CHROMA_PATH = os.path.join(basedir, os.environ.get('CHROMA_PATH') or 'chroma_db')
+PROMPT_PATH = os.path.join(basedir, os.environ.get('PROMPT_PATH') or "prompt.txt")
+TOP_K = int(os.environ.get('TOP_K') or 5)
 
 class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or secrets.token_hex(32)
