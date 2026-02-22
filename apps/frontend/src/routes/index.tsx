@@ -25,7 +25,7 @@ function ListWithIcon(props: { children: JSXElement; icon: JSXElement }) {
 export default function Home() {
 	return (
 		<div class="hero size-full overflow-auto bg-linear-to-b from-sky-900 to-blue-950 p-8">
-			<div class="hero-content flex-col gap-6 text-center sm:flex-row">
+			<div class="hero-content flex-col gap-8 text-center sm:flex-row sm:gap-16">
 				<AppLogo class="hidden *:h-auto *:w-2xs *:fill-primary-content sm:block" />
 
 				<div>
