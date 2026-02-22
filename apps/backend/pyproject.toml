@@ -14,9 +14,9 @@ dev = [
 ]
 
 [tool.ruff]
-# Target modern Python (matches requires-python)
+
 target-version = "py313"
-# Reasonable line length; adjust if you have a repo-wide standard
+
 line-length = 100
 # Avoid linting common noise directories
 exclude = [
@@ -59,7 +59,7 @@ combine-as-imports = true
 force-sort-within-sections = true
 
 [tool.ruff.format]
-# Use Ruff's formatter. If you prefer single quotes, flip this to "single".
+# Use Ruff's formatter.
 quote-style = "double"
 indent-style = "space"
 line-ending = "auto"
