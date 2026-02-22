@@ -29,15 +29,17 @@ export default function SignInPage() {
 
 	return (
 		<div class="grid size-full place-items-center overflow-auto">
-			<div class="flex aspect-9/16 w-xs flex-col items-center justify-center gap-4 p-4">
-				<AppLogo class="*:h-auto *:w-16" />
+			<div class="flex flex-col items-center justify-center gap-8 p-4 sm:flex-row sm:gap-16">
+				<div class="flex flex-col items-center justify-center gap-4">
+					<AppLogo class="*:h-auto *:w-16" />
 
-				<h1 class="font-bold text-2xl">Welcome back!</h1>
+					<h1 class="font-bold text-2xl">Welcome back!</h1>
 
-				<p>Sign in to continue with CampusAI</p>
+					<p>Sign in to continue with CampusAI</p>
+				</div>
 
 				<Form
-					class="mt-4 flex w-full flex-col gap-4"
+					class="mt-4 flex flex-col gap-4"
 					of={signInForm}
 					onSubmit={signInFormSubmitHandler}
 				>
