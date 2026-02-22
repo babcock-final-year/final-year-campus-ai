@@ -116,19 +116,23 @@ def login():
     data = request.context.json
     user = User.query.filter_by(email=data.email).first()
     if not user:
+        logger.warning(f"Login failed: No user found with email {data.email}")
         return jsonify({"message": "Invalid email or password"}), 401
 
     # If the user was created via OAuth or as a guest, they may not have a password
     if not user.password_hash:
-        logger.warning("")
+        logger.warning(f"Login failed: User {data.email} has no local password set")
         return jsonify({"message": "No local password set for this account. Please login via OAuth or reset your password."}), 401
 
     if not user.verify_password(data.password):
+        logger.warning(f"Login failed: Incorrect password for user {data.email}")
         return jsonify({"message": "Invalid email or password"}), 401
     
     if not user.is_confirmed:
+        logger.warning(f"Login failed: Unconfirmed account {data.email}")
         return jsonify({"message": "Account not confirmed. Please check your email."}), 403
     
+    logger.info(f"User logged in successfully: {user.email} (ID: {user.id})")
     return jsonify({
         "access_token": create_access_token(identity=user.id),
         "refresh_token": create_refresh_token(identity=user.id),
@@ -144,8 +148,10 @@ def me():
     user = User.query.get(current_user_id)
     
     if not user:
+        logger.warning(f"User info request failed: No user found with ID {current_user_id}")
         return jsonify({"message": "User not found"}), 404
     
+    logger.info(f"User info retrieved for user: {user.email} (ID: {user.id})")
     return jsonify({"user": UserBase.model_validate(user).model_dump()}), 200
 
 @api.route('/auth/refresh', methods=['POST'])
@@ -153,6 +159,7 @@ def me():
 def refresh_token():
     """Refresh access token using a valid refresh token."""
     
+    logger.info(f"Token refresh requested by user ID: {get_jwt_identity()}")
     current_user_id = get_jwt_identity()
     new_access_token = create_access_token(identity=current_user_id)
     return jsonify({"access_token": new_access_token}), 200
@@ -171,6 +178,7 @@ def guest_login():
     db.session.add(user)
     db.session.commit()
     
+    logger.info(f"Guest user created: {user.email} (ID: {user.id})")    
     return {
         "access_token": create_access_token(identity=user.id), 
         "refresh_token": create_refresh_token(identity=user.id),
@@ -202,12 +210,14 @@ def google_auth():
             db.session.add(user)
             db.session.commit()
 
+        logger.info(f"Google authentication successful for user: {user.email} (ID: {user.id})")
         return {
             "access_token": create_access_token(identity=user.id), 
             "refresh_token": create_refresh_token(identity=user.id),
             "user": UserBase.model_validate(user).model_dump()}, 200
     
     except ValueError:
+        logger.warning("Google authentication failed: Invalid token")
         return jsonify({"message": "Invalid Google Token"}), 400
     
 @api.route('/auth/logout', methods=['POST'])
@@ -217,12 +227,14 @@ def logout():
     jwt_data = get_jwt()
     jti = jwt_data.get('jti')
     if not jti:
+        logger.warning("Logout failed: No JTI found in token")
         return jsonify({"message": "Unable to revoke token"}), 400
 
     revoked_token = TokenBlocklist(jti=jti)
     db.session.add(revoked_token)
     db.session.commit()
 
+    logger.info(f"User logged out successfully, token revoked: JTI {jti}")
     return jsonify({"message": "Successfully logged out"}), 200
 
 
@@ -237,14 +249,17 @@ def request_change_email():
     user = User.query.get(current_user_id)
 
     if not user:
+        logger.warning(f"Email change request failed: No user found with ID {current_user_id}")
         return jsonify({"message": "User not found"}), 404
 
     # Verify password is correct for security
     if not user.password_hash or not user.verify_password(data.password):
+        logger.warning(f"Email change request failed: Incorrect password for user {user.email} (ID: {user.id})")
         return jsonify({"message": "Invalid password"}), 401
 
     new_email = data.new_email
     if User.query.filter_by(email=new_email).first():
+        logger.warning(f"Email change request failed: Email {new_email} already in use")
         return jsonify({"message": "Email already in use"}), 409
 
     token = user.generate_email_change_token(new_email)
@@ -262,6 +277,7 @@ def request_change_email():
         confirm_url=confirm_url,
     )
 
+    logger.info(f"Email change requested for user: {user.email} (ID: {user.id}), confirmation sent to {new_email}")
     return jsonify({"message": "Confirmation email sent to the new address."}), 200
 
 
@@ -271,12 +287,15 @@ def confirm_change_email(token):
 
     user = get_user_from_token(token, 'email-change')
     if user is None:
+        logger.warning("Email change confirmation failed: Invalid or expired token")
         return jsonify({"message": "Invalid or expired link"}), 400
 
     if user.change_email(token):
         db.session.commit()
+        logger.info(f"Email address updated successfully for user: {user.email} (ID: {user.id})")
         return jsonify({"message": "Email address updated successfully"}), 200
 
+    logger.warning(f"Email change confirmation failed for user: {user.email} (ID: {user.id}) - Token verification failed")
     return jsonify({"message": "Email change failed"}), 400
     
 @api.route('/auth/reset-password', methods=['POST'])
@@ -302,6 +321,7 @@ def request_password_reset():
             reset_url=reset_url,
         )
         
+    logger.info(f"Password reset requested for user: {user.email} (ID: {user.id}), reset link sent")
     return jsonify({"message": "If the email is registered, a reset link was sent."}), 200
 
 @api.route('/auth/reset-password-confirm/<token>', methods=['POST'])
@@ -311,6 +331,8 @@ def reset_password(token):
 
     if User.reset_password(token, data.new_password):
         db.session.commit()
+        logger.info("Password reset successful using token")
         return jsonify({"message": "Your password has been updated."}), 200
     
+    logger.warning("Password reset failed: Invalid or expired token")
     return jsonify({"message": "The reset link is invalid or has expired."}), 400
