@@ -9,6 +9,7 @@ import { HatGlasses, LockKeyhole, Mail, UserRoundPlus } from "lucide-solid";
 import { createSignal } from "solid-js";
 import BaseButton from "~/components/button/BaseButton";
 import FieldTextInput from "~/components/form/FieldTextInput";
+import AppLogo from "~/components/svg/AppLogo";
 import GoogleLogo from "~/components/svg/GoogleLogo";
 import { SignUpCredentialsSchema } from "~/models/credentials";
 
@@ -33,7 +34,9 @@ export default function SignUpPage() {
 	return (
 		<div class="grid size-full place-items-center overflow-auto">
 			<div class="flex flex-col items-center justify-center gap-8 p-4 sm:flex-row sm:gap-16">
-				<div class="grid grid-rows-2 place-items-center gap-4">
+				<div class="flex flex-col items-center justify-center gap-4">
+					<AppLogo class="*:h-auto *:w-16" />
+
 					<h1 class="font-bold text-2xl">Sign Up</h1>
 
 					<p>Sign in to continue with CampusAI</p>
