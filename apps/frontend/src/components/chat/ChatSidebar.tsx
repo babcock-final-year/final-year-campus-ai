@@ -10,7 +10,7 @@ import BaseButton from "../button/BaseButton";
 
 export default function ChatSidebar() {
 	return (
-		<div class="flex h-screen w-2xs flex-col gap-4 overflow-auto bg-linear-to-b from-sky-900 to-blue-950 px-2 py-8">
+		<div class="flex h-screen w-2xs flex-col gap-4 overflow-auto bg-accent px-2 py-8">
 			<div class="flex items-center justify-center gap-4">
 				<TextField>
 					<TextField.Label class="input rounded-full bg-base-100">
@@ -20,20 +20,20 @@ export default function ChatSidebar() {
 					</TextField.Label>
 				</TextField>
 
-				<FilePenLine class="size-8 text-primary-content" />
+				<FilePenLine class="size-8 text-secondary" />
 			</div>
 
-			<BaseButton class="btn-ghost mt-4 flex items-center justify-start p-2 font-semibold text-primary-content">
+			<BaseButton class="btn-ghost mt-4 flex items-center justify-start p-2 font-semibold text-secondary">
 				<FilePenLine />
 				New Chat
 			</BaseButton>
 
-			<BaseButton class="btn-ghost flex items-center justify-start p-2 font-semibold text-primary-content">
+			<BaseButton class="btn-ghost flex items-center justify-start p-2 font-semibold text-secondary">
 				<Folder />
 				New Project
 			</BaseButton>
 
-			<div class="mt-8 flex flex-col gap-4 text-primary-content">
+			<div class="mt-8 flex flex-col gap-4 text-secondary">
 				<h3 class="flex items-center gap-4 font-semibold">
 					<MessageCircleMore /> Recent Chats
 				</h3>
@@ -44,7 +44,7 @@ export default function ChatSidebar() {
 				</ul>
 			</div>
 
-			<BaseButton class="btn-ghost mt-auto flex items-center justify-start p-2 font-semibold text-primary-content">
+			<BaseButton class="btn-ghost mt-auto flex items-center justify-start p-2 font-semibold text-secondary">
 				<Settings />
 				Settings & Help
 			</BaseButton>
