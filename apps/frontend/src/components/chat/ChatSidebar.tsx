@@ -10,7 +10,7 @@ import BaseButton from "../button/BaseButton";
 
 export default function ChatSidebar() {
 	return (
-		<div class="flex h-screen w-2xs flex-col gap-4 overflow-auto bg-accent px-2 py-8">
+		<div class="flex h-screen w-2xs flex-col gap-4 overflow-auto px-2 py-8">
 			<div class="flex items-center justify-center gap-4">
 				<TextField>
 					<TextField.Label class="input rounded-full bg-base-100">

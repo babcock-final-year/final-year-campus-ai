@@ -12,16 +12,26 @@ export default function ChatMainAreaHeader() {
 	return (
 		<div class="flex justify-between">
 			<Drawer breakPoints={[0.75]} side="left">
-				<Drawer.Trigger class="btn btn-ghost btn-circle btn-sm bg-base-200">
-					<Ellipsis class="stroke-primary" />
-				</Drawer.Trigger>
+				{(drawerProps) => (
+					<>
+						<Drawer.Trigger class="btn btn-ghost btn-circle btn-sm bg-base-200">
+							<Ellipsis class="stroke-primary" />
+						</Drawer.Trigger>
 
-				<Drawer.Portal>
-					<Drawer.Overlay class="fixed inset-0 z-50 data-transitioning:transition-colors data-transitioning:duration-500" />
-					<Drawer.Content class="fixed inset-x-0 bottom-0 z-50 data-transitioning:transition-transform data-transitioning:duration-500">
-						<ChatSidebar />
-					</Drawer.Content>
-				</Drawer.Portal>
+						<Drawer.Portal>
+							<Drawer.Overlay
+								class="fixed inset-0 z-10 corvu-transitioning:transition-all corvu-transitioning:duration-500"
+								style={{
+									"backdrop-filter": `brightness(${100 - 25 * drawerProps.openPercentage}%)`,
+								}}
+							/>
+							{/* The padding and negative left is to give clearance when the user drags on the drawer further rightwards, otherwise it'll look "cut-off" */}
+							<Drawer.Content class="fixed inset-0 -left-12 z-10 flex w-fit bg-accent pl-12 corvu-transitioning:transition-transform corvu-transitioning:duration-500">
+								<ChatSidebar />
+							</Drawer.Content>
+						</Drawer.Portal>
+					</>
+				)}
 			</Drawer>
 
 			<div class="flex items-center justify-center gap-2 rounded-field bg-base-200 px-2 py-4 [&_svg]:stroke-primary">
