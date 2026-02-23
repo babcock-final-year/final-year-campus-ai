@@ -12,6 +12,7 @@ import FieldTextInput from "~/components/form/FieldTextInput";
 import AppLogo from "~/components/svg/AppLogo";
 import GoogleLogo from "~/components/svg/GoogleLogo";
 import { SignUpCredentialsSchema } from "~/models/credentials";
+import { routes } from "~/RouteManifest";
 
 export default function SignUpPage() {
 	const [hasAcceptedTerms, setHasAcceptedTerms] = createSignal(false);
@@ -123,7 +124,7 @@ export default function SignUpPage() {
 
 					<p class="mx-auto text-xs">
 						Already have an account?{" "}
-						<A class="link link-primary" href="/auth/sign-in">
+						<A class="link link-primary" href={routes().auth.signIn.index}>
 							Sign In
 						</A>
 					</p>

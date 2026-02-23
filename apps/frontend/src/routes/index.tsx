@@ -9,6 +9,7 @@ import {
 } from "lucide-solid";
 import type { JSXElement } from "solid-js";
 import AppLogo from "~/components/svg/AppLogo";
+import { routes } from "~/RouteManifest";
 
 function ListWithIcon(props: { children: JSXElement; icon: JSXElement }) {
 	return (
@@ -53,14 +54,14 @@ export default function Home() {
 						<Link
 							as={A}
 							class="btn btn-wide btn-lg [--btn-color:var(--color-primary-content)] [--btn-fg:var(--color-primary)]"
-							href="/auth/sign-up"
+							href={routes().auth.signUp.index}
 						>
 							Get Started <UserRoundPlus />
 						</Link>
 						<Link
 							as={A}
 							class="btn btn-ghost btn-wide btn-lg text-primary-content hover:text-base-content"
-							href="/auth/sign-in"
+							href={routes().auth.signIn.index}
 						>
 							Sign In <LogIn />
 						</Link>
