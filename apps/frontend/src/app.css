@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @plugin "@kobalte/tailwindcss";
+@plugin "@corvu/tailwind";
 @plugin "daisyui" {
 	themes:
 		unipal-light --default,
