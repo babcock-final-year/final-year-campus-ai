@@ -4,6 +4,7 @@
 export declare function routes(searchParams?: Record<string, string>): {
 	index: string;
 	_404: (_404: string | number) => { index: string };
+	chat: { index: string };
 	about: { index: string };
 	auth: {
 		signIn: { index: string };

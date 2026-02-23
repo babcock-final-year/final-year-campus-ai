@@ -7,6 +7,7 @@ export function routes(searchParams) {
   return {
     index: `/${query}` ,
     _404: (_404) => ({index: `/${_404}${query}`}),
+    chat: {index: `/chat${query}`},
     about: {index: `/about${query}`},
     auth: {
       signIn: {index: `/auth/sign-in${query}`},
