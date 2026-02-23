@@ -83,7 +83,7 @@ export default function SignInPage() {
 
 					<p class="mx-auto text-xs">
 						Don't have an account?{" "}
-						<A class="link link-primary" href="/sign-up">
+						<A class="link link-primary" href="/auth/sign-up">
 							Sign Up
 						</A>
 					</p>

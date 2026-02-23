@@ -123,7 +123,7 @@ export default function SignUpPage() {
 
 					<p class="mx-auto text-xs">
 						Already have an account?{" "}
-						<A class="link link-primary" href="/sign-in">
+						<A class="link link-primary" href="/auth/sign-in">
 							Sign In
 						</A>
 					</p>

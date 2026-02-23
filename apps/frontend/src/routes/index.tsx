@@ -53,14 +53,14 @@ export default function Home() {
 						<Link
 							as={A}
 							class="btn btn-wide btn-lg [--btn-color:var(--color-primary-content)] [--btn-fg:var(--color-primary)]"
-							href="/sign-up"
+							href="/auth/sign-up"
 						>
 							Get Started <UserRoundPlus />
 						</Link>
 						<Link
 							as={A}
 							class="btn btn-ghost btn-wide btn-lg text-primary-content hover:text-base-content"
-							href="/sign-in"
+							href="/auth/sign-in"
 						>
 							Sign In <LogIn />
 						</Link>
