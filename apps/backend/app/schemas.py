@@ -1,6 +1,9 @@
 from pydantic import BaseModel, EmailStr, Field
+from pydantic2ts import generate_typescript_defs
 from datetime import datetime
 from typing import List, Optional
+
+# Run this script to update types
 
 # User schema
 class UserBase(BaseModel):
@@ -65,3 +68,5 @@ class ChatHistoryResponse(BaseModel):
     chat_id: str
     title: str
     messages: List[ChatMessageResponse]
+
+generate_typescript_defs("schemas", "types.ts")
