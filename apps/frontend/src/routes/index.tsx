@@ -9,31 +9,30 @@ import {
 } from "lucide-solid";
 import type { JSXElement } from "solid-js";
 import AppLogo from "~/components/svg/AppLogo";
+import { routes } from "~/RouteManifest";
 
 function ListWithIcon(props: { children: JSXElement; icon: JSXElement }) {
 	return (
 		<li class="grid grid-cols-[1.5rem_1fr] place-items-center gap-6">
-			<div class="rounded-full bg-secondary p-2 text-primary-content shadow">
-				{props.icon}
-			</div>
+			<div class="rounded-full bg-base-100 p-2 shadow">{props.icon}</div>
 
-			<div class="text-primary-content">{props.children}</div>
+			<div class="text-secondary">{props.children}</div>
 		</li>
 	);
 }
 
 export default function Home() {
 	return (
-		<div class="hero size-full overflow-auto bg-linear-to-b from-sky-900 to-blue-950 p-8">
-			<div class="hero-content flex-col gap-6 text-center sm:flex-row">
-				<AppLogo class="hidden *:h-auto *:w-2xs *:fill-primary-content sm:block" />
+		<div class="hero size-full overflow-auto bg-linear-to-bl from-accent/90 to-accent p-8">
+			<div class="hero-content flex-col gap-8 text-center sm:flex-row sm:gap-16">
+				<AppLogo class="hidden *:h-auto *:w-2xs *:fill-secondary sm:block" />
 
 				<div>
-					<AppLogo class="mx-auto block *:h-auto *:w-24 *:place-self-center *:fill-primary-content sm:hidden" />
+					<AppLogo class="mx-auto block *:h-auto *:w-24 *:place-self-center *:fill-secondary sm:hidden" />
 
-					<h1 class="py-4 font-bold text-5xl text-primary-content">Unipal</h1>
+					<h1 class="py-4 font-bold text-5xl text-secondary">Unipal</h1>
 
-					<p class="py-4 font-semibold text-primary-content">
+					<p class="py-4 font-semibold text-secondary">
 						Your intelligent assistant for campus life.
 					</p>
 
@@ -52,15 +51,15 @@ export default function Home() {
 					<div class="flex flex-col items-center justify-center gap-4 py-4">
 						<Link
 							as={A}
-							class="btn btn-wide btn-lg [--btn-color:var(--color-primary-content)] [--btn-fg:var(--color-primary)]"
-							href="/sign-up"
+							class="btn btn-wide btn-lg btn-secondary"
+							href={routes().auth.signUp.index}
 						>
 							Get Started <UserRoundPlus />
 						</Link>
 						<Link
 							as={A}
-							class="btn btn-ghost btn-wide btn-lg text-primary-content hover:text-base-content"
-							href="/sign-in"
+							class="btn btn-ghost btn-wide btn-lg btn-secondary"
+							href={routes().auth.signIn.index}
 						>
 							Sign In <LogIn />
 						</Link>
