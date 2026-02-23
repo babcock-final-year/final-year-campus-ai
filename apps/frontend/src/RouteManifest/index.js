@@ -10,7 +10,10 @@ export function routes(searchParams) {
     about: {index: `/about${query}`},
     auth: {
       signIn: {index: `/auth/sign-in${query}`},
-      signUp: {index: `/auth/sign-up${query}`},
+      signUp: {
+        index: `/auth/sign-up${query}`,
+        success: {index: `/auth/sign-up/success${query}`},
+      },
     },
   };
 }

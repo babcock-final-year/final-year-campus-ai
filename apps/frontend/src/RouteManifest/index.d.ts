@@ -7,6 +7,9 @@ export declare function routes(searchParams?: Record<string, string>): {
 	about: { index: string };
 	auth: {
 		signIn: { index: string };
-		signUp: { index: string };
+		signUp: {
+			index: string;
+			success: { index: string };
+		};
 	};
 };
