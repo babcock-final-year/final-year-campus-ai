@@ -1,0 +1,11 @@
+{
+	"exports": {
+		".": {
+			"types": "./types.ts"
+		}
+	},
+	"name": "@packages/shared-types",
+	"private": true,
+	"type": "module",
+	"version": "0.0.1"
+}
