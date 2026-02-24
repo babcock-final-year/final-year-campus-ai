@@ -6,55 +6,55 @@
 */
 
 export interface AuthResponse {
-  access_token: string;
-  refresh_token: string;
-  token_type?: string;
-  user: UserBase;
+	access_token: string;
+	refresh_token: string;
+	token_type?: string;
+	user: UserBase;
 }
 export interface UserBase {
-  id: string;
-  full_name: string;
-  email?: string | null;
-  is_guest: boolean;
+	id: string;
+	full_name: string;
+	email?: string | null;
+	is_guest: boolean;
 }
 export interface ChangePasswordRequest {
-  old_password: string;
-  new_password: string;
+	old_password: string;
+	new_password: string;
 }
 export interface ChatHistoryResponse {
-  chat_id: string;
-  title: string;
-  messages: ChatMessageResponse[];
+	chat_id: string;
+	title: string;
+	messages: ChatMessageResponse[];
 }
 export interface ChatMessageResponse {
-  id: number;
-  role: string;
-  content: string;
-  timestamp: string;
-  is_liked?: boolean | null;
+	id: number;
+	role: string;
+	content: string;
+	timestamp: string;
+	is_liked?: boolean | null;
 }
 export interface ChatMessageRequest {
-  content: string;
+	content: string;
 }
 export interface EmailChangeRequest {
-  new_email: string;
-  password: string;
+	new_email: string;
+	password: string;
 }
 export interface GoogleAuthRequest {
-  token: string;
+	token: string;
 }
 export interface PasswordResetConfirmRequest {
-  new_password: string;
+	new_password: string;
 }
 export interface PasswordResetRequest {
-  email: string;
+	email: string;
 }
 export interface UserLoginRequest {
-  email: string;
-  password: string;
+	email: string;
+	password: string;
 }
 export interface UserRegisterRequest {
-  full_name: string;
-  email: string;
-  password: string;
+	full_name: string;
+	email: string;
+	password: string;
 }
