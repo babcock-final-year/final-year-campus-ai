@@ -34,6 +34,7 @@
 		"dev": "vinxi dev --port 3030",
 		"format": "biome format --staged --write",
 		"lint": "biome lint --staged --write",
+		"pkg:install": "bun install",
 		"start": "vinxi start",
 		"test": "vitest"
 	},

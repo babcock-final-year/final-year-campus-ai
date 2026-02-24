@@ -1,24 +1,28 @@
 {
 	"$schema": "https://turborepo.dev/schema.json",
-	"ui": "tui",
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],
 			"inputs": ["$TURBO_DEFAULT$", ".env*", "!README.md"],
 			"outputs": [".output/**", ".dist/**"]
 		},
-		"lint": {
-			"dependsOn": ["^lint"]
+		"dev": {
+			"cache": false,
+			"dependsOn": ["^pkg:install"],
+			"persistent": true
 		},
 		"format": {
 			"dependsOn": ["^format"]
 		},
+		"lint": {
+			"dependsOn": ["^lint"]
+		},
+		"pkg:install": {
+			"dependsOn": ["^pkg:install"]
+		},
 		"test": {
 			"dependsOn": ["^test"]
-		},
-		"dev": {
-			"cache": false,
-			"persistent": true
 		}
-	}
+	},
+	"ui": "tui"
 }

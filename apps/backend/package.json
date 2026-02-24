@@ -10,6 +10,7 @@
 		"format:check": "uv run ruff format . --check",
 		"lint": "uv run ruff check .",
 		"lint:fix": "uv run ruff check . --fix",
+		"pkg:install": "UV_VENV_CLEAR=1 uv venv && uv pip install -r requirements.txt",
 		"run": "uv run python -m flask --app app run --host 0.0.0.0 --port 5000",
 		"setup": "uv sync --dev",
 		"setup:prod": "uv sync --no-dev",
