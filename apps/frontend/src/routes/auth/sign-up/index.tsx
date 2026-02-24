@@ -4,6 +4,7 @@ import {
 	Form,
 	type SubmitEventHandler,
 } from "@formisch/solid";
+import { Link } from "@kobalte/core/link";
 import { A } from "@solidjs/router";
 import { HatGlasses, LockKeyhole, Mail, UserRoundPlus } from "lucide-solid";
 import { createSignal } from "solid-js";
@@ -117,9 +118,9 @@ export default function SignUpPage() {
 							<GoogleLogo /> Google
 						</BaseButton>
 
-						<BaseButton class="grow">
+						<Link class="btn grow" href={routes().chat.index}>
 							<HatGlasses /> Guest
-						</BaseButton>
+						</Link>
 					</div>
 
 					<p class="mx-auto text-xs">
