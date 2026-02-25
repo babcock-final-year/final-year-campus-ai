@@ -16,6 +16,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "^2.4.4",
 		"@corvu/tailwind": "^0.1.7",
+		"@packages/shared-types": "workspace:",
 		"@tailwindcss/vite": "^4.2.0",
 		"daisyui": "^5.5.19",
 		"solid-start-typesafe-routes-plugin": "^1.2.0",
@@ -33,6 +34,7 @@
 		"dev": "vinxi dev --port 3030",
 		"format": "biome format --staged --write",
 		"lint": "biome lint --staged --write",
+		"pkg:install": "bun install",
 		"start": "vinxi start",
 		"test": "vitest"
 	},
