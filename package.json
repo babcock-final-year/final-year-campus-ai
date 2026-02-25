@@ -20,6 +20,7 @@
 		"build": "turbo run build",
 		"dev": "turbo run dev",
 		"format": "turbo run format",
+		"gen:types": "turbo run gen:types",
 		"lint": "turbo run lint",
 		"pkg:install": "turbo run pkg:install",
 		"prepare": "husky",

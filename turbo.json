@@ -8,11 +8,14 @@
 		},
 		"dev": {
 			"cache": false,
-			"dependsOn": ["^pkg:install"],
+			"dependsOn": ["pkg:install", "gen:types"],
 			"persistent": true
 		},
 		"format": {
 			"dependsOn": ["^format"]
+		},
+		"gen:types": {
+			"dependsOn": ["pkg:install", "^gen:types"]
 		},
 		"lint": {
 			"dependsOn": ["^lint"]
