@@ -8,6 +8,7 @@
 		"dev": "uv run python -m flask --app app run --host 0.0.0.0 --port 5000 --debug",
 		"format": "uv run ruff format .",
 		"format:check": "uv run ruff format . --check",
+		"gen:types": "uv run ./gen-types.py",
 		"lint": "uv run ruff check .",
 		"lint:fix": "uv run ruff check . --fix",
 		"pkg:install": "UV_VENV_CLEAR=1 uv venv && uv pip install -r requirements.txt",

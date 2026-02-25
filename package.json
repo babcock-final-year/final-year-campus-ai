@@ -11,10 +11,7 @@
 	},
 	"lint-staged": {
 		"*.{ts,tsx,css,json}": "biome check --write",
-		"*.py": [
-			"uv run ruff check --fix",
-			"uv run ruff format --check"
-		]
+		"apps/backend/**/*.py": "./scripts/lint-and-format-backend.sh"
 	},
 	"name": "final-year-campus-ai",
 	"packageManager": "bun@1.3.6",

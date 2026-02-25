@@ -21,3 +21,8 @@ requests
 coverage
 psycopg2-binary
 faker
+flask_mail
+spectree
+pydantic-to-typescript2
+pydantic[email]
+ruff
