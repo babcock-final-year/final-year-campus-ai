@@ -1,11 +1,13 @@
 import { Button } from "@kobalte/core/button";
 import { Link } from "@kobalte/core/link";
 import { TextField } from "@kobalte/core/text-field";
+import clsx from "clsx/lite";
 import Drawer from "corvu/drawer";
 import {
+	CirclePlus,
 	Ellipsis,
-	FilePen,
 	Folder,
+	LogOut,
 	MessageCircleMore,
 	PanelLeftClose,
 	PanelLeftOpen,
@@ -13,7 +15,9 @@ import {
 	Settings,
 } from "lucide-solid";
 import { createSignal, For, Show } from "solid-js";
+import { Dynamic } from "solid-js/web";
 import BaseButton from "../button/BaseButton";
+import AppLogo from "../svg/AppLogo";
 
 export default function ChatSidebar(props: { isInDrawer?: boolean }) {
 	const [isSidebarHiddenInDesktopMode, setIsSidebarHiddenInDesktopMode] =
@@ -36,11 +40,14 @@ export default function ChatSidebar(props: { isInDrawer?: boolean }) {
 		}
 
 		return (
-			<BaseButton class="btn-ghost btn-circle" onClick={handleHideSidebar}>
+			<BaseButton
+				class="btn-circle btn-secondary btn-ghost"
+				onClick={handleHideSidebar}
+			>
 				{isSidebarHiddenInDesktopMode() ? (
-					<PanelLeftOpen class="min-w-6 text-secondary hover:text-base-content" />
+					<PanelLeftOpen class="min-w-6" />
 				) : (
-					<PanelLeftClose class="min-w-6 text-secondary hover:text-base-content" />
+					<PanelLeftClose class="min-w-6" />
 				)}
 			</BaseButton>
 		);
@@ -48,63 +55,82 @@ export default function ChatSidebar(props: { isInDrawer?: boolean }) {
 
 	return (
 		<div
-			class="flex h-screen w-2xs flex-col gap-8 overflow-auto px-2 py-8"
+			class={clsx(
+				"flex h-screen w-2xs flex-col gap-4 overflow-auto py-4",
+				!isSidebarHiddenInDesktopMode() && "px-2",
+			)}
 			ref={sideBar$}
 		>
-			<div class="flex items-center justify-center gap-4">
+			<div class="flex items-center gap-4 px-2">
 				<Show when={!isSidebarHiddenInDesktopMode()}>
-					<TextField>
-						<TextField.Label class="input input-secondary rounded-full bg-base-100">
-							<Search class="opacity-50" />
+					<AppLogo class="outline outline-accent-content/25 backdrop-brightness-125 *:size-6 *:fill-accent-content" />
 
-							<TextField.Input placeholder="Search" type="search" />
-						</TextField.Label>
-					</TextField>
+					<h2 class="font-semibold text-accent-content text-xl">Unipal</h2>
 				</Show>
 
-				{props.isInDrawer ? (
-					<Drawer.Close>
-						<SidebarHideBtn />
-					</Drawer.Close>
-				) : (
+				<Dynamic
+					class={clsx(!isSidebarHiddenInDesktopMode() && "ml-auto")}
+					component={props.isInDrawer ? Drawer.Close : "div"}
+				>
 					<SidebarHideBtn />
-				)}
+				</Dynamic>
 			</div>
 
 			<Show when={!isSidebarHiddenInDesktopMode()}>
-				<ul class="menu w-full px-0 [--menu-active-bg:var(--color-accent)] [--menu-active-fg:var(--color-accent-content)]">
+				<ul class="menu w-full px-0">
 					<li>
-						<Button class="px-0 font-semibold text-secondary">
-							<FilePen />
+						<BaseButton class="btn-secondary btn-ghost justify-start gap-4">
+							<CirclePlus />
 							New Chat
-						</Button>
+						</BaseButton>
 					</li>
 
 					<li>
-						<Button class="px-0 font-semibold text-secondary">
+						<BaseButton class="btn-secondary btn-ghost justify-start gap-4">
 							<Folder />
 							New Project
-						</Button>
+						</BaseButton>
 					</li>
 				</ul>
 
-				<div class="flex flex-col text-secondary">
-					<h3 class="flex items-center gap-2 font-semibold">
-						<MessageCircleMore /> Recent Chats
-					</h3>
+				<div class="flex grow flex-col overflow-auto text-accent-content/50">
+					<h3 class="px-4 text-sm">Recent Chats</h3>
 
-					<ul class="menu w-full px-0 font-semibold text-sm [--menu-active-bg:var(--color-accent)] [--menu-active-fg:var(--color-accent-content)]">
+					<ul class="menu w-full px-0">
 						<For
 							each={[
-								"Average School Fees for 2024 adsddsddqdwdq",
+								"Average School Tuition Fees for 2024",
+								"What is Chapel Seminar?",
+								"Average School Tuition Fees for 2024",
+								"What is Chapel Seminar?",
+								"Average School Tuition Fees for 2024",
+								"What is Chapel Seminar?",
+								"Average School Tuition Fees for 2024",
+								"What is Chapel Seminar?",
+								"Average School Tuition Fees for 2024",
+								"What is Chapel Seminar?",
+								"Average School Tuition Fees for 2024",
+								"What is Chapel Seminar?",
+								"Average School Tuition Fees for 2024",
+								"What is Chapel Seminar?",
+								"Average School Tuition Fees for 2024",
+								"What is Chapel Seminar?",
+								"Average School Tuition Fees for 2024",
+								"What is Chapel Seminar?",
+								"Average School Tuition Fees for 2024",
+								"What is Chapel Seminar?",
+								"Average School Tuition Fees for 2024",
 								"What is Chapel Seminar?",
 							]}
 						>
 							{(chatSummary) => (
 								<li class="w-full">
-									<Link class="flex w-full gap-2" href="#">
+									<Link
+										class="btn btn-secondary btn-ghost group w-full justify-start gap-2 text-left font-normal"
+										href="#"
+									>
 										<span class="grow truncate">{chatSummary}</span>
-										<Ellipsis class="min-w-6" />
+										<Ellipsis class="hidden min-w-6 group-hover:block" />
 									</Link>
 								</li>
 							)}
@@ -112,12 +138,18 @@ export default function ChatSidebar(props: { isInDrawer?: boolean }) {
 					</ul>
 				</div>
 
-				<ul class="menu mt-auto w-full px-0 font-semibold [--menu-active-bg:var(--color-accent)] [--menu-active-fg:var(--color-accent-content)]">
+				<ul class="menu w-full px-0">
 					<li>
-						<Button class="flex px-0 text-secondary">
+						<BaseButton class="btn-secondary btn-ghost justify-start gap-4 font-normal">
 							<Settings />
 							Settings & Help
-						</Button>
+						</BaseButton>
+					</li>
+					<li>
+						<BaseButton class="btn-error btn-ghost justify-start gap-4 font-normal">
+							<LogOut />
+							Logout
+						</BaseButton>
 					</li>
 				</ul>
 			</Show>
