@@ -12,7 +12,7 @@ export default function ChatMainAreaFooter() {
 	});
 
 	return (
-		<TextField class="grid place-items-center">
+		<TextField class="items-center-safe flex flex-col gap-4 pt-2">
 			<TextField.Label class="input h-12 w-5/6 max-w-3xl border-transparent shadow outline-2 outline-primary/25">
 				<BaseButton class="btn-primary btn-circle btn-ghost btn-sm">
 					<Plus />
@@ -33,6 +33,10 @@ export default function ChatMainAreaFooter() {
 					<SendHorizontal />
 				</BaseButton>
 			</TextField.Label>
+
+			<p class="text-primary/50 text-xs">
+				UNIPAL CAN MAKE MISTAKES. CHECK IMPORTANT INFO.
+			</p>
 		</TextField>
 	);
 }
