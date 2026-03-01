@@ -4,7 +4,7 @@ import ChatMainAreaHeader from "./ChatMainAreaHeader";
 
 export default function ChatMainArea() {
 	return (
-		<div class="grid size-full grid-rows-[2.5rem_1fr_3rem] px-6 py-8">
+		<div class="grid size-full grid-rows-[4rem_1fr_7rem] bg-base-200">
 			<ChatMainAreaHeader />
 			<ChatMainAreaChatList />
 			<ChatMainAreaFooter />
