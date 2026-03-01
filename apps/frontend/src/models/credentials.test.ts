@@ -2,6 +2,7 @@ import * as v from "valibot";
 import { describe, expect, it } from "vitest";
 import {
 	MatricNumberSchema,
+	SendPasswordResetLinkSchema,
 	SignInCredentialsSchema,
 	SignUpCredentialsSchema,
 } from "./credentials";
@@ -234,5 +235,98 @@ describe("SignUpCredentialsSchema", () => {
 				username: "dave",
 			}),
 		).toBe(false);
+	});
+});
+
+describe("SendPasswordResetLinkSchema", () => {
+	it("parses valid email objects", () => {
+		const input = { email: "alice@example.com" };
+		const output = v.parse(SendPasswordResetLinkSchema, input);
+		expect(output).toEqual(input);
+	});
+
+	it("parses various valid email formats", () => {
+		const validInputs = [
+			{ email: "user@domain.com" },
+			{ email: "bob.smith@example.org" },
+			{ email: "contact+tag@company.net" },
+			{ email: "test123@test.co.uk" },
+		];
+		for (const input of validInputs) {
+			const output = v.parse(SendPasswordResetLinkSchema, input);
+			expect(output).toEqual(input);
+		}
+	});
+
+	it("throws on invalid email addresses", () => {
+		const invalids = [
+			{ email: "" }, // empty email
+			{ email: "notanemail" }, // no @ or domain
+			{ email: "user@" }, // missing domain
+			{ email: "@example.com" }, // missing local part
+			{ email: "user@.com" }, // missing domain name
+			{ email: "user name@example.com" }, // space in local part
+			{ email: "user@exam ple.com" }, // space in domain
+		];
+		for (const bad of invalids) {
+			expect(() => v.parse(SendPasswordResetLinkSchema, bad)).toThrow();
+		}
+	});
+
+	it("throws on missing or invalid fields", () => {
+		const invalids = [
+			{}, // missing email field
+			{ email: 123 }, // wrong email type
+			{ email: null }, // null email
+			{ email: undefined }, // undefined email
+			{ email: { nested: "object" } }, // email as object
+			{ email: ["array"] }, // email as array
+		];
+		for (const bad of invalids) {
+			expect(() => v.parse(SendPasswordResetLinkSchema, bad)).toThrow();
+		}
+	});
+
+	it("safeParse returns success true for valid and false for invalid", () => {
+		const ok = v.safeParse(SendPasswordResetLinkSchema, {
+			email: "valid@example.com",
+		});
+		expect(ok.success).toBe(true);
+		if (ok.success) {
+			expect(ok.output.email).toBe("valid@example.com");
+		}
+
+		const bad = v.safeParse(SendPasswordResetLinkSchema, {
+			email: "invalid-email",
+		});
+		expect(bad.success).toBe(false);
+
+		const missing = v.safeParse(SendPasswordResetLinkSchema, {});
+		expect(missing.success).toBe(false);
+
+		const empty = v.safeParse(SendPasswordResetLinkSchema, {
+			email: "",
+		});
+		expect(empty.success).toBe(false);
+	});
+
+	it("works as a runtime guard (v.is)", () => {
+		expect(
+			v.is(SendPasswordResetLinkSchema, { email: "user@domain.com" }),
+		).toBe(true);
+
+		expect(
+			v.is(SendPasswordResetLinkSchema, { email: "another@test.org" }),
+		).toBe(true);
+
+		expect(v.is(SendPasswordResetLinkSchema, { email: "invalid-email" })).toBe(
+			false,
+		);
+
+		expect(v.is(SendPasswordResetLinkSchema, { email: "" })).toBe(false);
+
+		expect(v.is(SendPasswordResetLinkSchema, {})).toBe(false);
+
+		expect(v.is(SendPasswordResetLinkSchema, "not-an-object")).toBe(false);
 	});
 });
