@@ -1,5 +1,5 @@
 import { TextField } from "@kobalte/core/text-field";
-import { Plus } from "lucide-solid";
+import { Mic, Plus, SendHorizontal } from "lucide-solid";
 import { onMount } from "solid-js";
 import BaseButton from "../button/BaseButton";
 
@@ -12,22 +12,27 @@ export default function ChatMainAreaFooter() {
 	});
 
 	return (
-		<div class="flex items-center justify-center gap-4">
-			<BaseButton class="btn-secondary btn-circle">
-				<Plus />
-			</BaseButton>
+		<TextField class="grid place-items-center">
+			<TextField.Label class="input h-12 w-5/6 max-w-3xl border-transparent shadow outline-2 outline-primary/25">
+				<BaseButton class="btn-primary btn-circle btn-ghost btn-sm">
+					<Plus />
+				</BaseButton>
 
-			<TextField class="w-5/6 max-w-xl">
-				<TextField.Label class="input input-primary w-full">
-					<span class="label text-primary/75">Ask</span>
+				<TextField.Input
+					placeholder="Ask Unipal anything..."
+					ref={chatInput$}
+					type="text"
+				/>
 
-					<TextField.Input
-						placeholder="Anything!"
-						ref={chatInput$}
-						type="text"
-					/>
-				</TextField.Label>
-			</TextField>
-		</div>
+				{/* TODO: add speech to text */}
+				<BaseButton class="btn-circle btn-ghost btn-sm ml-auto">
+					<Mic class="opacity-75" />
+				</BaseButton>
+
+				<BaseButton class="btn-square btn-primary btn-sm">
+					<SendHorizontal />
+				</BaseButton>
+			</TextField.Label>
+		</TextField>
 	);
 }
