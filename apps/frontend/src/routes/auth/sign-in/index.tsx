@@ -96,7 +96,10 @@ function SignInForm() {
 					Remember me
 				</label>
 
-				<A class="link link-primary ml-auto text-xs" href="#">
+				<A
+					class="link link-primary ml-auto text-xs"
+					href={routes().auth.signIn.forgotPassword.index}
+				>
 					Forgot Password?
 				</A>
 			</div>

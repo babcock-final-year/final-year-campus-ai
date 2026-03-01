@@ -7,7 +7,10 @@ export declare function routes(searchParams?: Record<string, string>): {
 	chat: { index: string };
 	about: { index: string };
 	auth: {
-		signIn: { index: string };
+		signIn: {
+			index: string;
+			forgotPassword: { index: string };
+		};
 		signUp: {
 			index: string;
 			success: { index: string };
