@@ -77,32 +77,93 @@ describe("SignInCredentialsSchema", () => {
 });
 
 describe("SignUpCredentialsSchema", () => {
-	it("parses valid signup credentials (username + email + password)", () => {
+	it("parses valid signup credentials (username + email + password + confirmPass)", () => {
 		const input = {
+			confirmPass: "Secur3P@ss!",
 			email: "alice@example.com",
 			pass: "Secur3P@ss!",
 			username: "alice",
 		};
 		const output = v.parse(SignUpCredentialsSchema, input);
-		expect(output).toEqual(input);
+		// Output should not include confirmPass due to transform
+		expect(output).toEqual({
+			email: "alice@example.com",
+			pass: "Secur3P@ss!",
+			username: "alice",
+		});
+	});
+
+	it("throws when pass and confirmPass do not match", () => {
+		const input = {
+			confirmPass: "WrongP@ssword1",
+			email: "bob@example.com",
+			pass: "Secur3P@ss!",
+			username: "bob",
+		};
+		expect(() => v.parse(SignUpCredentialsSchema, input)).toThrow();
 	});
 
 	it("throws on invalid signup shapes or values", () => {
 		const invalids = [
-			// password issues (same variants as sign-in)
-			{ email: "a@b.com", pass: "x", username: "alice" },
-			{ email: "a@b.com", pass: "nouppercase1!", username: "alice" },
-			{ email: "a@b.com", pass: "NOLOWERCASE1!", username: "alice" },
-			{ email: "a@b.com", pass: "NoNumber!!", username: "alice" },
-			{ email: "a@b.com", pass: "NoSymbol11", username: "alice" },
+			// password issues
+			{ confirmPass: "x", email: "a@b.com", pass: "x", username: "alice" },
+			{
+				confirmPass: "nouppercase1!",
+				email: "a@b.com",
+				pass: "nouppercase1!",
+				username: "alice",
+			},
+			{
+				confirmPass: "NOLOWERCASE1!",
+				email: "a@b.com",
+				pass: "NOLOWERCASE1!",
+				username: "alice",
+			},
+			{
+				confirmPass: "NoNumber!!",
+				email: "a@b.com",
+				pass: "NoNumber!!",
+				username: "alice",
+			},
+			{
+				confirmPass: "NoSymbol11",
+				email: "a@b.com",
+				pass: "NoSymbol11",
+				username: "alice",
+			},
 
 			// email problems
-			{ email: "not-an-email", pass: "Secur3P@ss!", username: "alice" },
-			{ pass: "Secur3P@ss!", username: "alice" }, // missing email
+			{
+				confirmPass: "Secur3P@ss!",
+				email: "not-an-email",
+				pass: "Secur3P@ss!",
+				username: "alice",
+			},
+			{ confirmPass: "Secur3P@ss!", pass: "Secur3P@ss!", username: "alice" }, // missing email
 
 			// username problems
-			{ email: "alice@example.com", pass: "Secur3P@ss!" }, // missing username
-			{ email: "alice@example.com", pass: "Secur3P@ss!", username: 123 }, // wrong username type
+			{
+				confirmPass: "Secur3P@ss!",
+				email: "alice@example.com",
+				pass: "Secur3P@ss!",
+			}, // missing username
+			{
+				confirmPass: "Secur3P@ss!",
+				email: "alice@example.com",
+				pass: "Secur3P@ss!",
+				username: 123,
+			}, // wrong username type
+
+			// mismatched passwords
+			{
+				confirmPass: "WrongP@ssword1",
+				email: "alice@example.com",
+				pass: "Secur3P@ss!",
+				username: "alice",
+			},
+
+			// missing confirmPass
+			{ email: "alice@example.com", pass: "Secur3P@ss!", username: "alice" },
 		];
 
 		for (const bad of invalids) {
@@ -112,22 +173,36 @@ describe("SignUpCredentialsSchema", () => {
 
 	it("safeParse and is behave as runtime checks", () => {
 		const ok = v.safeParse(SignUpCredentialsSchema, {
+			confirmPass: "Secur3P@ss!",
 			email: "carol@domain.test",
 			pass: "Secur3P@ss!",
 			username: "carol",
 		});
 		expect(ok.success).toBe(true);
-		if (ok.success) expect(ok.output.username).toBe("carol");
+		if (ok.success) {
+			expect(ok.output.username).toBe("carol");
+			expect(ok.output).not.toHaveProperty("confirmPass");
+		}
 
 		const badEmail = v.safeParse(SignUpCredentialsSchema, {
+			confirmPass: "Secur3P@ss!",
 			email: "not-an-email",
 			pass: "Secur3P@ss!",
 			username: "carol",
 		});
 		expect(badEmail.success).toBe(false);
 
+		const badConfirm = v.safeParse(SignUpCredentialsSchema, {
+			confirmPass: "WrongP@ssword1",
+			email: "carol@domain.test",
+			pass: "Secur3P@ss!",
+			username: "carol",
+		});
+		expect(badConfirm.success).toBe(false);
+
 		expect(
 			v.is(SignUpCredentialsSchema, {
+				confirmPass: "Secur3P@ss!",
 				email: "dave@host.org",
 				pass: "Secur3P@ss!",
 				username: "dave",
@@ -136,6 +211,7 @@ describe("SignUpCredentialsSchema", () => {
 
 		expect(
 			v.is(SignUpCredentialsSchema, {
+				confirmPass: "short",
 				email: "dave@host.org",
 				pass: "short",
 				username: "dave",
@@ -145,6 +221,16 @@ describe("SignUpCredentialsSchema", () => {
 		expect(
 			v.is(SignUpCredentialsSchema, {
 				email: "dave@host.org",
+				pass: "Secur3P@ss!",
+				username: "dave",
+			}),
+		).toBe(false);
+
+		expect(
+			v.is(SignUpCredentialsSchema, {
+				confirmPass: "WrongP@ssword1",
+				email: "dave@host.org",
+				pass: "Secur3P@ss!",
 				username: "dave",
 			}),
 		).toBe(false);

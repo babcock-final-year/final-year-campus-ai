@@ -41,14 +41,25 @@ export type SignInCredentialsOutput = v.InferOutput<
 	typeof SignInCredentialsSchema
 >;
 
-export const SignUpCredentialsSchema = v.object({
-	email: v.pipe(NonEmptyStringSchema, v.email()),
-	pass: PasswordSchema,
-	username: NonEmptyStringSchema,
-});
+export const SignUpCredentialsSchema = v.pipe(
+	v.object({
+		confirmPass: PasswordSchema,
+		email: v.pipe(NonEmptyStringSchema, v.email()),
+		pass: PasswordSchema,
+		username: NonEmptyStringSchema,
+	}),
+	v.forward(
+		v.check(
+			({ pass, confirmPass }) => pass === confirmPass,
+			"Passwords do not match.",
+		),
+		["confirmPass"],
+	),
+	v.transform(({ email, pass, username }) => ({ email, pass, username })),
+);
 export type SignUpCredentialsInput = v.InferInput<
-	typeof SignInCredentialsSchema
+	typeof SignUpCredentialsSchema
 >;
 export type SignUpCredentialsOutput = v.InferOutput<
-	typeof SignInCredentialsSchema
+	typeof SignUpCredentialsSchema
 >;
