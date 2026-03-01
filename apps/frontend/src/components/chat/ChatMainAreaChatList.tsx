@@ -72,13 +72,18 @@ export default function ChatMainAreaChatList() {
 	const userChatHistory = createUserChatHistory();
 
 	return (
-		<main class="my-4 space-y-4 overflow-auto px-8 py-4">
+		<main class="my-4 overflow-auto px-4 py-4 sm:px-8">
 			<For each={userChatHistory()?.messages}>
 				{(val) => {
 					const isUser = createMemo(() => val.role === "user");
 
 					return (
-						<div class={clsx("chat", isUser() ? "chat-end" : "chat-start")}>
+						<div
+							class={clsx(
+								"chat",
+								isUser() ? "chat-end mb-4" : "chat-start mb-8",
+							)}
+						>
 							<div class="chat-image avatar place-self-start">
 								<div class="size-10 rounded-full">
 									<Image>
