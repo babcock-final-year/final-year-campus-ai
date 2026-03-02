@@ -1,6 +1,4 @@
-import { Button } from "@kobalte/core/button";
 import { Link } from "@kobalte/core/link";
-import { TextField } from "@kobalte/core/text-field";
 import clsx from "clsx/lite";
 import Drawer from "corvu/drawer";
 import {
@@ -8,10 +6,8 @@ import {
 	Ellipsis,
 	Folder,
 	LogOut,
-	MessageCircleMore,
 	PanelLeftClose,
 	PanelLeftOpen,
-	Search,
 	Settings,
 } from "lucide-solid";
 import { createSignal, For, Show } from "solid-js";
@@ -19,7 +15,7 @@ import { Dynamic } from "solid-js/web";
 import BaseButton from "../button/BaseButton";
 import AppLogo from "../svg/AppLogo";
 
-export default function ChatSidebar(props: { isInDrawer?: boolean }) {
+export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 	const [isSidebarHiddenInDesktopMode, setIsSidebarHiddenInDesktopMode] =
 		createSignal(false);
 

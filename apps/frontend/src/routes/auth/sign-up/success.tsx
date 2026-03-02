@@ -9,7 +9,7 @@ export default function SignUpSuccessPage() {
 	onMount(() => {
 		// Redirect to the chat page after 3 seconds
 
-		navigate(routes().chat.index);
+		navigate(routes().home.chat.index);
 	});
 
 	return (
@@ -27,7 +27,7 @@ export default function SignUpSuccessPage() {
 
 				<p>
 					Click this{" "}
-					<A class="link link-primary" href={routes().chat.index}>
+					<A class="link link-primary" href={routes().home.chat.index}>
 						link
 					</A>{" "}
 					if you aren't redirected automatically.

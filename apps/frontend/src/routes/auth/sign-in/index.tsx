@@ -115,7 +115,7 @@ function SignInForm() {
 					<GoogleLogo /> Google
 				</BaseButton>
 
-				<Link class="btn btn-secondary" href={routes().chat.index}>
+				<Link class="btn btn-secondary" href={routes().home.chat.index}>
 					<HatGlasses /> Guest
 				</Link>
 			</div>

@@ -130,7 +130,7 @@ function SignUpForm() {
 					<GoogleLogo /> Google
 				</BaseButton>
 
-				<Link class="btn" href={routes().chat.index}>
+				<Link class="btn" href={routes().home.chat.index}>
 					<HatGlasses /> Guest
 				</Link>
 			</div>

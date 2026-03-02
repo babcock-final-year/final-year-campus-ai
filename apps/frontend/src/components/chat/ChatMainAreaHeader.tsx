@@ -1,8 +1,8 @@
 import Drawer from "corvu/drawer";
 import { PanelLeftOpen } from "lucide-solid";
-import ChatSidebar from "./ChatSidebar";
+import HomeSidebar from "../home/HomeSidebar";
 
-export default function ChatMainAreaHeader() {
+export default function HomeMainAreaHeader() {
 	return (
 		<div class="flex items-center justify-between border-base-300 border-b bg-base-100 p-4">
 			<Drawer breakPoints={[0.75]} side="left">
@@ -21,7 +21,7 @@ export default function ChatMainAreaHeader() {
 							/>
 							{/* The padding and negative left is to give clearance when the user drags on the drawer further rightwards, otherwise it'll look "cut-off" */}
 							<Drawer.Content class="fixed inset-0 -left-12 z-10 flex w-fit bg-accent pl-12 corvu-transitioning:transition-transform corvu-transitioning:duration-500">
-								<ChatSidebar isInDrawer={true} />
+								<HomeSidebar isInDrawer={true} />
 							</Drawer.Content>
 						</Drawer.Portal>
 					</>
