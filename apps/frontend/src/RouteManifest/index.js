@@ -10,6 +10,12 @@ export function routes(searchParams) {
     about: {index: `/about${query}`},
     home: {
       chat: {index: `/home/chat${query}`},
+      settings: {
+        theme: {index: `/home/settings/theme${query}`},
+        contact: {index: `/home/settings/contact${query}`},
+        profile: {index: `/home/settings/profile${query}`},
+        complaint: {index: `/home/settings/complaint${query}`},
+      },
     },
     auth: {
       signIn: {

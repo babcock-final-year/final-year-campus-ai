@@ -12,6 +12,7 @@ import {
 } from "lucide-solid";
 import { createSignal, For, Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
+import { routes } from "~/RouteManifest";
 import BaseButton from "../button/BaseButton";
 import AppLogo from "../svg/AppLogo";
 
@@ -136,16 +137,23 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 
 				<ul class="menu w-full px-0">
 					<li>
-						<BaseButton class="btn-secondary btn-ghost justify-start gap-4 font-normal">
+						<Link
+							class="btn btn-secondary btn-ghost justify-start gap-4 font-normal"
+							href={routes().home.settings.profile.index}
+						>
 							<Settings />
 							Settings & Help
-						</BaseButton>
+						</Link>
 					</li>
 					<li>
-						<BaseButton class="btn-error btn-ghost justify-start gap-4 font-normal">
+						{/* TODO: Add logout functionality */}
+						<Link
+							class="btn btn-error btn-ghost justify-start gap-4 font-normal"
+							href={routes().auth.signIn.index}
+						>
 							<LogOut />
 							Logout
-						</BaseButton>
+						</Link>
 					</li>
 				</ul>
 			</Show>
