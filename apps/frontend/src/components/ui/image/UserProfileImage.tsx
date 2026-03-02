@@ -1,12 +1,14 @@
 import { Image } from "@kobalte/core/image";
 import clsx from "clsx/lite";
+import type { JSXElement } from "solid-js";
+import type { _ImageProps } from "./_shared";
 
-interface ImageProps {
-	class?: Partial<Record<"wrapper" | "fallback" | "img", string>>;
+interface UserProfileImageProps extends _ImageProps {
+	cornerBtn?: JSXElement;
 }
 
 /** Dislays the user's profile picture when possible, falling back to a solid color display of their username intiials. */
-export default function UserProfileImage(props: ImageProps) {
+export default function UserProfileImage(props: UserProfileImageProps) {
 	return (
 		<Image class={clsx("avatar", props.class?.wrapper)}>
 			{/* TODO: Do actual user img fetching */}
@@ -21,6 +23,8 @@ export default function UserProfileImage(props: ImageProps) {
 			>
 				ME
 			</Image.Fallback>
+
+			{props.cornerBtn}
 		</Image>
 	);
 }

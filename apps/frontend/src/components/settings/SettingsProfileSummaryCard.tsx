@@ -1,5 +1,6 @@
 import clsx from "clsx/lite";
-import { Dot } from "lucide-solid";
+import { Camera, Dot } from "lucide-solid";
+import BaseButton from "../ui/button/BaseButton";
 import UserProfileImage from "../ui/image/UserProfileImage";
 
 export default function SettingsProfileSummaryCard(props: { class?: string }) {
@@ -16,6 +17,11 @@ export default function SettingsProfileSummaryCard(props: { class?: string }) {
 					wrapper:
 						"row-span-3 aspect-square h-5/6 max-h-[25vw] place-self-center rounded-full shadow-lg outline-3 outline-base-100",
 				}}
+				cornerBtn={
+					<BaseButton class="btn-primary btn-circle btn-sm absolute -right-1 -bottom-1 p-1.5">
+						<Camera />
+					</BaseButton>
+				}
 			/>
 
 			{/* TODO: Get user name */}
