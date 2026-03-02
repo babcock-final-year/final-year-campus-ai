@@ -110,12 +110,12 @@ function SignInForm() {
 
 			<div class="divider m-0 text-xs opacity-50">Or continue with</div>
 
-			<div class="flex gap-4 *:grow">
-				<BaseButton class="btn-secondary">
+			<div class="*:btn-secondary flex gap-4 *:grow">
+				<BaseButton>
 					<GoogleLogo /> Google
 				</BaseButton>
 
-				<Link class="btn btn-secondary" href={routes().home.chat.index}>
+				<Link class="btn" href={routes().home.chat.index}>
 					<HatGlasses /> Guest
 				</Link>
 			</div>
