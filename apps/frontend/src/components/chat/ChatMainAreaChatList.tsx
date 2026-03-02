@@ -4,6 +4,7 @@ import { Copy, ThumbsDown, ThumbsUp } from "lucide-solid";
 import { createMemo, createSignal, For, Show } from "solid-js";
 import createUserChatHistory from "~/hooks/chat/createUserChatHistory";
 import BaseButton from "../ui/button/BaseButton";
+import UserProfileImage from "../ui/image/UserProfileImage";
 import AppLogo from "../ui/svg/AppLogo";
 
 function AssistantReplyButtons(props: { txt: string }) {
@@ -84,28 +85,27 @@ export default function ChatMainAreaChatList() {
 								isUser() ? "chat-end mb-4" : "chat-start mb-8",
 							)}
 						>
-							<div class="chat-image avatar place-self-start">
-								<div class="size-10 rounded-full">
-									<Image>
-										<Image.Fallback
-											class={clsx(
-												"size-full",
-												isUser() && "grid place-items-center bg-base-300",
-											)}
-										>
-											<Show
-												fallback={
+							<Show
+								fallback={
+									<div class="chat-image avatar place-self-start">
+										<div class="size-10 rounded-full">
+											<Image>
+												<Image.Fallback class="size-full">
 													<AppLogo class="bg-primary *:size-full *:fill-primary-content" />
-												}
-												when={isUser()}
-											>
-												{/*TODO: Make this use the user's initials*/}
-												US
-											</Show>
-										</Image.Fallback>
-									</Image>
-								</div>
-							</div>
+												</Image.Fallback>
+											</Image>
+										</div>
+									</div>
+								}
+								when={isUser()}
+							>
+								<UserProfileImage
+									class={{
+										fallback: "size-full",
+										wrapper: "chat-image size-10 place-self-start",
+									}}
+								/>
+							</Show>
 							<div
 								class={clsx(
 									"chat-bubble",
