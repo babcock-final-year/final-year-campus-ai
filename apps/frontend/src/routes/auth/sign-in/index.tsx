@@ -17,10 +17,10 @@ import {
 	UserRoundPlus,
 } from "lucide-solid";
 import { createSignal } from "solid-js";
-import BaseButton from "~/components/button/BaseButton";
 import FieldTextInput from "~/components/form/FieldTextInput";
-import AppLogo from "~/components/svg/AppLogo";
-import GoogleLogo from "~/components/svg/GoogleLogo";
+import BaseButton from "~/components/ui/button/BaseButton";
+import AppLogo from "~/components/ui/svg/AppLogo";
+import GoogleLogo from "~/components/ui/svg/GoogleLogo";
 import { SignInCredentialsSchema } from "~/models/credentials";
 import { routes } from "~/RouteManifest";
 

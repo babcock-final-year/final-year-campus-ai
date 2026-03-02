@@ -8,7 +8,7 @@ import {
 	UserRoundPlus,
 } from "lucide-solid";
 import type { JSXElement } from "solid-js";
-import AppLogo from "~/components/svg/AppLogo";
+import AppLogo from "~/components/ui/svg/AppLogo";
 import { routes } from "~/RouteManifest";
 
 function ListWithIcon(props: { children: JSXElement; icon: JSXElement }) {

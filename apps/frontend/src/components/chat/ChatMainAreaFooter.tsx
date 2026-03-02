@@ -1,7 +1,7 @@
 import { TextField } from "@kobalte/core/text-field";
 import { Mic, Plus, SendHorizontal } from "lucide-solid";
 import { onMount } from "solid-js";
-import BaseButton from "../button/BaseButton";
+import BaseButton from "../ui/button/BaseButton";
 
 export default function ChatMainAreaFooter() {
 	let chatInput$!: HTMLInputElement;

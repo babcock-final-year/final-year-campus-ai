@@ -13,8 +13,8 @@ import {
 import { createSignal, For, Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { routes } from "~/RouteManifest";
-import BaseButton from "../button/BaseButton";
-import AppLogo from "../svg/AppLogo";
+import BaseButton from "../ui/button/BaseButton";
+import AppLogo from "../ui/svg/AppLogo";
 
 export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 	const [isSidebarHiddenInDesktopMode, setIsSidebarHiddenInDesktopMode] =

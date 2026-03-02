@@ -3,8 +3,8 @@ import clsx from "clsx/lite";
 import { Copy, ThumbsDown, ThumbsUp } from "lucide-solid";
 import { createMemo, createSignal, For, Show } from "solid-js";
 import createUserChatHistory from "~/hooks/chat/createUserChatHistory";
-import BaseButton from "../button/BaseButton";
-import AppLogo from "../svg/AppLogo";
+import BaseButton from "../ui/button/BaseButton";
+import AppLogo from "../ui/svg/AppLogo";
 
 function AssistantReplyButtons(props: { txt: string }) {
 	const [likeState, setLikeState] = createSignal<"like" | "dislike" | "null">(
