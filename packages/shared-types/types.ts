@@ -17,6 +17,9 @@ export interface UserBase {
 	email?: string | null;
 	is_guest: boolean;
 }
+export interface AvatarUploadResponse {
+	avatar_url: string;
+}
 export interface ChangePasswordRequest {
 	old_password: string;
 	new_password: string;
@@ -36,6 +39,32 @@ export interface ChatMessageResponse {
 export interface ChatMessageRequest {
 	content: string;
 }
+export interface ChatSummary {
+	id: string;
+	title: string;
+	created_at?: string | null;
+}
+export interface ChatsListResponse {
+	chats: ChatSummary[];
+}
+export interface ComplaintCreateRequest {
+	title: string;
+	description: string;
+}
+export interface ComplaintListResponse {
+	complaints: ComplaintResponse[];
+}
+export interface ComplaintResponse {
+	id: number;
+	user_id: string;
+	title: string;
+	description: string;
+	status: string;
+	created_at: string;
+}
+export interface DeleteResponse {
+	message: string;
+}
 export interface EmailChangeRequest {
 	new_email: string;
 	password: string;
@@ -43,11 +72,17 @@ export interface EmailChangeRequest {
 export interface GoogleAuthRequest {
 	token: string;
 }
+export interface LikeMessageRequest {
+	like: boolean;
+}
 export interface PasswordResetConfirmRequest {
 	new_password: string;
 }
 export interface PasswordResetRequest {
 	email: string;
+}
+export interface SearchResponse {
+	results: ChatMessageResponse[];
 }
 export interface UserLoginRequest {
 	email: string;
@@ -57,4 +92,10 @@ export interface UserRegisterRequest {
 	full_name: string;
 	email: string;
 	password: string;
+}
+export interface UserUpdateRequest {
+	full_name?: string | null;
+	username?: string | null;
+	matric_no?: string | null;
+	avatar_url?: string | null;
 }
