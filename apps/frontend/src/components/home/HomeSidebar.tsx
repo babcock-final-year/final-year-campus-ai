@@ -12,11 +12,15 @@ import {
 } from "lucide-solid";
 import { createSignal, For, Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
+import createUserProfile from "~/hooks/user/createUserProfile";
 import { routes } from "~/RouteManifest";
 import BaseButton from "../ui/button/BaseButton";
+import UserProfileImage from "../ui/image/UserProfileImage";
 import AppLogo from "../ui/svg/AppLogo";
 
 export default function HomeSidebar(props: { isInDrawer?: boolean }) {
+	const userProfile = createUserProfile();
+
 	const [isSidebarHiddenInDesktopMode, setIsSidebarHiddenInDesktopMode] =
 		createSignal(false);
 
@@ -53,7 +57,7 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 	return (
 		<div
 			class={clsx(
-				"flex h-screen w-2xs flex-col gap-4 overflow-auto py-4",
+				"flex h-screen w-2xs flex-col gap-2 overflow-auto py-4",
 				!isSidebarHiddenInDesktopMode() && "px-2",
 			)}
 			ref={sideBar$}
@@ -135,20 +139,20 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 					</ul>
 				</div>
 
-				<ul class="menu w-full px-0">
+				<ul class="menu menu-horizontal w-full justify-around px-0">
 					<li>
 						<Link
-							class="btn btn-secondary btn-ghost justify-start gap-4 font-normal"
+							class="btn btn-secondary btn-ghost justify-start font-normal"
 							href={routes().home.settings.profile.index}
 						>
 							<Settings />
-							Settings & Help
+							Settings
 						</Link>
 					</li>
 					<li>
 						{/* TODO: Add logout functionality */}
 						<Link
-							class="btn btn-error btn-ghost justify-start gap-4 font-normal"
+							class="btn btn-error btn-ghost justify-start font-normal"
 							href={routes().auth.signIn.index}
 						>
 							<LogOut />
@@ -156,6 +160,24 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 						</Link>
 					</li>
 				</ul>
+
+				{/* User profile shortcut */}
+				<div class="grid grid-cols-[3rem_1fr] grid-rows-2 place-content-center gap-x-4 px-2 contain-content">
+					<UserProfileImage
+						class={{
+							fallback: "bg-secondary/25 font-semibold text-secondary",
+							wrapper: "col-start-1 row-span-2 aspect-square h-auto w-full",
+						}}
+					/>
+
+					<h3 class="col-start-2 row-start-1 truncate font-semibold text-secondary">
+						{userProfile().full_name}
+					</h3>
+
+					<p class="col-start-2 row-start-2 truncate text-secondary opacity-25">
+						{userProfile().email}
+					</p>
+				</div>
 			</Show>
 		</div>
 	);
