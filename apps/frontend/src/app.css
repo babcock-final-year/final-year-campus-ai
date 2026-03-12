@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "@fontsource/inter";
+@import "@fontsource-variable/inter";
 @plugin "@kobalte/tailwindcss";
 @plugin "@corvu/tailwind";
 @plugin "daisyui" {
@@ -44,5 +44,6 @@
 }
 
 body {
-	font-family: Inter, var(--font-sans);
+	font-family: "Inter Variable", var(--font-sans);
+	font-optical-sizing: auto;
 }
