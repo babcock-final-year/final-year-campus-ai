@@ -25,7 +25,7 @@ export default function SettingsProfileSummaryCard(props: { class?: string }) {
 			/>
 
 			{/* TODO: Get user name */}
-			<h2 class="col-start-2 flex items-center font-semibold text-xl md:text-2xl">
+			<h2 class="col-start-2 flex items-center truncate font-semibold text-xl md:text-2xl">
 				Phenomenan 69420
 			</h2>
 
