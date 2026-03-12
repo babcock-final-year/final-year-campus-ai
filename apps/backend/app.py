@@ -7,6 +7,8 @@ from flask_migrate import Migrate
 from app import create_app, db
 from app.models import Chat, Complaint, Message, User
 
+# API Documentation is at /apidoc/swagger/
+
 load_dotenv()
 
 # Create the application instance
