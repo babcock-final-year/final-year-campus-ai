@@ -27,7 +27,10 @@ function ActionMenuItem(props: ActionMenuItemProps) {
 	return (
 		<A
 			activeClass={isErrBtn() ? "btn-error" : "btn-primary"}
-			class={clsx("btn", isErrBtn() ? "btn-error" : "btn-primary")}
+			class={clsx(
+				"btn w-auto sm:w-full",
+				isErrBtn() ? "btn-error" : "btn-primary",
+			)}
 			end
 			href={props.route}
 			inactiveClass={clsx(
@@ -84,7 +87,12 @@ export default function SettingsActionMenu(props: { class?: string }) {
 	] as const satisfies ActionMenuItemProps[];
 
 	return (
-		<div class={clsx("flex flex-col gap-4", props.class)}>
+		<div
+			class={clsx(
+				"flex items-center gap-2 overflow-auto sm:flex-col sm:items-baseline sm:gap-4",
+				props.class,
+			)}
+		>
 			<For each={actionMenuItemProps}>
 				{(val) => <ActionMenuItem {...val} />}
 			</For>

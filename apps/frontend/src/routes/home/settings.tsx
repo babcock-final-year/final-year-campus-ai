@@ -10,13 +10,13 @@ export default function SettingsInterfaceLayout(props: {
 		<div class="grid size-full grid-rows-[3.5rem_1fr]">
 			<HomeMainAreaHeader />
 
-			<div class="grid grid-rows-8 gap-4 overflow-auto bg-base-200 p-8 sm:grid-cols-[16rem_1fr_1fr]">
-				<SettingsProfileSummaryCard class="col-start-1 col-end-4 row-start-1 row-end-3" />
+			<div class="flex flex-col gap-4 overflow-auto bg-base-200 p-4 md:p-8">
+				<SettingsProfileSummaryCard class="h-36" />
 
-				<SettingsActionMenu class="sm:col-start-1 sm:col-end-2 sm:row-start-3 sm:row-end-9" />
+				<div class="contents grow gap-4 sm:flex">
+					<SettingsActionMenu class="w-full sm:w-60" />
 
-				<div class="sm:col-start-2 sm:col-end-4 sm:row-start-3 sm:row-end-9">
-					{props.children}
+					<div class="grow">{props.children}</div>
 				</div>
 			</div>
 		</div>
