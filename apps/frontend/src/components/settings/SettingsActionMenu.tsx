@@ -69,7 +69,7 @@ export default function SettingsActionMenu(props: { class?: string }) {
 		},
 		{
 			icon: Palette,
-			name: "Theme & Interface",
+			name: "Theme",
 			route: settingsRoutes.theme.index,
 		},
 		{
