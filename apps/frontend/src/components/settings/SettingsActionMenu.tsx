@@ -72,7 +72,7 @@ export default function SettingsActionMenu(props: { class?: string }) {
 		},
 		{
 			icon: Palette,
-			name: "Theme",
+			name: "Theme & Interface",
 			route: settingsRoutes.theme.index,
 		},
 		{
@@ -89,7 +89,7 @@ export default function SettingsActionMenu(props: { class?: string }) {
 	return (
 		<div
 			class={clsx(
-				"flex items-center gap-2 overflow-auto sm:flex-col sm:items-baseline sm:gap-4",
+				"flex items-center gap-2 overflow-auto sm:min-w-60 sm:flex-col sm:items-baseline sm:gap-4",
 				props.class,
 			)}
 		>
