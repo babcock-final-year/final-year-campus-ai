@@ -7,7 +7,7 @@ export default function SettingsProfileSummaryCard(props: { class?: string }) {
 	return (
 		<div
 			class={clsx(
-				"grid grid-cols-[8rem_1fr] grid-rows-[1.5fr_1fr] gap-x-2 rounded-box border border-base-300 bg-base-100 p-4",
+				"grid grid-cols-[8rem_1fr] grid-rows-[1fr_1.5rem_1.25fr] gap-x-2 rounded-box border border-base-300 bg-base-100 p-4",
 				props.class,
 			)}
 		>
@@ -30,9 +30,15 @@ export default function SettingsProfileSummaryCard(props: { class?: string }) {
 			</h2>
 
 			{/* TODO: Initials and matric no */}
-			<p class="col-start-2 row-start-2 flex font-mono opacity-75">
+			<p class="col-start-2 row-start-2 flex opacity-75">
 				P_6 <Dot /> 22/1224
 			</p>
+
+			<div class="mt-1 flex size-full items-center">
+				<BaseButton class="btn-primary btn-sm rounded-full">
+					Edit Profile
+				</BaseButton>
+			</div>
 		</div>
 	);
 }
