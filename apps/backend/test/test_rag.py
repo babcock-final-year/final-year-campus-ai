@@ -1,19 +1,23 @@
 import os
 import tempfile
 import unittest
+
 from langchain_core.documents import Document
 from langchain_core.prompts import PromptTemplate
 
+# python -m unittest discover -s test -p "test_rag.py" -v
 # Try to import project modules; tests will skip if dependencies aren't available
 try:
+    from app.core.rag.llm import LLM
     from app.core.rag.loader import DocumentLoader
+    from app.core.rag.retriever import Retriever
     from app.core.rag.splitter import DocumentSplitter
     from app.core.rag.vectorstore import VectorStore
-    from app.core.rag.retriever import Retriever
-    from app.core.rag.llm import LLM
+
     HAS_MODULES = True
 except Exception:
     HAS_MODULES = False
+
 
 @unittest.skipIf(not HAS_MODULES, "Required project modules or dependencies not available")
 class TestRagPipeline(unittest.TestCase):
@@ -29,20 +33,28 @@ class TestRagPipeline(unittest.TestCase):
 
             loader = DocumentLoader(directory=td)
             documents = loader.load()
-            
+
             self.assertIsInstance(documents, list)
             self.assertEqual(len(documents), 2)
-            self.assertTrue(any(doc.page_content.startswith("This is a test text file.") for doc in documents))
+            self.assertTrue(
+                any(doc.page_content.startswith("This is a test text file.") for doc in documents)
+            )
             # Some markdown loaders may normalize/remove leading hashes;
             # assert the markdown content exists in one of the loaded documents.
-            self.assertTrue(any("This is a test markdown file." in doc.page_content for doc in documents))
+            self.assertTrue(
+                any("This is a test markdown file." in doc.page_content for doc in documents)
+            )
 
             # Metadata/source should reference filenames
             sources = [doc.metadata.get("source", "") for doc in documents]
             self.assertTrue(any("test.txt" in s for s in sources) or any(s == "" for s in sources))
 
     def test_splitter_basic(self):
-        docs = [Document(page_content="This is a test doc about admissions.", metadata={"source": "test.txt"})]
+        docs = [
+            Document(
+                page_content="This is a test doc about admissions.", metadata={"source": "test.txt"}
+            )
+        ]
         splitter = DocumentSplitter(model="hf", chunk_overlap=10)
         chunks = splitter.split(docs)
         self.assertTrue(isinstance(chunks, list))
@@ -62,8 +74,6 @@ class TestRagPipeline(unittest.TestCase):
                 self.ids.extend(ids or [None for _ in texts])
 
             def as_retriever(self, search_kwargs=None):
-                k = (search_kwargs or {}).get("k")
-
                 class R:
                     def __init__(self, texts):
                         self._texts = texts
@@ -78,7 +88,10 @@ class TestRagPipeline(unittest.TestCase):
         # inject mock vector_store
         vs.vector_store = MockVectorStore()
 
-        docs = [Document(page_content="Admissions info: apply online.", metadata={"source": "a.txt"}), Document(page_content="Campus life details.", metadata={"source": "b.txt"})]
+        docs = [
+            Document(page_content="Admissions info: apply online.", metadata={"source": "a.txt"}),
+            Document(page_content="Campus life details.", metadata={"source": "b.txt"}),
+        ]
         ids = ["1", "2"]
         vs.add_documents(ids, None, docs)
 
