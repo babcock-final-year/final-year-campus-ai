@@ -1,14 +1,22 @@
 import type { FieldStore } from "@formisch/solid";
 import { TextField } from "@kobalte/core/text-field";
 import clsx from "clsx/lite";
-import type { JSXElement } from "solid-js";
+import { type JSXElement, Show } from "solid-js";
 import type { AnySchema } from "valibot";
 
 interface FieldTextInputProps extends Omit<FieldStore<AnySchema>, "path"> {
 	placeholder?: string;
 	label: JSXElement;
 	icon: JSXElement;
-	type: "text" | "email" | "tel" | "password" | "url" | "date" | "search";
+	type:
+		| "text"
+		| "email"
+		| "tel"
+		| "password"
+		| "url"
+		| "date"
+		| "search"
+		| "textarea";
 	inputClass?: string;
 }
 
@@ -22,15 +30,26 @@ export default function FieldTextInput(props: FieldTextInputProps) {
 				{props.label}
 			</TextField.Label>
 
-			<div class={clsx("input validator", props.inputClass)}>
-				{props.icon}
-				<TextField.Input
-					{...props.props}
-					class="grow"
-					placeholder={props.placeholder || ""}
-					type={props.type}
-				/>
-			</div>
+			<Show
+				fallback={
+					<TextField.TextArea
+						{...props.props}
+						class={clsx("textarea validator grow", props.inputClass)}
+						placeholder={props.placeholder || ""}
+					/>
+				}
+				when={props.type !== "textarea"}
+			>
+				<div class={clsx("input validator", props.inputClass)}>
+					{props.icon}
+					<TextField.Input
+						{...props.props}
+						class="grow"
+						placeholder={props.placeholder || ""}
+						type={props.type}
+					/>
+				</div>
+			</Show>
 
 			<TextField.ErrorMessage class="validator-hint">
 				{props.errors?.[0]}
