@@ -24,13 +24,10 @@ export default function SettingsInterfaceProfilePage() {
 	const profileDataArray = [
 		{ children: userProfile().full_name, title: "Full Name" },
 		{ children: "22/1234", title: "Matric Number" },
-		{ children: "School of Computing", title: "Major / Department" },
 		{
 			children: userProfile().email ?? "blaa@student.babcock.edu.ng",
 			title: "School Email",
 		},
-		{ children: "Computer Science", title: "Course / Program of Study" },
-		{ children: "3rd year", title: "Year of Study" },
 	] as const satisfies TitleAndValueProps[];
 
 	return (
