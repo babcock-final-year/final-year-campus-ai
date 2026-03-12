@@ -7,6 +7,7 @@ export declare function routes(searchParams?: Record<string, string>): {
 	about: { index: string };
 	home: {
 		chat: { index: string };
+		editProfile: { index: string };
 		settings: {
 			theme: { index: string };
 			contact: { index: string };
