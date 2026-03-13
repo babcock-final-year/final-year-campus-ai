@@ -1,5 +1,7 @@
+import { Link } from "@kobalte/core/link";
 import clsx from "clsx/lite";
 import { Camera, Dot } from "lucide-solid";
+import { routes } from "~/RouteManifest";
 import BaseButton from "../ui/button/BaseButton";
 import UserProfileImage from "../ui/image/UserProfileImage";
 
@@ -35,9 +37,12 @@ export default function SettingsProfileSummaryCard(props: { class?: string }) {
 			</p>
 
 			<div class="mt-1 flex size-full items-center">
-				<BaseButton class="btn-primary btn-sm rounded-full">
+				<Link
+					class="btn btn-primary btn-sm rounded-full"
+					href={routes().home.editProfile.index}
+				>
 					Edit Profile
-				</BaseButton>
+				</Link>
 			</div>
 		</div>
 	);
