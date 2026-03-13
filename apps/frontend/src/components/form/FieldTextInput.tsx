@@ -18,6 +18,7 @@ interface FieldTextInputProps extends Omit<FieldStore<AnySchema>, "path"> {
 		| "search"
 		| "textarea";
 	inputClass?: string;
+	disabled?: boolean;
 }
 
 export default function FieldTextInput(props: FieldTextInputProps) {
@@ -35,6 +36,7 @@ export default function FieldTextInput(props: FieldTextInputProps) {
 					<TextField.TextArea
 						{...props.props}
 						class={clsx("textarea validator grow", props.inputClass)}
+						disabled={props.disabled}
 						placeholder={props.placeholder || ""}
 					/>
 				}
@@ -45,6 +47,7 @@ export default function FieldTextInput(props: FieldTextInputProps) {
 					<TextField.Input
 						{...props.props}
 						class="grow"
+						disabled={props.disabled}
 						placeholder={props.placeholder || ""}
 						type={props.type}
 					/>

@@ -6,22 +6,14 @@ import {
 } from "@formisch/solid";
 import { Link } from "@kobalte/core/link";
 import { A } from "@solidjs/router";
-import {
-	ArrowLeft,
-	ArrowRight,
-	HatGlasses,
-	LockKeyhole,
-	Mail,
-	RotateCcwKey,
-	UserRoundPlus,
-} from "lucide-solid";
-import { createSignal } from "solid-js";
+import { ArrowLeft, ArrowRight, Mail } from "lucide-solid";
+import { createSignal, Show } from "solid-js";
 import FieldTextInput from "~/components/form/FieldTextInput";
 import BaseButton from "~/components/ui/button/BaseButton";
 import AppLogo from "~/components/ui/svg/AppLogo";
-import GoogleLogo from "~/components/ui/svg/GoogleLogo";
 import { SendPasswordResetLinkSchema } from "~/models/credentials";
 import { routes } from "~/RouteManifest";
+import { requestPasswordReset } from "~/server/auth";
 
 function PasswordResetForm() {
 	const passwordResetForm = createForm({
@@ -29,10 +21,41 @@ function PasswordResetForm() {
 		schema: SendPasswordResetLinkSchema,
 	});
 
+	const [isSubmitting, setIsSubmitting] = createSignal(false);
+	const [status, setStatus] = createSignal<
+		| { type: "idle" }
+		| { type: "success"; message: string }
+		| { type: "error"; message: string }
+	>({ type: "idle" });
+
 	const passwordResetFormSubmitHandler: SubmitEventHandler<
 		typeof SendPasswordResetLinkSchema
-	> = async (_passwordResetInfo, _ev) => {
-		// TODO: add functionality
+	> = async (passwordResetInfo) => {
+		if (isSubmitting()) return;
+
+		setIsSubmitting(true);
+		setStatus({ type: "idle" });
+
+		try {
+			const res = await requestPasswordReset({
+				email: passwordResetInfo.email.trim(),
+			});
+
+			if (!res.ok) {
+				setStatus({
+					message: res.message,
+					type: "error",
+				});
+				return;
+			}
+
+			setStatus({
+				message: res.message,
+				type: "success",
+			});
+		} finally {
+			setIsSubmitting(false);
+		}
 	};
 
 	return (
@@ -59,9 +82,25 @@ function PasswordResetForm() {
 				)}
 			</Field>
 
-			<BaseButton class="btn-primary mx-auto w-full" type="submit">
+			<BaseButton
+				class="btn-primary mx-auto w-full"
+				disabled={isSubmitting()}
+				type="submit"
+			>
 				Send Reset Link <ArrowRight />
 			</BaseButton>
+
+			<Show when={status().type === "success"}>
+				<p class="text-sm text-success">
+					{(status() as { type: "success"; message: string }).message}
+				</p>
+			</Show>
+
+			<Show when={status().type === "error"}>
+				<p class="text-error text-sm">
+					{(status() as { type: "error"; message: string }).message}
+				</p>
+			</Show>
 
 			<div class="divider m-0 opacity-50" />
 

@@ -1,8 +1,10 @@
 import { createAsync } from "@solidjs/router";
-import { getUserChatHistory } from "~/server/chat";
+import { getUserChatHistoryQuery } from "~/server/queries";
 
 export default function createUserChatHistory() {
-	const userChatHistory = createAsync(async () => getUserChatHistory());
+	const userChatHistory = createAsync(() => getUserChatHistoryQuery(), {
+		initialValue: null,
+	});
 
 	return userChatHistory;
 }

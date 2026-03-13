@@ -1,10 +1,5 @@
-import { createAsync } from "@solidjs/router";
+const CONTACT_EMAIL = "jessemokolo@gmail.com";
 
-// TODO
 export default function createContactEmail() {
-	const contactEmail = createAsync(async () => "jessemokolo@gmail.com", {
-		initialValue: "jessemokolo@gmail.com",
-	});
-
-	return contactEmail;
+	return () => CONTACT_EMAIL;
 }

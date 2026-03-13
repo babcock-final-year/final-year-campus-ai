@@ -9,7 +9,10 @@ export function routes(searchParams) {
     _404: (_404) => ({index: `/${_404}${query}`}),
     about: {index: `/about${query}`},
     home: {
-      chat: {index: `/home/chat${query}`},
+      chat: {
+        index: `/home/chat${query}`,
+        chatId: (chatId) => ({index: `/home/chat/${chatId}${query}`}),
+      },
       editProfile: {index: `/home/edit-profile${query}`},
       settings: {
         theme: {index: `/home/settings/theme${query}`},

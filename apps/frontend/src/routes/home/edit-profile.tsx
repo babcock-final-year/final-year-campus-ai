@@ -13,7 +13,8 @@ import UploadImageButton from "~/components/ui/button/UploadImageButton";
 import UserProfileImage from "~/components/ui/image/UserProfileImage";
 import createUserProfile from "~/hooks/user/createUserProfile";
 import { UserProfileSchema } from "~/models/user-profile";
-import { routes } from "~/RouteManifest";
+import { backendApi, backendRoutes } from "~/server/api";
+import { revalidateUserProfile } from "~/server/queries";
 
 export default function EditProfileInterfacePage() {
 	const userProfile = createUserProfile();
@@ -30,7 +31,25 @@ export default function EditProfileInterfacePage() {
 
 	const onSubmitEditProfileForm: SubmitEventHandler<
 		typeof UserProfileSchema
-	> = (formData, e) => {};
+	> = async (formData) => {
+		const userId = userProfile().id;
+		if (!userId) return;
+
+		const res = await backendApi.put(
+			backendRoutes.users.update.build({ user_id: userId }),
+			{
+				avatar_url: formData.avatar_url ?? null,
+				full_name: formData.full_name ?? null,
+				matric_no: formData.matric_no ?? null,
+				username: formData.username ?? null,
+			},
+		);
+
+		if (!res.ok) return;
+
+		await revalidateUserProfile();
+		history.back();
+	};
 
 	const onAvatarUpload = (url: string) => {
 		setInput(editProfileForm, { input: url, path: ["avatar_url"] });
@@ -71,7 +90,29 @@ export default function EditProfileInterfacePage() {
 							<UploadImageButton onUpload={onAvatarUpload}>
 								Change Photo
 							</UploadImageButton>
-							<BaseButton>Remove</BaseButton>
+							<BaseButton
+								onClick={async () => {
+									const userId = userProfile().id;
+									if (!userId) return;
+
+									const res = await backendApi.put(
+										backendRoutes.users.update.build({ user_id: userId }),
+										{ avatar_url: null },
+									);
+
+									if (!res.ok) return;
+
+									setInput(editProfileForm, {
+										input: "",
+										path: ["avatar_url"],
+									});
+
+									await revalidateUserProfile();
+								}}
+								type="button"
+							>
+								Remove
+							</BaseButton>
 						</div>
 					</div>
 				</div>
@@ -119,6 +160,7 @@ export default function EditProfileInterfacePage() {
 						{(field) => (
 							<FieldTextInput
 								{...field}
+								disabled={true}
 								icon={<AtSign class="opacity-75" />}
 								inputClass="bg-base-200"
 								label="Email"

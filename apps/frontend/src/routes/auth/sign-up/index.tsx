@@ -5,7 +5,7 @@ import {
 	type SubmitEventHandler,
 } from "@formisch/solid";
 import { Link } from "@kobalte/core/link";
-import { A } from "@solidjs/router";
+import { A, useNavigate } from "@solidjs/router";
 import {
 	HatGlasses,
 	LockKeyhole,
@@ -20,8 +20,10 @@ import AppLogo from "~/components/ui/svg/AppLogo";
 import GoogleLogo from "~/components/ui/svg/GoogleLogo";
 import { SignUpCredentialsSchema } from "~/models/credentials";
 import { routes } from "~/RouteManifest";
+import { guestLogin, register } from "~/server/auth";
 
 function SignUpForm() {
+	const navigate = useNavigate();
 	const [hasAcceptedTerms, setHasAcceptedTerms] = createSignal(false);
 
 	const signUpForm = createForm({
@@ -31,8 +33,26 @@ function SignUpForm() {
 
 	const signUpFormSubmitHandler: SubmitEventHandler<
 		typeof SignUpCredentialsSchema
-	> = async (_signUpInfo, _ev) => {
-		// TODO: add functionality
+	> = async (signUpInfo, _ev) => {
+		if (!hasAcceptedTerms()) return;
+
+		const res = await register({
+			email: signUpInfo.email,
+			full_name: signUpInfo.username,
+			password: signUpInfo.pass,
+		});
+
+		if (!res.ok) return;
+
+		navigate(routes().home.chat.index);
+	};
+
+	const onGuest = async () => {
+		const res = await guestLogin();
+
+		if (!res.ok) return;
+
+		navigate(routes().home.chat.index);
 	};
 
 	return (
@@ -119,7 +139,11 @@ function SignUpForm() {
 				</span>
 			</label>
 
-			<BaseButton class="btn-primary mx-auto w-full" type="submit">
+			<BaseButton
+				class="btn-primary mx-auto w-full"
+				disabled={!hasAcceptedTerms()}
+				type="submit"
+			>
 				Create Account
 			</BaseButton>
 
@@ -130,9 +154,9 @@ function SignUpForm() {
 					<GoogleLogo /> Google
 				</BaseButton>
 
-				<Link class="btn" href={routes().home.chat.index}>
+				<BaseButton class="btn" onClick={onGuest} type="button">
 					<HatGlasses /> Guest
-				</Link>
+				</BaseButton>
 			</div>
 
 			<p class="mx-auto mt-2 text-xs">

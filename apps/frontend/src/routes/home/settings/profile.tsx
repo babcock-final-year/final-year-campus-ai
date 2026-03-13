@@ -20,12 +20,11 @@ function TitleAndValue(props: TitleAndValueProps) {
 export default function SettingsInterfaceProfilePage() {
 	const userProfile = createUserProfile();
 
-	// TODO
 	const profileDataArray = [
 		{ children: userProfile().full_name, title: "Full Name" },
-		{ children: "22/1234", title: "Matric Number" },
+		{ children: userProfile().matric_no ?? "", title: "Matric Number" },
 		{
-			children: userProfile().email ?? "blaa@student.babcock.edu.ng",
+			children: userProfile().email ?? "",
 			title: "School Email",
 		},
 	] as const satisfies TitleAndValueProps[];

@@ -6,7 +6,10 @@ export declare function routes(searchParams?: Record<string, string>): {
 	_404: (_404: string | number) => { index: string };
 	about: { index: string };
 	home: {
-		chat: { index: string };
+		chat: {
+			index: string;
+			chatId: (chatId: string | number) => { index: string };
+		};
 		editProfile: { index: string };
 		settings: {
 			theme: { index: string };

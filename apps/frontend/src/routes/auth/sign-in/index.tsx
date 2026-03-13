@@ -5,7 +5,7 @@ import {
 	type SubmitEventHandler,
 } from "@formisch/solid";
 import { Link } from "@kobalte/core/link";
-import { A } from "@solidjs/router";
+import { A, useNavigate } from "@solidjs/router";
 import {
 	Calendar,
 	GraduationCap,
@@ -23,9 +23,10 @@ import AppLogo from "~/components/ui/svg/AppLogo";
 import GoogleLogo from "~/components/ui/svg/GoogleLogo";
 import { SignInCredentialsSchema } from "~/models/credentials";
 import { routes } from "~/RouteManifest";
+import { guestLogin, login } from "~/server/auth";
 
 function SignInForm() {
-	//TODO: do something with this
+	const navigate = useNavigate();
 	const [shouldRememberSignIn, setShouldRememberSignIn] = createSignal(false);
 
 	const signInForm = createForm({
@@ -38,8 +39,23 @@ function SignInForm() {
 
 	const signInFormSubmitHandler: SubmitEventHandler<
 		typeof SignInCredentialsSchema
-	> = async (_signInInfo, _ev) => {
-		// TODO: add functionality
+	> = async (signInInfo, _ev) => {
+		const res = await login({
+			email: signInInfo.user,
+			password: signInInfo.pass,
+		});
+
+		if (!res.ok) return;
+
+		navigate(routes().home.chat.index);
+	};
+
+	const handleGuestLogin = async () => {
+		const res = await guestLogin();
+
+		if (!res.ok) return;
+
+		navigate(routes().home.chat.index);
 	};
 
 	return (
@@ -115,9 +131,9 @@ function SignInForm() {
 					<GoogleLogo /> Google
 				</BaseButton>
 
-				<Link class="btn" href={routes().home.chat.index}>
+				<BaseButton class="btn" onClick={handleGuestLogin} type="button">
 					<HatGlasses /> Guest
-				</Link>
+				</BaseButton>
 			</div>
 
 			<p class="mx-auto text-xs">

@@ -1,4 +1,3 @@
-import { Link } from "@kobalte/core/link";
 import { A } from "@solidjs/router";
 import clsx from "clsx/lite";
 import {
@@ -12,17 +11,25 @@ import {
 } from "lucide-solid";
 import { createMemo, For } from "solid-js";
 import { routes } from "~/RouteManifest";
+import { logout } from "~/server/auth";
 
 interface ActionMenuItemProps {
 	icon: LucideIcon;
 	name: string;
 	type?: "normal" | "err";
-	route: string;
-	onClick?: () => void;
+	route?: string;
+	onClick?: () => void | Promise<void>;
 }
 
 function ActionMenuItem(props: ActionMenuItemProps) {
 	const isErrBtn = createMemo(() => props.type === "err");
+
+	const handleClick = async (e: MouseEvent) => {
+		if (!props.onClick) return;
+
+		e.preventDefault();
+		await props.onClick();
+	};
 
 	return (
 		<A
@@ -32,11 +39,12 @@ function ActionMenuItem(props: ActionMenuItemProps) {
 				isErrBtn() ? "btn-error" : "btn-primary",
 			)}
 			end
-			href={props.route}
+			href={props.route ?? "#"}
 			inactiveClass={clsx(
 				"btn-ghost not-hover:border-base-300 not-hover:bg-secondary",
 				!isErrBtn() && "not-hover:text-neutral",
 			)}
+			onClick={props.onClick ? handleClick : undefined}
 		>
 			<props.icon class="size-5 opacity-50" />
 
@@ -78,10 +86,9 @@ export default function SettingsActionMenu(props: { class?: string }) {
 		{
 			icon: Trash,
 			name: "Delete My Data",
-			onClick() {
-				// TODO: LOgout and delete data
+			onClick: async () => {
+				await logout({ redirectTo: routes().auth.signIn.index });
 			},
-			route: routes().auth.signIn.index,
 			type: "err",
 		},
 	] as const satisfies ActionMenuItemProps[];

@@ -1,4 +1,5 @@
 import { Link } from "@kobalte/core/link";
+import { createAsync } from "@solidjs/router";
 import clsx from "clsx/lite";
 import Drawer from "corvu/drawer";
 import {
@@ -10,10 +11,12 @@ import {
 	PanelLeftOpen,
 	Settings,
 } from "lucide-solid";
-import { createSignal, For, Show } from "solid-js";
+import { createSignal, For, Show, Suspense } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import createUserProfile from "~/hooks/user/createUserProfile";
 import { routes } from "~/RouteManifest";
+import { logout } from "~/server/auth";
+import { listChatsQuery } from "~/server/queries";
 import BaseButton from "../ui/button/BaseButton";
 import UserProfileImage from "../ui/image/UserProfileImage";
 import AppLogo from "../ui/svg/AppLogo";
@@ -21,10 +24,18 @@ import AppLogo from "../ui/svg/AppLogo";
 export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 	const userProfile = createUserProfile();
 
+	const chats = createAsync(() => listChatsQuery(), {
+		initialValue: { chats: [] },
+	});
+
 	const [isSidebarHiddenInDesktopMode, setIsSidebarHiddenInDesktopMode] =
 		createSignal(false);
 
 	let sideBar$!: HTMLDivElement;
+
+	async function handleLogout() {
+		await logout();
+	}
 
 	function SidebarHideBtn() {
 		function handleHideSidebar() {
@@ -97,46 +108,33 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 				<div class="flex grow flex-col overflow-auto text-accent-content/50">
 					<h3 class="px-4 text-sm">Recent Chats</h3>
 
-					<ul class="menu w-full px-0">
-						<For
-							each={[
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-							]}
-						>
-							{(chatSummary) => (
+					<Suspense
+						fallback={
+							<ul class="menu w-full px-0">
 								<li class="w-full">
-									<Link
-										class="btn btn-secondary btn-ghost group w-full justify-start gap-2 text-left font-normal"
-										href="#"
-									>
-										<span class="grow truncate">{chatSummary}</span>
-										<Ellipsis class="hidden min-w-6 group-hover:block" />
-									</Link>
+									<span class="btn btn-secondary btn-ghost w-full justify-start font-normal opacity-50">
+										Loading...
+									</span>
 								</li>
-							)}
-						</For>
-					</ul>
+							</ul>
+						}
+					>
+						<ul class="menu w-full px-0">
+							<For each={chats()?.chats ?? []}>
+								{(chat) => (
+									<li class="w-full">
+										<Link
+											class="btn btn-secondary btn-ghost group w-full justify-start gap-2 text-left font-normal"
+											href={`${routes().home.chat.index}/${chat.id}`}
+										>
+											<span class="grow truncate">{chat.title}</span>
+											<Ellipsis class="hidden min-w-6 group-hover:block" />
+										</Link>
+									</li>
+								)}
+							</For>
+						</ul>
+					</Suspense>
 				</div>
 
 				<ul class="menu menu-horizontal w-full justify-around px-0">
@@ -150,14 +148,14 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 						</Link>
 					</li>
 					<li>
-						{/* TODO: Add logout functionality */}
-						<Link
+						<BaseButton
 							class="btn btn-error btn-ghost justify-start font-normal"
-							href={routes().auth.signIn.index}
+							onClick={handleLogout}
+							type="button"
 						>
 							<LogOut />
 							Logout
-						</Link>
+						</BaseButton>
 					</li>
 				</ul>
 

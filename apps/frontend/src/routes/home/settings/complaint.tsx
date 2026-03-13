@@ -5,8 +5,8 @@ import {
 	getInput,
 	reset,
 	type SubmitEventHandler,
-	SubmitHandler,
 } from "@formisch/solid";
+import { createSignal } from "solid-js";
 import FieldTextInput from "~/components/form/FieldTextInput";
 import BaseButton from "~/components/ui/button/BaseButton";
 import LimitCounter from "~/components/ui/indicator/LimitCounter";
@@ -15,6 +15,7 @@ import {
 	FILE_COMPLAINT_FORM_TITLE_MAX_LENGTH,
 	FileComplaintFormSchema,
 } from "~/models/file-complaint-form";
+import { createComplaint } from "~/server/complaints";
 
 export default function SettingsInterfaceComplaintPage() {
 	const fileComplaintForm = createForm({
@@ -23,10 +24,26 @@ export default function SettingsInterfaceComplaintPage() {
 		validate: "input",
 	});
 
+	const [isSubmitting, setIsSubmitting] = createSignal(false);
+
 	const handleSubmitFileComplaintForm: SubmitEventHandler<
 		typeof FileComplaintFormSchema
-	> = (formData, e) => {
-		// TODO: Sumbit file complaint
+	> = async (formData) => {
+		if (isSubmitting()) return;
+
+		setIsSubmitting(true);
+		try {
+			const created = await createComplaint({
+				description: formData.description.trim(),
+				title: formData.title.trim(),
+			});
+
+			if (!created) return;
+
+			reset(fileComplaintForm);
+		} finally {
+			setIsSubmitting(false);
+		}
 	};
 
 	return (
@@ -89,11 +106,16 @@ export default function SettingsInterfaceComplaintPage() {
 				</Field>
 
 				<div class="flex gap-4">
-					<BaseButton class="btn-primary" type="submit">
+					<BaseButton
+						class="btn-primary"
+						disabled={isSubmitting()}
+						type="submit"
+					>
 						Send Report
 					</BaseButton>
 					<BaseButton
 						class="btn-ghost"
+						disabled={isSubmitting()}
 						onClick={() => reset(fileComplaintForm)}
 						type="reset"
 					>
