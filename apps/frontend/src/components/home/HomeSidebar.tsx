@@ -11,12 +11,12 @@ import {
 	PanelLeftOpen,
 	Settings,
 } from "lucide-solid";
-import { createSignal, For, Show, Suspense } from "solid-js";
+import { createSignal, For, onMount, Show, Suspense } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import createUserProfile from "~/hooks/user/createUserProfile";
 import { routes } from "~/RouteManifest";
-import { logout } from "~/server/auth";
-import { listChatsQuery } from "~/server/queries";
+import { clearAuthTokens } from "~/utils/auth-tokens";
+import { createChatsListQuery } from "~/utils/client-queries";
 import BaseButton from "../ui/button/BaseButton";
 import UserProfileImage from "../ui/image/UserProfileImage";
 import AppLogo from "../ui/svg/AppLogo";
@@ -24,8 +24,14 @@ import AppLogo from "../ui/svg/AppLogo";
 export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 	const userProfile = createUserProfile();
 
-	const chats = createAsync(() => listChatsQuery(), {
+	const chatsQuery = createChatsListQuery();
+
+	const chats = createAsync(async () => await chatsQuery.refetch(), {
 		initialValue: { chats: [] },
+	});
+
+	onMount(() => {
+		void chatsQuery.refetch();
 	});
 
 	const [isSidebarHiddenInDesktopMode, setIsSidebarHiddenInDesktopMode] =
@@ -34,7 +40,8 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 	let sideBar$!: HTMLDivElement;
 
 	async function handleLogout() {
-		await logout();
+		clearAuthTokens();
+		window.location.href = routes().auth.signIn.index;
 	}
 
 	function SidebarHideBtn() {
@@ -120,7 +127,7 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 						}
 					>
 						<ul class="menu w-full px-0">
-							<For each={chats()?.chats ?? []}>
+							<For each={chatsQuery.data()?.chats ?? []}>
 								{(chat) => (
 									<li class="w-full">
 										<Link

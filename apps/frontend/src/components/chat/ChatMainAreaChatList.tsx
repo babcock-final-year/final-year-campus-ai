@@ -1,13 +1,10 @@
 import { Image } from "@kobalte/core/image";
+import type { ChatHistoryResponse } from "@packages/shared-types";
 import { createAsync } from "@solidjs/router";
 import clsx from "clsx/lite";
 import { Copy, ThumbsDown, ThumbsUp } from "lucide-solid";
 import { createMemo, createSignal, For, Show, Suspense } from "solid-js";
-import { likeMessage } from "~/server/chat";
-import {
-	getChatMessagesQuery,
-	getUserChatHistoryQuery,
-} from "~/server/queries";
+import { backendClient } from "~/utils/backend-client";
 import BaseButton from "../ui/button/BaseButton";
 import UserProfileImage from "../ui/image/UserProfileImage";
 import AppLogo from "../ui/svg/AppLogo";
@@ -30,8 +27,11 @@ function AssistantReplyButtons(props: {
 		setIsSubmitting(true);
 
 		try {
-			const res = await likeMessage(props.chatId, props.msgId, next === "like");
-			if (!res) return;
+			const res = await backendClient.post<unknown, { like: boolean }>(
+				`/api/v1/history/chats/${encodeURIComponent(props.chatId)}/messages/${props.msgId}/like`,
+				{ like: next === "like" },
+			);
+			if (!res.ok) return;
 
 			setLikeState(next);
 		} finally {
@@ -97,12 +97,31 @@ export default function ChatMainAreaChatList(props: {
 	chatId?: string | null;
 }) {
 	const chatHistory = createAsync(
-		() => {
+		async () => {
 			const id = props.chatId;
-			if (typeof id === "string" && id.trim().length > 0)
-				return getChatMessagesQuery(id);
+			if (typeof id === "string" && id.trim().length > 0) {
+				const res = await backendClient.get<ChatHistoryResponse>(
+					`/api/v1/history/chats/${encodeURIComponent(id)}/messages`,
+				);
+				if (!res.ok) return null;
 
-			return getUserChatHistoryQuery();
+				return res.data;
+			}
+
+			const res = await backendClient.get<{ chats: { id: string }[] }>(
+				"/api/v1/history/chats",
+			);
+			if (!res.ok) return null;
+
+			const mostRecent = res.data.chats.at(0);
+			if (!mostRecent) return null;
+
+			const messages = await backendClient.get<ChatHistoryResponse>(
+				`/api/v1/history/chats/${encodeURIComponent(mostRecent.id)}/messages`,
+			);
+			if (!messages.ok) return null;
+
+			return messages.data;
 		},
 		{ initialValue: null },
 	);

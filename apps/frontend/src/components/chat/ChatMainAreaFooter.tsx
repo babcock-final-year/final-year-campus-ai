@@ -1,23 +1,39 @@
 import { TextField } from "@kobalte/core/text-field";
+import type {
+	ChatHistoryResponse,
+	ChatMessageRequest,
+} from "@packages/shared-types";
 import { createAsync } from "@solidjs/router";
 import { Mic, Plus, SendHorizontal } from "lucide-solid";
 import { createSignal, Suspense } from "solid-js";
-import { createChat, postChatMessage } from "~/server/chat";
-import {
-	getChatMessagesQuery,
-	getUserChatHistoryQuery,
-	revalidateChatMessages,
-	revalidateChatsList,
-} from "~/server/queries";
+import { backendClient } from "~/utils/backend-client";
 import BaseButton from "../ui/button/BaseButton";
 
 export default function ChatMainAreaFooter(props: { chatId?: string | null }) {
 	const [msg, setMsg] = createSignal("");
 	const [isSending, setIsSending] = createSignal(false);
 
-	const chatHistory = createAsync(() => getUserChatHistoryQuery(), {
-		initialValue: null,
-	});
+	const chatHistory = createAsync(
+		async () => {
+			const res = await backendClient.get<{ chats: { id: string }[] }>(
+				"/api/v1/history/chats",
+			);
+			if (!res.ok) return null;
+
+			const mostRecent = res.data.chats.at(0);
+			if (!mostRecent) return null;
+
+			const messages = await backendClient.get<ChatHistoryResponse>(
+				`/api/v1/history/chats/${encodeURIComponent(mostRecent.id)}/messages`,
+			);
+			if (!messages.ok) return null;
+
+			return messages.data;
+		},
+		{
+			initialValue: null,
+		},
+	);
 
 	const sendMessage = async () => {
 		const content = msg().trim();
@@ -33,18 +49,30 @@ export default function ChatMainAreaFooter(props: { chatId?: string | null }) {
 			}
 
 			if (!chatId) {
-				const created = await createChat();
-				if (!created) return;
+				const created = await backendClient.post<
+					{ chat_id: string; title: string },
+					{ title?: string }
+				>("/api/v1/chat", undefined);
 
-				chatId = created.chat_id;
-				await revalidateChatsList();
+				if (!created.ok) return;
+
+				chatId = created.data.chat_id;
 			}
 
-			const res = await postChatMessage(chatId, { content });
-			if (!res) return;
+			const res = await backendClient.post<unknown, ChatMessageRequest>(
+				`/api/v1/chat/${encodeURIComponent(chatId)}/message`,
+				{ content },
+			);
+			if (!res.ok) return;
 
 			setMsg("");
-			await revalidateChatMessages(chatId);
+
+			if (props.chatId) {
+				window.location.reload();
+				return;
+			}
+
+			window.location.href = `/home/chat/${encodeURIComponent(chatId)}`;
 		} finally {
 			setIsSending(false);
 		}

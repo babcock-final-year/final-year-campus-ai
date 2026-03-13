@@ -18,9 +18,10 @@ import FieldTextInput from "~/components/form/FieldTextInput";
 import BaseButton from "~/components/ui/button/BaseButton";
 import AppLogo from "~/components/ui/svg/AppLogo";
 import GoogleLogo from "~/components/ui/svg/GoogleLogo";
+import { getBackendBaseUrl } from "~/constants/env";
 import { SignUpCredentialsSchema } from "~/models/credentials";
 import { routes } from "~/RouteManifest";
-import { guestLogin, register } from "~/server/auth";
+import { clearAuthTokens, setAuthTokens } from "~/utils/auth-tokens";
 
 function SignUpForm() {
 	const navigate = useNavigate();
@@ -31,26 +32,64 @@ function SignUpForm() {
 		schema: SignUpCredentialsSchema,
 	});
 
+	const backendBaseUrl = () => getBackendBaseUrl().replace(/\/+$/, "");
+
 	const signUpFormSubmitHandler: SubmitEventHandler<
 		typeof SignUpCredentialsSchema
 	> = async (signUpInfo, _ev) => {
 		if (!hasAcceptedTerms()) return;
 
-		const res = await register({
-			email: signUpInfo.email,
-			full_name: signUpInfo.username,
-			password: signUpInfo.pass,
+		const url = `${backendBaseUrl()}/api/v1/auth/register`;
+
+		const res = await fetch(url, {
+			body: JSON.stringify({
+				email: signUpInfo.email,
+				full_name: signUpInfo.username,
+				password: signUpInfo.pass,
+			}),
+			headers: { "Content-Type": "application/json" },
+			method: "POST",
 		});
 
 		if (!res.ok) return;
+
+		const data = (await res.json()) as {
+			access_token?: string;
+			refresh_token?: string;
+		};
+
+		if (!data.access_token || !data.refresh_token) return;
+
+		clearAuthTokens();
+		setAuthTokens({
+			accessToken: data.access_token,
+			refreshToken: data.refresh_token,
+		});
 
 		navigate(routes().home.chat.index);
 	};
 
 	const onGuest = async () => {
-		const res = await guestLogin();
+		const url = `${backendBaseUrl()}/api/v1/auth/guest`;
+
+		const res = await fetch(url, {
+			method: "POST",
+		});
 
 		if (!res.ok) return;
+
+		const data = (await res.json()) as {
+			access_token?: string;
+			refresh_token?: string;
+		};
+
+		if (!data.access_token || !data.refresh_token) return;
+
+		clearAuthTokens();
+		setAuthTokens({
+			accessToken: data.access_token,
+			refreshToken: data.refresh_token,
+		});
 
 		navigate(routes().home.chat.index);
 	};

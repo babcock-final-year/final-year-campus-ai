@@ -21,9 +21,10 @@ import FieldTextInput from "~/components/form/FieldTextInput";
 import BaseButton from "~/components/ui/button/BaseButton";
 import AppLogo from "~/components/ui/svg/AppLogo";
 import GoogleLogo from "~/components/ui/svg/GoogleLogo";
+import { getBackendBaseUrl } from "~/constants/env";
 import { SignInCredentialsSchema } from "~/models/credentials";
 import { routes } from "~/RouteManifest";
-import { guestLogin, login } from "~/server/auth";
+import { clearAuthTokens, setAuthTokens } from "~/utils/auth-tokens";
 
 function SignInForm() {
 	const navigate = useNavigate();
@@ -37,23 +38,61 @@ function SignInForm() {
 		schema: SignInCredentialsSchema,
 	});
 
+	const backendBaseUrl = () => getBackendBaseUrl().replace(/\/+$/, "");
+
 	const signInFormSubmitHandler: SubmitEventHandler<
 		typeof SignInCredentialsSchema
 	> = async (signInInfo, _ev) => {
-		const res = await login({
-			email: signInInfo.user,
-			password: signInInfo.pass,
+		const url = `${backendBaseUrl()}/api/v1/auth/login`;
+
+		const res = await fetch(url, {
+			body: JSON.stringify({
+				email: signInInfo.user,
+				password: signInInfo.pass,
+			}),
+			headers: { "Content-Type": "application/json" },
+			method: "POST",
 		});
 
 		if (!res.ok) return;
+
+		const data = (await res.json()) as {
+			access_token?: string;
+			refresh_token?: string;
+		};
+
+		if (!data.access_token || !data.refresh_token) return;
+
+		if (!shouldRememberSignIn()) clearAuthTokens();
+		setAuthTokens({
+			accessToken: data.access_token,
+			refreshToken: data.refresh_token,
+		});
 
 		navigate(routes().home.chat.index);
 	};
 
 	const handleGuestLogin = async () => {
-		const res = await guestLogin();
+		const url = `${backendBaseUrl()}/api/v1/auth/guest`;
+
+		const res = await fetch(url, {
+			method: "POST",
+		});
 
 		if (!res.ok) return;
+
+		const data = (await res.json()) as {
+			access_token?: string;
+			refresh_token?: string;
+		};
+
+		if (!data.access_token || !data.refresh_token) return;
+
+		if (!shouldRememberSignIn()) clearAuthTokens();
+		setAuthTokens({
+			accessToken: data.access_token,
+			refreshToken: data.refresh_token,
+		});
 
 		navigate(routes().home.chat.index);
 	};

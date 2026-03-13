@@ -11,7 +11,7 @@ import {
 } from "lucide-solid";
 import { createMemo, For } from "solid-js";
 import { routes } from "~/RouteManifest";
-import { logout } from "~/server/auth";
+import { clearAuthTokens } from "~/utils/auth-tokens";
 
 interface ActionMenuItemProps {
 	icon: LucideIcon;
@@ -87,7 +87,8 @@ export default function SettingsActionMenu(props: { class?: string }) {
 			icon: Trash,
 			name: "Delete My Data",
 			onClick: async () => {
-				await logout({ redirectTo: routes().auth.signIn.index });
+				clearAuthTokens();
+				window.location.href = routes().auth.signIn.index;
 			},
 			type: "err",
 		},
