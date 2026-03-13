@@ -11,6 +11,8 @@ class UserBase(BaseModel):
     full_name: str
     email: EmailStr | None = None
     is_guest: bool
+    matric_no: str | None = None
+    avatar_url: str | None = None
 
     model_config = ConfigDict(
         from_attributes=True

@@ -7,6 +7,8 @@ export const DEFAULT_USER_PROFILE = {
 	full_name: "Phenomeman 69420",
 	id: "0",
 	is_guest: true,
+	matric_no: null,
+	avatar_url: null,
 } as const satisfies UserBase;
 
 export async function getUserProfile(): Promise<UserBase> {

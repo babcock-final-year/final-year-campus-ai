@@ -5,7 +5,6 @@ import {
 	type SubmitEventHandler,
 	setInput,
 } from "@formisch/solid";
-import { Link } from "@kobalte/core/link";
 import { AtSign, Camera, IdCard, UserRound } from "lucide-solid";
 import HomeMainAreaHeader from "~/components/chat/ChatMainAreaHeader";
 import FieldTextInput from "~/components/form/FieldTextInput";
@@ -20,7 +19,12 @@ export default function EditProfileInterfacePage() {
 	const userProfile = createUserProfile();
 
 	const editProfileForm = createForm({
-		initialInput: userProfile(),
+		initialInput: {
+			avatar_url: userProfile().avatar_url ?? undefined,
+			email: userProfile().email ?? undefined,
+			full_name: userProfile().full_name,
+			matric_no: userProfile().matric_no ?? undefined,
+		},
 		schema: UserProfileSchema,
 	});
 
