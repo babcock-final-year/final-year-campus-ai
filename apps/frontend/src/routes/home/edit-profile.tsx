@@ -3,12 +3,14 @@ import {
 	Field,
 	Form,
 	type SubmitEventHandler,
+	setInput,
 } from "@formisch/solid";
 import { Link } from "@kobalte/core/link";
 import { AtSign, Camera, IdCard, UserRound } from "lucide-solid";
 import HomeMainAreaHeader from "~/components/chat/ChatMainAreaHeader";
 import FieldTextInput from "~/components/form/FieldTextInput";
 import BaseButton from "~/components/ui/button/BaseButton";
+import UploadImageButton from "~/components/ui/button/UploadImageButton";
 import UserProfileImage from "~/components/ui/image/UserProfileImage";
 import createUserProfile from "~/hooks/user/createUserProfile";
 import { UserProfileSchema } from "~/models/user-profile";
@@ -25,6 +27,10 @@ export default function EditProfileInterfacePage() {
 	const onSubmitEditProfileForm: SubmitEventHandler<
 		typeof UserProfileSchema
 	> = (formData, e) => {};
+
+	const onAvatarUpload = (url: string) => {
+		setInput(editProfileForm, { input: url, path: ["avatar_url"] });
+	};
 
 	return (
 		<div class="grid size-full grid-rows-[3.5rem_1fr] bg-base-200">
@@ -43,9 +49,12 @@ export default function EditProfileInterfacePage() {
 								"row-span-3 aspect-square h-24 place-self-center rounded-full shadow-lg outline-3 outline-base-100 sm:h-28",
 						}}
 						cornerBtn={
-							<BaseButton class="btn-primary btn-circle btn-sm absolute -right-1 -bottom-1 p-1.5">
+							<UploadImageButton
+								class="btn-circle btn-sm absolute -right-1 -bottom-1 p-1.5"
+								onUpload={onAvatarUpload}
+							>
 								<Camera />
-							</BaseButton>
+							</UploadImageButton>
 						}
 					/>
 
@@ -55,7 +64,9 @@ export default function EditProfileInterfacePage() {
 							Update your profile picture. Max 5MB.
 						</p>
 						<div class="mt-2 flex gap-4">
-							<BaseButton class="btn-primary">Change Photo</BaseButton>
+							<UploadImageButton onUpload={onAvatarUpload}>
+								Change Photo
+							</UploadImageButton>
 							<BaseButton>Remove</BaseButton>
 						</div>
 					</div>

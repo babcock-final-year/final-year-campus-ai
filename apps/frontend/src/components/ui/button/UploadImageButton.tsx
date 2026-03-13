@@ -1,5 +1,5 @@
+import { Form } from "@formisch/solid";
 import clsx from "clsx/lite";
-import { Camera } from "lucide-solid";
 import { createSignal, type JSXElement } from "solid-js";
 import { uploadFile } from "~/server/file-upload";
 import BaseButton from "./BaseButton";
@@ -34,7 +34,10 @@ export default function UploadImageButton(props: UploadImageButtonProps) {
 			return;
 		}
 
-		const possibleUrl = await uploadFile(file);
+		const formData = new FormData();
+		formData.set("file", file);
+
+		const possibleUrl = await uploadFile(formData);
 
 		if (possibleUrl) await props.onUpload?.(possibleUrl);
 
