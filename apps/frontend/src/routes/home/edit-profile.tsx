@@ -6,6 +6,7 @@ import {
 	setInput,
 } from "@formisch/solid";
 import { AtSign, Camera, IdCard, UserRound } from "lucide-solid";
+import { createMemo } from "solid-js";
 import HomeMainAreaHeader from "~/components/chat/ChatMainAreaHeader";
 import FieldTextInput from "~/components/form/FieldTextInput";
 import BaseButton from "~/components/ui/button/BaseButton";
@@ -14,7 +15,6 @@ import UserProfileImage from "~/components/ui/image/UserProfileImage";
 import createUserProfile from "~/hooks/user/createUserProfile";
 import { UserProfileSchema } from "~/models/user-profile";
 import { backendApi, backendRoutes } from "~/server/api";
-import { revalidateUserProfile } from "~/server/queries";
 
 export default function EditProfileInterfacePage() {
 	const userProfile = createUserProfile();
@@ -47,12 +47,29 @@ export default function EditProfileInterfacePage() {
 
 		if (!res.ok) return;
 
-		await revalidateUserProfile();
 		history.back();
 	};
 
-	const onAvatarUpload = (url: string) => {
+	const avatarUrlForPreview = createMemo(() => {
+		const url = editProfileForm.input.avatar_url;
+		if (!url) return null;
+
+		const base = url.split("?")[0] ?? url;
+		return `${base}?v=${Date.now()}`;
+	});
+
+	const onAvatarUpload = async (url: string) => {
 		setInput(editProfileForm, { input: url, path: ["avatar_url"] });
+
+		const userId = userProfile().id;
+		if (!userId) return;
+
+		const res = await backendApi.put(
+			backendRoutes.users.update.build({ user_id: userId }),
+			{ avatar_url: url },
+		);
+
+		if (!res.ok) return;
 	};
 
 	return (
@@ -66,6 +83,7 @@ export default function EditProfileInterfacePage() {
 			>
 				<div class="flex h-28 justify-center gap-8 sm:h-32 sm:justify-start">
 					<UserProfileImage
+						avatarUrlOverride={avatarUrlForPreview()}
 						class={{
 							fallback: "text-3xl",
 							wrapper:
@@ -106,8 +124,6 @@ export default function EditProfileInterfacePage() {
 										input: "",
 										path: ["avatar_url"],
 									});
-
-									await revalidateUserProfile();
 								}}
 								type="button"
 							>

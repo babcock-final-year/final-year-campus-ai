@@ -1,0 +1,29 @@
+import os
+
+from dotenv import load_dotenv  # pyright: ignore[reportMissingImports]
+from flask_migrate import Migrate
+
+from app import create_app, db
+from app.models import Chat, Complaint, Message, User
+
+load_dotenv()
+
+migrate = Migrate()
+
+
+def create_flask_app():
+	app = create_app(os.getenv("FLASK_CONFIG") or "default")
+	migrate.init_app(app, db)
+	return app
+
+
+app = create_flask_app()
+
+
+@app.shell_context_processor
+def make_shell_context():
+	return dict(db=db, User=User, Chat=Chat, Message=Message, Complaint=Complaint)
+
+
+if __name__ == "__main__":
+	app.run(host="0.0.0.0", port=5000, debug=True)

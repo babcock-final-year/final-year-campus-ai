@@ -1,13 +1,16 @@
 import os
-from typing import List
+from typing import Any, Iterable, List
+
+from langchain_core.callbacks import BaseCallbackHandler
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import PromptTemplate
+from langchain_core.runnables import RunnablePassthrough
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_groq import ChatGroq
-from langchain_core.prompts import PromptTemplate
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnablePassthrough
-from langchain_core.callbacks import BaseCallbackHandler
+
+from config import GEMINI_API_KEY, GEMINI_LLM_MODEL, GROQ_API_KEY, GROQ_LLM_MODEL, PROMPT_PATH
+
 from ...services.logger import get_logger
-from config import GEMINI_LLM_MODEL, GEMINI_API_KEY, GROQ_LLM_MODEL, GROQ_API_KEY, PROMPT_PATH
 
 logger = get_logger(__name__)
 
@@ -61,9 +64,44 @@ class LLM:
             # Fallback hardcoded prompt if file loading fails
             return PromptTemplate.from_template("Context: {context}\n\nQuestion: {question}\n\n")
 
-    def _format_docs(self, docs: List[str]) -> str:
-        """Merge retrieved Document chunks into a single string for the prompt."""
-        return "\n\n".join(doc.page_content for doc in docs)
+    def _format_docs(self, docs: Any) -> str:
+        """Merge retrieved chunks into a single string for the prompt.
+
+        The retriever is expected to return a list of LangChain `Document`s, but in
+        dev it may return plain strings (or other objects). This function is
+        defensive and will never throw for unexpected shapes.
+        """
+        if docs is None:
+            return ""
+
+        if isinstance(docs, str):
+            return docs
+
+        def iter_docs(val: Any) -> Iterable[Any]:
+            if isinstance(val, (list, tuple)):
+                return val
+            return [val]
+
+        parts: List[str] = []
+        for d in iter_docs(docs):
+            if d is None:
+                continue
+
+            if isinstance(d, str):
+                parts.append(d)
+                continue
+
+            page_content = getattr(d, "page_content", None)
+            if isinstance(page_content, str):
+                parts.append(page_content)
+                continue
+
+            try:
+                parts.append(str(d))
+            except Exception:
+                continue
+
+        return "\n\n".join(parts)
 
     def get_response(self, query: str, retriever) -> str:
         """Execute the RAG chain and return a text response from the LLM.

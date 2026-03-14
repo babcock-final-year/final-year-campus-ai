@@ -93,7 +93,7 @@ export function createChatMessagesQuery(
 			if (typeof id !== "string" || id.trim().length === 0) return null;
 
 			const res = await backendClient.get<ChatHistoryResponse>(
-				`/api/v1/history/chats/${encodeURIComponent(id)}/messages`,
+				`/api/v1/history/chat/${encodeURIComponent(id)}/messages`,
 			);
 			if (!res.ok) return null;
 

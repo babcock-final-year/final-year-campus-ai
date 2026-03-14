@@ -11,9 +11,16 @@ from app.models import Chat, Complaint, Message, User
 
 load_dotenv()
 
-# Create the application instance
-app = create_app(os.getenv("FLASK_CONFIG") or "default")
-migrate = Migrate(app, db)
+migrate = Migrate()
+
+
+def create_flask_app():
+    app = create_app(os.getenv("FLASK_CONFIG") or "default")
+    migrate.init_app(app, db)
+    return app
+
+
+app = create_flask_app()
 
 
 @app.shell_context_processor

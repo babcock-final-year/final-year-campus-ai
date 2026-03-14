@@ -1,5 +1,5 @@
 import { Link } from "@kobalte/core/link";
-import { createAsync } from "@solidjs/router";
+import { useNavigate } from "@solidjs/router";
 import clsx from "clsx/lite";
 import Drawer from "corvu/drawer";
 import {
@@ -22,13 +22,11 @@ import UserProfileImage from "../ui/image/UserProfileImage";
 import AppLogo from "../ui/svg/AppLogo";
 
 export default function HomeSidebar(props: { isInDrawer?: boolean }) {
+	const navigate = useNavigate();
+
 	const userProfile = createUserProfile();
 
 	const chatsQuery = createChatsListQuery();
-
-	const chats = createAsync(async () => await chatsQuery.refetch(), {
-		initialValue: { chats: [] },
-	});
 
 	onMount(() => {
 		void chatsQuery.refetch();
@@ -38,6 +36,20 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 		createSignal(false);
 
 	let sideBar$!: HTMLDivElement;
+
+	function handleNewChat() {
+		navigate(routes().home.chat.index);
+
+		if (props.isInDrawer) {
+			try {
+				document
+					.querySelector<HTMLButtonElement>("[data-corvu-drawer-close]")
+					?.click();
+			} catch {
+				// no-op
+			}
+		}
+	}
 
 	async function handleLogout() {
 		clearAuthTokens();
@@ -98,7 +110,11 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 			<Show when={!isSidebarHiddenInDesktopMode()}>
 				<ul class="menu w-full px-0">
 					<li>
-						<BaseButton class="btn-secondary btn-ghost justify-start gap-4">
+						<BaseButton
+							class="btn-secondary btn-ghost justify-start gap-4"
+							onClick={handleNewChat}
+							type="button"
+						>
 							<CirclePlus />
 							New Chat
 						</BaseButton>

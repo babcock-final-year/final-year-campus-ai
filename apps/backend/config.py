@@ -1,5 +1,7 @@
-import os, secrets
-from dotenv import load_dotenv, find_dotenv
+import os
+import secrets
+
+from dotenv import find_dotenv, load_dotenv
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 dotenv_path = os.path.join(basedir, '.env')
@@ -8,7 +10,7 @@ load_dotenv(find_dotenv(dotenv_path), override=False)
 # RAG
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 GEMINI_EMBEDDINGS_MODEL = os.getenv("GEMINI_EMBEDDINGS_MODEL", "text-embedding-004")
-GEMINI_LLM_MODEL = os.getenv("GEMINI_LLM_MODEL", "gemini-3-pro")
+GEMINI_LLM_MODEL = os.getenv("GEMINI_LLM_MODEL", "gemini-1.5-flash")
 HF_EMBEDDINGS_MODEL = os.environ.get('HF_EMBEDDINGS_MODEL')
 HF_ACCESS_TOKEN = os.environ.get('HF_ACCESS_TOKEN')
 GROQ_API_KEY = os.environ.get('GROQ_API_KEY')
@@ -22,13 +24,22 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or secrets.token_hex(32)
     JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or secrets.token_hex(32)
 
+class DevelopmentConfig(Config):
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
+        'sqlite:///' + os.path.join(basedir, 'data-dev.db')
+
+    # Deterministic dev secret so JWTs remain valid across backend restarts when no env is set.
+    # This trades security for speed in local dev; production must provide JWT_SECRET_KEY.
+    JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY') or 'dev-jwt-secret-change-me'
+
     MAIL_SERVER = 'smtp.googlemail.com'
     MAIL_PORT = 587
     MAIL_USE_TLS = True
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER')
-    
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     CORS_HEADERS = 'Content-Type'
 
@@ -37,15 +48,12 @@ class Config:
     CONFIRM_TOKEN_EXPIRES = int(os.environ.get('CONFIRM_TOKEN_EXPIRES') or 3600)
     RESET_TOKEN_EXPIRES = int(os.environ.get('RESET_TOKEN_EXPIRES') or 3600)
     EMAIL_CHANGE_TOKEN_EXPIRES = int(os.environ.get('EMAIL_CHANGE_TOKEN_EXPIRES') or 3600)
-    
+
     @staticmethod
     def init_app(app):
         pass
 
-class DevelopmentConfig(Config):
-    DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'data-dev.db')
+
 
 class TestingConfig(Config):
     TESTING = True

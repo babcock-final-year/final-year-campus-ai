@@ -1,6 +1,7 @@
 import type { UserBase } from "@packages/shared-types";
 import { createAsync } from "@solidjs/router";
 import { backendClient } from "~/utils/backend-client";
+import { hasAuthTokens } from "~/utils/auth-tokens";
 
 const DEFAULT_USER_PROFILE = {
 	avatar_url: null,
@@ -14,6 +15,8 @@ const DEFAULT_USER_PROFILE = {
 export default function createUserProfile() {
 	const profile = createAsync(
 		async () => {
+			if (!hasAuthTokens()) return structuredClone(DEFAULT_USER_PROFILE);
+
 			const res = await backendClient.get<{ user: UserBase }>(
 				"/api/v1/auth/me",
 			);
