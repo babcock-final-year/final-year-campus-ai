@@ -19,6 +19,7 @@ import {
 import { createSignal } from "solid-js";
 import FieldTextInput from "~/components/form/FieldTextInput";
 import BaseButton from "~/components/ui/button/BaseButton";
+import GuestLoginButton from "~/components/ui/button/GuestLoginButton";
 import AppLogo from "~/components/ui/svg/AppLogo";
 import GoogleLogo from "~/components/ui/svg/GoogleLogo";
 import { SignInCredentialsSchema } from "~/models/credentials";
@@ -115,9 +116,7 @@ function SignInForm() {
 					<GoogleLogo /> Google
 				</BaseButton>
 
-				<Link class="btn" href={routes().home.chat.index}>
-					<HatGlasses /> Guest
-				</Link>
+				<GuestLoginButton />
 			</div>
 
 			<p class="mx-auto text-xs">
