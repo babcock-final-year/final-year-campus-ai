@@ -1,11 +1,48 @@
 import { Link } from "@kobalte/core/link";
+import { useNavigate } from "@solidjs/router";
 import { HatGlasses } from "lucide-solid";
+import { createSignal } from "solid-js";
+import { useAuth } from "~/context/AuthContextProvider";
 import { routes } from "~/RouteManifest";
+import AuthRpc from "~/rpc/auth";
+import BaseButton from "./BaseButton";
 
 export default function GuestLoginButton() {
+	const [isLoggingIn, setIsLoggingIn] = createSignal(false);
+	const authContext = useAuth();
+
+	const navigate = useNavigate();
+
+	async function handleGuestLogin() {
+		setIsLoggingIn(true);
+
+		const res = await AuthRpc.guest.post();
+
+		// TODO: Add error toast
+		if (!res.success) {
+			setIsLoggingIn(false);
+			return;
+		}
+
+		const { access_token, refresh_token, user } = res.res;
+
+		authContext?.setAccessToken(access_token);
+		authContext?.setUserProfile(user);
+
+		setIsLoggingIn(false);
+
+		navigate(routes().home.chat.index);
+	}
+
 	return (
-		<Link class="btn" href={routes().home.chat.index}>
-			<HatGlasses /> Guest
-		</Link>
+		<BaseButton disabled={isLoggingIn()} onClick={handleGuestLogin}>
+			{isLoggingIn() ? (
+				<span class="loading loading-spinner"></span>
+			) : (
+				<>
+					<HatGlasses /> Guest
+				</>
+			)}
+		</BaseButton>
 	);
 }
