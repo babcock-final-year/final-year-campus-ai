@@ -20,6 +20,7 @@ import {
 	type UserRegisterRequestInput,
 	UserRegisterRequestSchema,
 } from "~/models/auth.schemas";
+import { type UserBaseOutput, UserBaseSchema } from "~/models/users.schemas";
 import { getClientEnv } from "~/utils/env";
 import { coerceToError } from "~/utils/error";
 import type { ServerResultResponse } from "./_shared";
@@ -228,20 +229,23 @@ const AuthRpc = {
 	 * @returns The user object.
 	 */
 	me: {
-		get: query(async (): Promise<ServerResultResponse<{ user: unknown }>> => {
-			try {
-				const res = await fetch(`${BASE_PATH}/me`, {
-					credentials: "include",
-					method: "GET",
-				});
-				return {
-					res: await res.json(),
-					success: true,
-				};
-			} catch (e) {
-				return { err: coerceToError(e), success: false };
-			}
-		}, "AuthRpc.me.get"),
+		get: query(
+			async (): Promise<ServerResultResponse<{ user: UserBaseOutput }>> => {
+				try {
+					const res = await fetch(`${BASE_PATH}/me`, {
+						credentials: "include",
+						method: "GET",
+					});
+					return {
+						res: { user: v.parse(UserBaseSchema, (await res.json())["user"]) },
+						success: true,
+					};
+				} catch (e) {
+					return { err: coerceToError(e), success: false };
+				}
+			},
+			"AuthRpc.me.get",
+		),
 	},
 
 	/**
