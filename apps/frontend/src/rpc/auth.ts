@@ -28,7 +28,8 @@ import type { ServerResultResponse } from "./_shared";
  * AuthRpc provides type-safe, ergonomic methods for all authentication-related backend routes.
  * Each method is wrapped in SolidStart query for caching/deduplication.
  */
-const BASE_PATH = `${getClientEnv().VITE_BACKEND_BASE_URL}/auth` as const;
+const BASE_PATH =
+	`${getClientEnv().VITE_BACKEND_BASE_URL}/api/v1/auth` as const;
 
 const AuthRpc = {
 	/**

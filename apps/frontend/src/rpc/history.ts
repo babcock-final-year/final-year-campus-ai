@@ -12,6 +12,9 @@ import type { ServerResultResponse } from "./_shared";
  * HistoryRpc provides type-safe, ergonomic methods for all history-related backend routes.
  * Each method is wrapped in SolidStart query for caching/deduplication.
  */
+const BASE_PATH =
+	`${getClientEnv().VITE_BACKEND_BASE_URL}/api/v1/history` as const;
+
 const HistoryRpc = {
 	/**
 	 * List all chats for the current user.
@@ -21,13 +24,10 @@ const HistoryRpc = {
 		get: query(
 			async (): Promise<ServerResultResponse<ChatsListResponseOutput>> => {
 				try {
-					const res = await fetch(
-						`${getClientEnv().VITE_BACKEND_BASE_URL}/history/chats`,
-						{
-							credentials: "include",
-							method: "GET",
-						},
-					);
+					const res = await fetch(`${BASE_PATH}/chats`, {
+						credentials: "include",
+						method: "GET",
+					});
 					return {
 						res: v.parse(ChatsListResponseSchema, await res.json()),
 						success: true,

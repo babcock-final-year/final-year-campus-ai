@@ -18,6 +18,9 @@ import type { ServerResultResponse } from "./_shared";
  * UsersRpc provides type-safe, ergonomic methods for all user-related backend routes.
  * Each method abstracts fetch, validates with valibot, and returns a ServerResultResponse.
  */
+const BASE_PATH =
+	`${getClientEnv().VITE_BACKEND_BASE_URL}/api/v1/users` as const;
+
 const UsersRpc = {
 	/**
 	 * Upload a new avatar for the user.
@@ -35,7 +38,7 @@ const UsersRpc = {
 					const formData = new FormData();
 					formData.append("avatar", file);
 					const res = await fetch(
-						`${getClientEnv().VITE_BACKEND_BASE_URL}/users/${encodeURIComponent(String(userId))}/avatar`,
+						`${BASE_PATH}/${encodeURIComponent(String(userId))}/avatar`,
 						{
 							body: formData,
 							credentials: "include",
@@ -65,7 +68,7 @@ const UsersRpc = {
 		): Promise<ServerResultResponse<UserProfileResponseOutput>> => {
 			try {
 				const res = await fetch(
-					`${getClientEnv().VITE_BACKEND_BASE_URL}/users/${encodeURIComponent(String(userId))}`,
+					`${BASE_PATH}/${encodeURIComponent(String(userId))}`,
 					{
 						credentials: "include",
 						method: "GET",
@@ -95,7 +98,7 @@ const UsersRpc = {
 		): Promise<ServerResultResponse<UserUpdateResponseOutput>> => {
 			try {
 				const res = await fetch(
-					`${getClientEnv().VITE_BACKEND_BASE_URL}/users/${encodeURIComponent(String(userId))}`,
+					`${BASE_PATH}/${encodeURIComponent(String(userId))}`,
 					{
 						body: JSON.stringify(
 							v.parse(UserUpdateRequestSchema, updateRequest),

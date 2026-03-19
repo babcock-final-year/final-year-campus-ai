@@ -20,6 +20,9 @@ import type { ServerResultResponse } from "./_shared";
  * ChatRpc provides type-safe, ergonomic methods for all chat-related backend routes.
  * Each method is wrapped in SolidStart query for caching/deduplication.
  */
+const BASE_PATH =
+	`${getClientEnv().VITE_BACKEND_BASE_URL}/api/v1/chat` as const;
+
 const ChatRpc = {
 	/**
 	 * Get the chat history for a specific chat.
@@ -32,7 +35,7 @@ const ChatRpc = {
 		): Promise<ServerResultResponse<ChatHistoryResponseOutput>> => {
 			try {
 				const res = await fetch(
-					`${getClientEnv().VITE_BACKEND_BASE_URL}/chat/${encodeURIComponent(String(chatId))}`,
+					`${BASE_PATH}/${encodeURIComponent(String(chatId))}`,
 					{
 						credentials: "include",
 						method: "GET",
@@ -63,7 +66,7 @@ const ChatRpc = {
 			): Promise<ServerResultResponse<ChatMessageResponseOutput>> => {
 				try {
 					const res = await fetch(
-						`${getClientEnv().VITE_BACKEND_BASE_URL}/chat/${encodeURIComponent(String(chatId))}/message`,
+						`${BASE_PATH}/${encodeURIComponent(String(chatId))}/message`,
 						{
 							body: JSON.stringify(
 								v.parse(ChatMessageRequestSchema, messageRequest),
@@ -95,17 +98,12 @@ const ChatRpc = {
 			createRequest: ChatCreateRequestInput,
 		): Promise<ServerResultResponse<ChatCreateResponseOutput>> => {
 			try {
-				const res = await fetch(
-					`${getClientEnv().VITE_BACKEND_BASE_URL}/chat`,
-					{
-						body: JSON.stringify(
-							v.parse(ChatCreateRequestSchema, createRequest),
-						),
-						credentials: "include",
-						headers: { "Content-Type": "application/json" },
-						method: "POST",
-					},
-				);
+				const res = await fetch(`${BASE_PATH}`, {
+					body: JSON.stringify(v.parse(ChatCreateRequestSchema, createRequest)),
+					credentials: "include",
+					headers: { "Content-Type": "application/json" },
+					method: "POST",
+				});
 				return {
 					res: v.parse(ChatCreateResponseSchema, await res.json()),
 					success: true,

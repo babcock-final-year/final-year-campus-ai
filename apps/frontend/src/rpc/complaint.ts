@@ -16,6 +16,9 @@ import type { ServerResultResponse } from "./_shared";
  * ComplaintRpc provides type-safe, ergonomic methods for all complaint-related backend routes.
  * Each method is wrapped in SolidStart query for caching/deduplication.
  */
+const BASE_PATH =
+	`${getClientEnv().VITE_BACKEND_BASE_URL}/api/v1/complaints` as const;
+
 const ComplaintRpc = {
 	/**
 	 * Return a single complaint if owned by the requester.
@@ -29,7 +32,7 @@ const ComplaintRpc = {
 			): Promise<ServerResultResponse<ComplaintResponseOutput>> => {
 				try {
 					const res = await fetch(
-						`${getClientEnv().VITE_BACKEND_BASE_URL}/complaints/${encodeURIComponent(String(complaintId))}`,
+						`${BASE_PATH}/${encodeURIComponent(String(complaintId))}`,
 						{
 							credentials: "include",
 							method: "GET",
@@ -54,13 +57,10 @@ const ComplaintRpc = {
 	get: query(
 		async (): Promise<ServerResultResponse<ComplaintListResponseOutput>> => {
 			try {
-				const res = await fetch(
-					`${getClientEnv().VITE_BACKEND_BASE_URL}/complaints`,
-					{
-						credentials: "include",
-						method: "GET",
-					},
-				);
+				const res = await fetch(BASE_PATH, {
+					credentials: "include",
+					method: "GET",
+				});
 				return {
 					res: v.parse(ComplaintListResponseSchema, await res.json()),
 					success: true,
@@ -82,17 +82,14 @@ const ComplaintRpc = {
 			createRequest: ComplaintCreateRequestInput,
 		): Promise<ServerResultResponse<ComplaintResponseOutput>> => {
 			try {
-				const res = await fetch(
-					`${getClientEnv().VITE_BACKEND_BASE_URL}/complaints`,
-					{
-						body: JSON.stringify(
-							v.parse(ComplaintCreateRequestSchema, createRequest),
-						),
-						credentials: "include",
-						headers: { "Content-Type": "application/json" },
-						method: "POST",
-					},
-				);
+				const res = await fetch(BASE_PATH, {
+					body: JSON.stringify(
+						v.parse(ComplaintCreateRequestSchema, createRequest),
+					),
+					credentials: "include",
+					headers: { "Content-Type": "application/json" },
+					method: "POST",
+				});
 				return {
 					res: v.parse(ComplaintResponseSchema, await res.json()),
 					success: true,
