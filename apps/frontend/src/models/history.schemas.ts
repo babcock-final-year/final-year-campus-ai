@@ -8,6 +8,8 @@ export const ChatSummarySchema = v.object({
 	id: v.number(),
 	title: v.string(),
 });
+export type ChatSummaryInput = v.InferInput<typeof ChatSummarySchema>;
+export type ChatSummaryOutput = v.InferOutput<typeof ChatSummarySchema>;
 
 /**
  * Schema for the response of GET /history/chats
@@ -16,6 +18,12 @@ export const ChatSummarySchema = v.object({
 export const ChatsListResponseSchema = v.object({
 	chats: v.array(ChatSummarySchema),
 });
+export type ChatsListResponseInput = v.InferInput<
+	typeof ChatsListResponseSchema
+>;
+export type ChatsListResponseOutput = v.InferOutput<
+	typeof ChatsListResponseSchema
+>;
 
 /**
  * Optionally, if the backend returns full chat history objects in the list,
@@ -25,3 +33,5 @@ export const ChatsListResponseSchema = v.object({
 // export const ChatsListResponseSchema = v.object({
 //   chats: v.array(ChatHistoryResponseSchema),
 // })
+// export type ChatsListResponseInput = v.InferInput<typeof ChatsListResponseSchema>;
+// export type ChatsListResponseOutput = v.InferOutput<typeof ChatsListResponseSchema>;

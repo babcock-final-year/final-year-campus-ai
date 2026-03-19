@@ -1,10 +1,15 @@
 import { query } from "@solidjs/router";
 import * as v from "valibot";
 import {
-	type ChatCreateRequestSchema,
+	type ChatCreateRequestInput,
+	ChatCreateRequestSchema,
+	type ChatCreateResponseOutput,
 	ChatCreateResponseSchema,
+	type ChatHistoryResponseOutput,
 	ChatHistoryResponseSchema,
-	type ChatMessageRequestSchema,
+	type ChatMessageRequestInput,
+	ChatMessageRequestSchema,
+	type ChatMessageResponseOutput,
 	ChatMessageResponseSchema,
 } from "~/models/chat.schemas";
 import { getClientEnv } from "~/utils/env";
@@ -24,9 +29,7 @@ const ChatRpc = {
 	get: query(
 		async (
 			chatId: number | string,
-		): Promise<
-			ServerResultResponse<v.InferOutput<typeof ChatHistoryResponseSchema>>
-		> => {
+		): Promise<ServerResultResponse<ChatHistoryResponseOutput>> => {
 			try {
 				const res = await fetch(
 					`${getClientEnv().VITE_BACKEND_BASE_URL}/chat/${encodeURIComponent(String(chatId))}`,
@@ -56,15 +59,15 @@ const ChatRpc = {
 		post: query(
 			async (
 				chatId: number | string,
-				messageRequest: v.InferInput<typeof ChatMessageRequestSchema>,
-			): Promise<
-				ServerResultResponse<v.InferOutput<typeof ChatMessageResponseSchema>>
-			> => {
+				messageRequest: ChatMessageRequestInput,
+			): Promise<ServerResultResponse<ChatMessageResponseOutput>> => {
 				try {
 					const res = await fetch(
 						`${getClientEnv().VITE_BACKEND_BASE_URL}/chat/${encodeURIComponent(String(chatId))}/message`,
 						{
-							body: JSON.stringify(messageRequest),
+							body: JSON.stringify(
+								v.parse(ChatMessageRequestSchema, messageRequest),
+							),
 							credentials: "include",
 							headers: { "Content-Type": "application/json" },
 							method: "POST",
@@ -89,15 +92,15 @@ const ChatRpc = {
 	 */
 	post: query(
 		async (
-			createRequest: v.InferInput<typeof ChatCreateRequestSchema>,
-		): Promise<
-			ServerResultResponse<v.InferOutput<typeof ChatCreateResponseSchema>>
-		> => {
+			createRequest: ChatCreateRequestInput,
+		): Promise<ServerResultResponse<ChatCreateResponseOutput>> => {
 			try {
 				const res = await fetch(
 					`${getClientEnv().VITE_BACKEND_BASE_URL}/chat`,
 					{
-						body: JSON.stringify(createRequest),
+						body: JSON.stringify(
+							v.parse(ChatCreateRequestSchema, createRequest),
+						),
 						credentials: "include",
 						headers: { "Content-Type": "application/json" },
 						method: "POST",

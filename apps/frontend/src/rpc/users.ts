@@ -1,10 +1,13 @@
 import { query } from "@solidjs/router";
 import * as v from "valibot";
 import {
+	type AvatarUploadResponseOutput,
 	AvatarUploadResponseSchema,
-	UserBaseSchema,
+	type UserProfileResponseOutput,
 	UserProfileResponseSchema,
-	type UserUpdateRequestSchema,
+	type UserUpdateRequestInput,
+	UserUpdateRequestSchema,
+	type UserUpdateResponseOutput,
 	UserUpdateResponseSchema,
 } from "~/models/users.schemas";
 import { getClientEnv } from "~/utils/env";
@@ -27,9 +30,7 @@ const UsersRpc = {
 			async (
 				userId: number | string,
 				file: File | Blob,
-			): Promise<
-				ServerResultResponse<v.InferOutput<typeof AvatarUploadResponseSchema>>
-			> => {
+			): Promise<ServerResultResponse<AvatarUploadResponseOutput>> => {
 				try {
 					const formData = new FormData();
 					formData.append("avatar", file);
@@ -61,9 +62,7 @@ const UsersRpc = {
 	get: query(
 		async (
 			userId: number | string,
-		): Promise<
-			ServerResultResponse<v.InferOutput<typeof UserProfileResponseSchema>>
-		> => {
+		): Promise<ServerResultResponse<UserProfileResponseOutput>> => {
 			try {
 				const res = await fetch(
 					`${getClientEnv().VITE_BACKEND_BASE_URL}/users/${encodeURIComponent(String(userId))}`,
@@ -92,15 +91,15 @@ const UsersRpc = {
 	put: query(
 		async (
 			userId: number | string,
-			updateRequest: v.InferInput<typeof UserUpdateRequestSchema>,
-		): Promise<
-			ServerResultResponse<v.InferOutput<typeof UserUpdateResponseSchema>>
-		> => {
+			updateRequest: UserUpdateRequestInput,
+		): Promise<ServerResultResponse<UserUpdateResponseOutput>> => {
 			try {
 				const res = await fetch(
 					`${getClientEnv().VITE_BACKEND_BASE_URL}/users/${encodeURIComponent(String(userId))}`,
 					{
-						body: JSON.stringify(updateRequest),
+						body: JSON.stringify(
+							v.parse(UserUpdateRequestSchema, updateRequest),
+						),
 						credentials: "include",
 						headers: { "Content-Type": "application/json" },
 						method: "PUT",

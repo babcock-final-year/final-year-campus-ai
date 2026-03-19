@@ -1,6 +1,9 @@
 import { query } from "@solidjs/router";
 import * as v from "valibot";
-import { ChatsListResponseSchema } from "~/models/history.schemas";
+import {
+	type ChatsListResponseOutput,
+	ChatsListResponseSchema,
+} from "~/models/history.schemas";
 import { getClientEnv } from "~/utils/env";
 import { coerceToError } from "~/utils/error";
 import type { ServerResultResponse } from "./_shared";
@@ -16,9 +19,7 @@ const HistoryRpc = {
 	 */
 	chats: {
 		get: query(
-			async (): Promise<
-				ServerResultResponse<v.InferOutput<typeof ChatsListResponseSchema>>
-			> => {
+			async (): Promise<ServerResultResponse<ChatsListResponseOutput>> => {
 				try {
 					const res = await fetch(
 						`${getClientEnv().VITE_BACKEND_BASE_URL}/history/chats`,

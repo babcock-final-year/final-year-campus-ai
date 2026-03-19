@@ -1,15 +1,24 @@
 import { query } from "@solidjs/router";
 import * as v from "valibot";
 import {
+	type AccessTokenResponseOutput,
 	AccessTokenResponseSchema,
+	type AuthResponseOutput,
 	AuthResponseSchema,
-	type EmailChangeRequestSchema,
-	type GoogleAuthRequestSchema,
+	type EmailChangeRequestInput,
+	EmailChangeRequestSchema,
+	type GoogleAuthRequestInput,
+	GoogleAuthRequestSchema,
+	type MessageResponseOutput,
 	MessageResponseSchema,
-	type PasswordResetConfirmRequestSchema,
-	type PasswordResetRequestSchema,
-	type UserLoginRequestSchema,
-	type UserRegisterRequestSchema,
+	type PasswordResetConfirmRequestInput,
+	PasswordResetConfirmRequestSchema,
+	type PasswordResetRequestInput,
+	PasswordResetRequestSchema,
+	type UserLoginRequestInput,
+	UserLoginRequestSchema,
+	type UserRegisterRequestInput,
+	UserRegisterRequestSchema,
 } from "~/models/auth.schemas";
 import { getClientEnv } from "~/utils/env";
 import { coerceToError } from "~/utils/error";
@@ -30,13 +39,13 @@ const AuthRpc = {
 	changeEmail: {
 		post: query(
 			async (
-				changeRequest: v.InferInput<typeof EmailChangeRequestSchema>,
-			): Promise<
-				ServerResultResponse<v.InferOutput<typeof MessageResponseSchema>>
-			> => {
+				changeRequest: EmailChangeRequestInput,
+			): Promise<ServerResultResponse<MessageResponseOutput>> => {
 				try {
 					const res = await fetch(`${BASE_PATH}/change-email`, {
-						body: JSON.stringify(changeRequest),
+						body: JSON.stringify(
+							v.parse(EmailChangeRequestSchema, changeRequest),
+						),
 						credentials: "include",
 						headers: { "Content-Type": "application/json" },
 						method: "POST",
@@ -62,9 +71,7 @@ const AuthRpc = {
 		get: query(
 			async (
 				token: string,
-			): Promise<
-				ServerResultResponse<v.InferOutput<typeof MessageResponseSchema>>
-			> => {
+			): Promise<ServerResultResponse<MessageResponseOutput>> => {
 				try {
 					const res = await fetch(
 						`${BASE_PATH}/change-email-confirm/${encodeURIComponent(token)}`,
@@ -93,9 +100,7 @@ const AuthRpc = {
 		get: query(
 			async (
 				token: string,
-			): Promise<
-				ServerResultResponse<v.InferOutput<typeof MessageResponseSchema>>
-			> => {
+			): Promise<ServerResultResponse<MessageResponseOutput>> => {
 				try {
 					const res = await fetch(
 						`${BASE_PATH}/confirm/${encodeURIComponent(token)}`,
@@ -123,13 +128,13 @@ const AuthRpc = {
 	google: {
 		post: query(
 			async (
-				googleRequest: v.InferInput<typeof GoogleAuthRequestSchema>,
-			): Promise<
-				ServerResultResponse<v.InferOutput<typeof AuthResponseSchema>>
-			> => {
+				googleRequest: GoogleAuthRequestInput,
+			): Promise<ServerResultResponse<AuthResponseOutput>> => {
 				try {
 					const res = await fetch(`${BASE_PATH}/google`, {
-						body: JSON.stringify(googleRequest),
+						body: JSON.stringify(
+							v.parse(GoogleAuthRequestSchema, googleRequest),
+						),
 						headers: { "Content-Type": "application/json" },
 						method: "POST",
 					});
@@ -150,24 +155,19 @@ const AuthRpc = {
 	 * @returns Auth tokens and guest user info.
 	 */
 	guest: {
-		post: query(
-			async (): Promise<
-				ServerResultResponse<v.InferOutput<typeof AuthResponseSchema>>
-			> => {
-				try {
-					const res = await fetch(`${BASE_PATH}/guest`, {
-						method: "POST",
-					});
-					return {
-						res: v.parse(AuthResponseSchema, await res.json()),
-						success: true,
-					};
-				} catch (e) {
-					return { err: coerceToError(e), success: false };
-				}
-			},
-			"AuthRpc.guest.post",
-		),
+		post: query(async (): Promise<ServerResultResponse<AuthResponseOutput>> => {
+			try {
+				const res = await fetch(`${BASE_PATH}/guest`, {
+					method: "POST",
+				});
+				return {
+					res: v.parse(AuthResponseSchema, await res.json()),
+					success: true,
+				};
+			} catch (e) {
+				return { err: coerceToError(e), success: false };
+			}
+		}, "AuthRpc.guest.post"),
 	},
 
 	/**
@@ -178,13 +178,11 @@ const AuthRpc = {
 	login: {
 		post: query(
 			async (
-				loginRequest: v.InferInput<typeof UserLoginRequestSchema>,
-			): Promise<
-				ServerResultResponse<v.InferOutput<typeof AuthResponseSchema>>
-			> => {
+				loginRequest: UserLoginRequestInput,
+			): Promise<ServerResultResponse<AuthResponseOutput>> => {
 				try {
 					const res = await fetch(`${BASE_PATH}/login`, {
-						body: JSON.stringify(loginRequest),
+						body: JSON.stringify(v.parse(UserLoginRequestSchema, loginRequest)),
 						headers: { "Content-Type": "application/json" },
 						method: "POST",
 					});
@@ -206,9 +204,7 @@ const AuthRpc = {
 	 */
 	logout: {
 		post: query(
-			async (): Promise<
-				ServerResultResponse<v.InferOutput<typeof MessageResponseSchema>>
-			> => {
+			async (): Promise<ServerResultResponse<MessageResponseOutput>> => {
 				try {
 					const res = await fetch(`${BASE_PATH}/logout`, {
 						credentials: "include",
@@ -253,9 +249,7 @@ const AuthRpc = {
 	 */
 	refresh: {
 		post: query(
-			async (): Promise<
-				ServerResultResponse<v.InferOutput<typeof AccessTokenResponseSchema>>
-			> => {
+			async (): Promise<ServerResultResponse<AccessTokenResponseOutput>> => {
 				try {
 					const res = await fetch(`${BASE_PATH}/refresh`, {
 						credentials: "include",
@@ -281,13 +275,13 @@ const AuthRpc = {
 	register: {
 		post: query(
 			async (
-				registerRequest: v.InferInput<typeof UserRegisterRequestSchema>,
-			): Promise<
-				ServerResultResponse<v.InferOutput<typeof AuthResponseSchema>>
-			> => {
+				registerRequest: UserRegisterRequestInput,
+			): Promise<ServerResultResponse<AuthResponseOutput>> => {
 				try {
 					const res = await fetch(`${BASE_PATH}/register`, {
-						body: JSON.stringify(registerRequest),
+						body: JSON.stringify(
+							v.parse(UserRegisterRequestSchema, registerRequest),
+						),
 						headers: { "Content-Type": "application/json" },
 						method: "POST",
 					});
@@ -311,13 +305,11 @@ const AuthRpc = {
 	resetPassword: {
 		post: query(
 			async (
-				request: v.InferInput<typeof PasswordResetRequestSchema>,
-			): Promise<
-				ServerResultResponse<v.InferOutput<typeof MessageResponseSchema>>
-			> => {
+				request: PasswordResetRequestInput,
+			): Promise<ServerResultResponse<MessageResponseOutput>> => {
 				try {
 					const res = await fetch(`${BASE_PATH}/reset-password`, {
-						body: JSON.stringify(request),
+						body: JSON.stringify(v.parse(PasswordResetRequestSchema, request)),
 						headers: { "Content-Type": "application/json" },
 						method: "POST",
 					});
@@ -343,15 +335,15 @@ const AuthRpc = {
 		post: query(
 			async (
 				token: string,
-				request: v.InferInput<typeof PasswordResetConfirmRequestSchema>,
-			): Promise<
-				ServerResultResponse<v.InferOutput<typeof MessageResponseSchema>>
-			> => {
+				request: PasswordResetConfirmRequestInput,
+			): Promise<ServerResultResponse<MessageResponseOutput>> => {
 				try {
 					const res = await fetch(
 						`${BASE_PATH}/reset-password-confirm/${encodeURIComponent(token)}`,
 						{
-							body: JSON.stringify(request),
+							body: JSON.stringify(
+								v.parse(PasswordResetConfirmRequestSchema, request),
+							),
 							headers: { "Content-Type": "application/json" },
 							method: "POST",
 						},

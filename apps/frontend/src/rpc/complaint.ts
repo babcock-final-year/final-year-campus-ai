@@ -1,8 +1,11 @@
 import { query } from "@solidjs/router";
 import * as v from "valibot";
 import {
-	type ComplaintCreateRequestSchema,
+	type ComplaintCreateRequestInput,
+	ComplaintCreateRequestSchema,
+	type ComplaintListResponseOutput,
 	ComplaintListResponseSchema,
+	type ComplaintResponseOutput,
 	ComplaintResponseSchema,
 } from "~/models/complaint.schemas";
 import { getClientEnv } from "~/utils/env";
@@ -23,9 +26,7 @@ const ComplaintRpc = {
 		get: query(
 			async (
 				complaintId: number | string,
-			): Promise<
-				ServerResultResponse<v.InferOutput<typeof ComplaintResponseSchema>>
-			> => {
+			): Promise<ServerResultResponse<ComplaintResponseOutput>> => {
 				try {
 					const res = await fetch(
 						`${getClientEnv().VITE_BACKEND_BASE_URL}/complaints/${encodeURIComponent(String(complaintId))}`,
@@ -51,9 +52,7 @@ const ComplaintRpc = {
 	 * @returns An array of complaints for the authenticated user.
 	 */
 	get: query(
-		async (): Promise<
-			ServerResultResponse<v.InferOutput<typeof ComplaintListResponseSchema>>
-		> => {
+		async (): Promise<ServerResultResponse<ComplaintListResponseOutput>> => {
 			try {
 				const res = await fetch(
 					`${getClientEnv().VITE_BACKEND_BASE_URL}/complaints`,
@@ -80,15 +79,15 @@ const ComplaintRpc = {
 	 */
 	post: query(
 		async (
-			createRequest: v.InferInput<typeof ComplaintCreateRequestSchema>,
-		): Promise<
-			ServerResultResponse<v.InferOutput<typeof ComplaintResponseSchema>>
-		> => {
+			createRequest: ComplaintCreateRequestInput,
+		): Promise<ServerResultResponse<ComplaintResponseOutput>> => {
 			try {
 				const res = await fetch(
 					`${getClientEnv().VITE_BACKEND_BASE_URL}/complaints`,
 					{
-						body: JSON.stringify(createRequest),
+						body: JSON.stringify(
+							v.parse(ComplaintCreateRequestSchema, createRequest),
+						),
 						credentials: "include",
 						headers: { "Content-Type": "application/json" },
 						method: "POST",
