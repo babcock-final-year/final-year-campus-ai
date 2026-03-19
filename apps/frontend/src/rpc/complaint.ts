@@ -1,11 +1,11 @@
 import { query } from "@solidjs/router";
 import * as v from "valibot";
-import { SERVER_ENV } from "~/constants/env";
 import {
 	type ComplaintCreateRequestSchema,
 	ComplaintListResponseSchema,
 	ComplaintResponseSchema,
 } from "~/models/complaint.schemas";
+import { getClientEnv } from "~/utils/env";
 import { coerceToError } from "~/utils/error";
 import type { ServerResultResponse } from "./_shared";
 
@@ -28,7 +28,7 @@ const ComplaintRpc = {
 			> => {
 				try {
 					const res = await fetch(
-						`${SERVER_ENV.BACKEND_BASE_URL}/complaints/${encodeURIComponent(String(complaintId))}`,
+						`${getClientEnv().VITE_BACKEND_BASE_URL}/complaints/${encodeURIComponent(String(complaintId))}`,
 						{
 							credentials: "include",
 							method: "GET",
@@ -55,10 +55,13 @@ const ComplaintRpc = {
 			ServerResultResponse<v.InferOutput<typeof ComplaintListResponseSchema>>
 		> => {
 			try {
-				const res = await fetch(`${SERVER_ENV.BACKEND_BASE_URL}/complaints`, {
-					credentials: "include",
-					method: "GET",
-				});
+				const res = await fetch(
+					`${getClientEnv().VITE_BACKEND_BASE_URL}/complaints`,
+					{
+						credentials: "include",
+						method: "GET",
+					},
+				);
 				return {
 					res: v.parse(ComplaintListResponseSchema, await res.json()),
 					success: true,
@@ -82,12 +85,15 @@ const ComplaintRpc = {
 			ServerResultResponse<v.InferOutput<typeof ComplaintResponseSchema>>
 		> => {
 			try {
-				const res = await fetch(`${SERVER_ENV.BACKEND_BASE_URL}/complaints`, {
-					body: JSON.stringify(createRequest),
-					credentials: "include",
-					headers: { "Content-Type": "application/json" },
-					method: "POST",
-				});
+				const res = await fetch(
+					`${getClientEnv().VITE_BACKEND_BASE_URL}/complaints`,
+					{
+						body: JSON.stringify(createRequest),
+						credentials: "include",
+						headers: { "Content-Type": "application/json" },
+						method: "POST",
+					},
+				);
 				return {
 					res: v.parse(ComplaintResponseSchema, await res.json()),
 					success: true,

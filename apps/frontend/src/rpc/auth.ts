@@ -1,6 +1,5 @@
 import { query } from "@solidjs/router";
 import * as v from "valibot";
-import { SERVER_ENV } from "~/constants/env";
 import {
 	AccessTokenResponseSchema,
 	AuthResponseSchema,
@@ -12,6 +11,7 @@ import {
 	type UserLoginRequestSchema,
 	type UserRegisterRequestSchema,
 } from "~/models/auth.schemas";
+import { getClientEnv } from "~/utils/env";
 import { coerceToError } from "~/utils/error";
 import type { ServerResultResponse } from "./_shared";
 
@@ -19,7 +19,7 @@ import type { ServerResultResponse } from "./_shared";
  * AuthRpc provides type-safe, ergonomic methods for all authentication-related backend routes.
  * Each method is wrapped in SolidStart query for caching/deduplication.
  */
-const BASE_PATH = `${SERVER_ENV.BACKEND_BASE_URL}/auth` as const;
+const BASE_PATH = `${getClientEnv().VITE_BACKEND_BASE_URL}/auth` as const;
 
 const AuthRpc = {
 	/**

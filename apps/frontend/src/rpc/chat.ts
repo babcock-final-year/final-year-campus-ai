@@ -1,6 +1,5 @@
 import { query } from "@solidjs/router";
 import * as v from "valibot";
-import { SERVER_ENV } from "~/constants/env";
 import {
 	type ChatCreateRequestSchema,
 	ChatCreateResponseSchema,
@@ -8,6 +7,7 @@ import {
 	type ChatMessageRequestSchema,
 	ChatMessageResponseSchema,
 } from "~/models/chat.schemas";
+import { getClientEnv } from "~/utils/env";
 import { coerceToError } from "~/utils/error";
 import type { ServerResultResponse } from "./_shared";
 
@@ -29,7 +29,7 @@ const ChatRpc = {
 		> => {
 			try {
 				const res = await fetch(
-					`${SERVER_ENV.BACKEND_BASE_URL}/chat/${encodeURIComponent(String(chatId))}`,
+					`${getClientEnv().VITE_BACKEND_BASE_URL}/chat/${encodeURIComponent(String(chatId))}`,
 					{
 						credentials: "include",
 						method: "GET",
@@ -62,7 +62,7 @@ const ChatRpc = {
 			> => {
 				try {
 					const res = await fetch(
-						`${SERVER_ENV.BACKEND_BASE_URL}/chat/${encodeURIComponent(String(chatId))}/message`,
+						`${getClientEnv().VITE_BACKEND_BASE_URL}/chat/${encodeURIComponent(String(chatId))}/message`,
 						{
 							body: JSON.stringify(messageRequest),
 							credentials: "include",
@@ -94,12 +94,15 @@ const ChatRpc = {
 			ServerResultResponse<v.InferOutput<typeof ChatCreateResponseSchema>>
 		> => {
 			try {
-				const res = await fetch(`${SERVER_ENV.BACKEND_BASE_URL}/chat`, {
-					body: JSON.stringify(createRequest),
-					credentials: "include",
-					headers: { "Content-Type": "application/json" },
-					method: "POST",
-				});
+				const res = await fetch(
+					`${getClientEnv().VITE_BACKEND_BASE_URL}/chat`,
+					{
+						body: JSON.stringify(createRequest),
+						credentials: "include",
+						headers: { "Content-Type": "application/json" },
+						method: "POST",
+					},
+				);
 				return {
 					res: v.parse(ChatCreateResponseSchema, await res.json()),
 					success: true,

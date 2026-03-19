@@ -1,6 +1,6 @@
 "use server";
 
-import { SERVER_ENV } from "~/constants/env";
+import { getServerEnv } from "~/utils/env";
 
 export async function uploadFile(formData: FormData): Promise<string | null> {
 	const file = formData.get("file");
@@ -12,7 +12,7 @@ export async function uploadFile(formData: FormData): Promise<string | null> {
 		formData.append("image", file);
 
 		const res = await fetch(
-			`https://api.imgbb.com/1/upload?expiration=${60 * 24 * 30}&key=${SERVER_ENV.IMGBB_API_KEY}`,
+			`https://api.imgbb.com/1/upload?expiration=${60 * 24 * 30}&key=${getServerEnv().IMGBB_API_KEY}`,
 			{
 				body: formData,
 				method: "POST",

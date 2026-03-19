@@ -1,7 +1,7 @@
 import { query } from "@solidjs/router";
 import * as v from "valibot";
-import { SERVER_ENV } from "~/constants/env";
 import { ChatsListResponseSchema } from "~/models/history.schemas";
+import { getClientEnv } from "~/utils/env";
 import { coerceToError } from "~/utils/error";
 import type { ServerResultResponse } from "./_shared";
 
@@ -21,7 +21,7 @@ const HistoryRpc = {
 			> => {
 				try {
 					const res = await fetch(
-						`${SERVER_ENV.BACKEND_BASE_URL}/history/chats`,
+						`${getClientEnv().VITE_BACKEND_BASE_URL}/history/chats`,
 						{
 							credentials: "include",
 							method: "GET",

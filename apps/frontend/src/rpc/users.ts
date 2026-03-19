@@ -1,6 +1,5 @@
 import { query } from "@solidjs/router";
 import * as v from "valibot";
-import { SERVER_ENV } from "~/constants/env";
 import {
 	AvatarUploadResponseSchema,
 	UserBaseSchema,
@@ -8,6 +7,7 @@ import {
 	type UserUpdateRequestSchema,
 	UserUpdateResponseSchema,
 } from "~/models/users.schemas";
+import { getClientEnv } from "~/utils/env";
 import { coerceToError } from "~/utils/error";
 import type { ServerResultResponse } from "./_shared";
 
@@ -34,7 +34,7 @@ const UsersRpc = {
 					const formData = new FormData();
 					formData.append("avatar", file);
 					const res = await fetch(
-						`${SERVER_ENV.BACKEND_BASE_URL}/users/${encodeURIComponent(String(userId))}/avatar`,
+						`${getClientEnv().VITE_BACKEND_BASE_URL}/users/${encodeURIComponent(String(userId))}/avatar`,
 						{
 							body: formData,
 							credentials: "include",
@@ -66,7 +66,7 @@ const UsersRpc = {
 		> => {
 			try {
 				const res = await fetch(
-					`${SERVER_ENV.BACKEND_BASE_URL}/users/${encodeURIComponent(String(userId))}`,
+					`${getClientEnv().VITE_BACKEND_BASE_URL}/users/${encodeURIComponent(String(userId))}`,
 					{
 						credentials: "include",
 						method: "GET",
@@ -98,7 +98,7 @@ const UsersRpc = {
 		> => {
 			try {
 				const res = await fetch(
-					`${SERVER_ENV.BACKEND_BASE_URL}/users/${encodeURIComponent(String(userId))}`,
+					`${getClientEnv().VITE_BACKEND_BASE_URL}/users/${encodeURIComponent(String(userId))}`,
 					{
 						body: JSON.stringify(updateRequest),
 						credentials: "include",
