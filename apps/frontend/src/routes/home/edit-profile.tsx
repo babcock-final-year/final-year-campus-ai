@@ -11,7 +11,7 @@ import FieldTextInput from "~/components/form/FieldTextInput";
 import BaseButton from "~/components/ui/button/BaseButton";
 import UploadImageButton from "~/components/ui/button/UploadImageButton";
 import UserProfileImage from "~/components/ui/image/UserProfileImage";
-import createUserProfile from "~/hooks/user/createUserProfile";
+import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { UserProfileSchema } from "~/models/user-profile";
 import { routes } from "~/RouteManifest";
 

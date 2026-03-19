@@ -1,5 +1,5 @@
 import { For } from "solid-js";
-import createUserProfile from "~/hooks/user/createUserProfile";
+import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 
 interface TitleAndValueProps {
 	title: string;
