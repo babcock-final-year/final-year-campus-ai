@@ -5,10 +5,10 @@ import { EmailSchema } from "./shared";
  * Schema for the request body of PUT /users/<user_id>
  */
 export const UserUpdateRequestSchema = v.object({
-	avatar_url: v.optional(v.string()),
-	full_name: v.optional(v.string()),
-	matric_no: v.optional(v.string()),
-	username: v.optional(v.string()),
+	avatar_url: v.nullish(v.string()),
+	full_name: v.nullish(v.string()),
+	matric_no: v.nullish(v.string()),
+	username: v.nullish(v.string()),
 });
 export type UserUpdateRequestInput = v.InferInput<
 	typeof UserUpdateRequestSchema
@@ -17,18 +17,15 @@ export type UserUpdateRequestOutput = v.InferOutput<
 	typeof UserUpdateRequestSchema
 >;
 
-/**
- * Schema for the response user object (public profile)
- */
 export const UserBaseSchema = v.object({
-	avatar_url: v.optional(v.string()),
+	avatar_url: v.nullish(v.string()),
 	email: EmailSchema,
 	full_name: v.string(),
-	id: v.number(),
-	is_confirmed: v.optional(v.boolean()),
-	is_guest: v.optional(v.boolean()),
-	matric_no: v.optional(v.string()),
-	username: v.string(),
+	id: v.string(),
+	is_confirmed: v.nullish(v.boolean()),
+	is_guest: v.nullish(v.boolean()),
+	matric_no: v.nullish(v.string(), "??/????"),
+	username: v.nullish(v.string(), "???"),
 });
 export type UserBaseInput = v.InferInput<typeof UserBaseSchema>;
 export type UserBaseOutput = v.InferOutput<typeof UserBaseSchema>;
@@ -63,7 +60,7 @@ export type UserUpdateResponseOutput = v.InferOutput<
  */
 export const AvatarUploadResponseSchema = v.object({
 	avatar_url: v.string(),
-	message: v.optional(v.string()),
+	message: v.nullish(v.string()),
 });
 export type AvatarUploadResponseInput = v.InferInput<
 	typeof AvatarUploadResponseSchema

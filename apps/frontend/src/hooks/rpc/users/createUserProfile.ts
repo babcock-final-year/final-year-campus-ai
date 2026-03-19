@@ -1,10 +1,13 @@
 import { type AccessorWithLatest, createAsync } from "@solidjs/router";
-import type { UserProfileResponseOutput } from "~/models/users.schemas";
+import type {
+	UserBaseOutput,
+	UserProfileResponseOutput,
+} from "~/models/users.schemas";
 import AuthRpc from "~/rpc/auth";
 import UsersRpc from "~/rpc/users";
 
 export default function createUserProfile(): AccessorWithLatest<
-	UserProfileResponseOutput | null | undefined
+	UserBaseOutput | null | undefined
 > {
 	const profile = createAsync(async () => {
 		const meAuth = await AuthRpc.me.get();
@@ -16,7 +19,7 @@ export default function createUserProfile(): AccessorWithLatest<
 		const res = await UsersRpc.get(meAuth.res.user?.id);
 
 		if (res.success) {
-			return res.res;
+			return res.res.user;
 		}
 		return null;
 	});

@@ -5,7 +5,7 @@ import {
 	type Setter,
 	useContext,
 } from "solid-js";
-import type { UserBaseOutput } from "~/models/users.schemas";
+import type { UserBaseOutput } from "~/models/auth.schemas";
 import AuthRpc from "~/rpc/auth";
 
 interface AuthContextData {

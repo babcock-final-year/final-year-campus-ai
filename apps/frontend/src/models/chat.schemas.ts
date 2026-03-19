@@ -5,7 +5,7 @@ import { UserBaseSchema } from "./users.schemas";
  * Schema for the request body of POST /chat
  */
 export const ChatCreateRequestSchema = v.object({
-	title: v.optional(v.string()),
+	title: v.nullish(v.string()),
 });
 export type ChatCreateRequestInput = v.InferInput<
 	typeof ChatCreateRequestSchema

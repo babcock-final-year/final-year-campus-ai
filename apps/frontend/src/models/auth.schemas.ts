@@ -1,5 +1,6 @@
 import * as v from "valibot";
 import { EmailSchema } from "./shared";
+import { UserBaseSchema } from "./users.schemas";
 
 /**
  * Schema for the request body of /auth/register
@@ -67,22 +68,6 @@ export type PasswordResetConfirmRequestInput = v.InferInput<
 export type PasswordResetConfirmRequestOutput = v.InferOutput<
 	typeof PasswordResetConfirmRequestSchema
 >;
-
-/**
- * Schema for the response of /auth endpoints returning user and tokens
- */
-export const UserBaseSchema = v.object({
-	avatar_url: v.optional(v.string()),
-	email: EmailSchema,
-	full_name: v.string(),
-	id: v.number(),
-	is_confirmed: v.optional(v.boolean()),
-	is_guest: v.optional(v.boolean()),
-	matric_no: v.optional(v.string()),
-	username: v.string(),
-});
-export type UserBaseInput = v.InferInput<typeof UserBaseSchema>;
-export type UserBaseOutput = v.InferOutput<typeof UserBaseSchema>;
 
 export const AuthResponseSchema = v.object({
 	access_token: v.string(),
