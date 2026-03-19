@@ -6,6 +6,7 @@ describe("UserProfileSchema", () => {
 	it("parses valid input", () => {
 		const input = {
 			avatar_url: "https://example.com/avatar.png",
+			email: "iceman8911@gmail.com",
 			full_name: "John Doe",
 			matric_no: "22/0039",
 			username: "john",
@@ -18,6 +19,7 @@ describe("UserProfileSchema", () => {
 		expect(() =>
 			v.parse(UserProfileSchema, {
 				avatar_url: "https://example.com/avatar.png",
+				email: "iceman8911@gmail.com",
 				full_name: "",
 				matric_no: "22/0039",
 				username: "john",
@@ -29,6 +31,7 @@ describe("UserProfileSchema", () => {
 		expect(() =>
 			v.parse(UserProfileSchema, {
 				avatar_url: "https://example.com/avatar.png",
+				email: "iceman8911@gmail.com",
 				full_name: "John Doe",
 				matric_no: "22/0039",
 				username: "",
@@ -42,6 +45,7 @@ describe("UserProfileSchema", () => {
 			expect(() =>
 				v.parse(UserProfileSchema, {
 					avatar_url: "https://example.com/avatar.png",
+					email: "iceman8911@gmail.com",
 					full_name: "John Doe",
 					matric_no,
 					username: "john",
@@ -61,6 +65,7 @@ describe("UserProfileSchema", () => {
 			expect(() =>
 				v.parse(UserProfileSchema, {
 					avatar_url,
+					email: "iceman8911@gmail.com",
 					full_name: "John Doe",
 					matric_no: "22/0039",
 					username: "john",
@@ -72,6 +77,7 @@ describe("UserProfileSchema", () => {
 	it("safeParse returns success true for valid and false for invalid", () => {
 		const ok = v.safeParse(UserProfileSchema, {
 			avatar_url: "https://example.com/avatar.png",
+			email: "iceman8911@gmail.com",
 			full_name: "John Doe",
 			matric_no: "22/0039",
 			username: "john",
@@ -81,6 +87,7 @@ describe("UserProfileSchema", () => {
 
 		const bad = v.safeParse(UserProfileSchema, {
 			avatar_url: "https://example.com/avatar.png",
+			email: "iceman8911@gmail.com",
 			full_name: "",
 			matric_no: "22/0039",
 			username: "john",
@@ -92,6 +99,7 @@ describe("UserProfileSchema", () => {
 		expect(
 			v.is(UserProfileSchema, {
 				avatar_url: "https://example.com/avatar.png",
+				email: "iceman8911@gmail.com",
 				full_name: "John Doe",
 				matric_no: "22/0039",
 				username: "john",
@@ -101,6 +109,7 @@ describe("UserProfileSchema", () => {
 		expect(
 			v.is(UserProfileSchema, {
 				avatar_url: "not-a-url",
+				email: "iceman8911@gmail.com",
 				full_name: "John Doe",
 				matric_no: "22/0039",
 				username: "john",
