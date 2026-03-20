@@ -88,12 +88,12 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 						</BaseButton>
 					</li>
 
-					<li>
+					{/*<li>
 						<BaseButton class="btn-secondary btn-ghost justify-start gap-4">
 							<Folder />
 							New Project
 						</BaseButton>
-					</li>
+					</li>*/}
 				</ul>
 
 				<div class="flex grow flex-col overflow-auto text-accent-content/50">
