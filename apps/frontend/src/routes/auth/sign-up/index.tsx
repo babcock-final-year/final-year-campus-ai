@@ -61,7 +61,7 @@ function SignUpForm() {
 
 		setIsRegistering(false);
 
-		navigate(routes().home.chat.index);
+		navigate(routes().auth.signUp.success.index);
 	};
 
 	return (
