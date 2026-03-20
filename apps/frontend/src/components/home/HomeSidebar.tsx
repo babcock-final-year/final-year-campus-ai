@@ -12,6 +12,7 @@ import {
 } from "lucide-solid";
 import { createSignal, For, Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
+import createChatsHistory from "~/hooks/rpc/history/createChatsHistory";
 import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { routes } from "~/RouteManifest";
 import BaseButton from "../ui/button/BaseButton";
@@ -20,6 +21,7 @@ import AppLogo from "../ui/svg/AppLogo";
 
 export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 	const userProfile = createUserProfile();
+	const chats = createChatsHistory();
 
 	const [isSidebarHiddenInDesktopMode, setIsSidebarHiddenInDesktopMode] =
 		createSignal(false);
@@ -98,39 +100,14 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 					<h3 class="px-4 text-sm">Recent Chats</h3>
 
 					<ul class="menu w-full px-0">
-						<For
-							each={[
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-								"Average School Tuition Fees for 2024",
-								"What is Chapel Seminar?",
-							]}
-						>
-							{(chatSummary) => (
+						<For each={chats()?.chats}>
+							{(chat) => (
 								<li class="w-full">
 									<Link
 										class="btn btn-secondary btn-ghost group w-full justify-start gap-2 text-left font-normal"
 										href="#"
 									>
-										<span class="grow truncate">{chatSummary}</span>
+										<span class="grow truncate">{chat.title}</span>
 										<Ellipsis class="hidden min-w-6 group-hover:block" />
 									</Link>
 								</li>

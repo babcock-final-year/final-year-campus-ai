@@ -32,14 +32,14 @@ const UsersRpc = {
 	avatar: {
 		post: query(
 			async (
-				userId: number | string,
+				userId: string,
 				file: File | Blob,
 			): Promise<ServerResultResponse<AvatarUploadResponseOutput>> => {
 				try {
 					const formData = new FormData();
 					formData.append("avatar", file);
 					const res = await fetchWithAuth(
-						`${BASE_PATH}/${encodeURIComponent(String(userId))}/avatar`,
+						`${BASE_PATH}/${encodeURIComponent(userId)}/avatar`,
 						{ body: formData, method: "POST" },
 					);
 
@@ -61,11 +61,11 @@ const UsersRpc = {
 	 */
 	get: query(
 		async (
-			userId: number | string,
+			userId: string,
 		): Promise<ServerResultResponse<UserProfileResponseOutput>> => {
 			try {
 				const res = await fetchWithAuth(
-					`${BASE_PATH}/${encodeURIComponent(String(userId))}`,
+					`${BASE_PATH}/${encodeURIComponent(userId)}`,
 					{ method: "GET" },
 				);
 				return {
@@ -87,12 +87,12 @@ const UsersRpc = {
 	 */
 	put: query(
 		async (
-			userId: number | string,
+			userId: string,
 			updateRequest: UserUpdateRequestInput,
 		): Promise<ServerResultResponse<UserUpdateResponseOutput>> => {
 			try {
 				const res = await fetchWithAuth(
-					`${BASE_PATH}/${encodeURIComponent(String(userId))}`,
+					`${BASE_PATH}/${encodeURIComponent(userId)}`,
 					{
 						body: JSON.stringify(
 							v.parse(UserUpdateRequestSchema, updateRequest),

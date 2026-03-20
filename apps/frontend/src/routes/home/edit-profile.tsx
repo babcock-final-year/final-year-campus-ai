@@ -5,7 +5,8 @@ import {
 	type SubmitEventHandler,
 	setInput,
 } from "@formisch/solid";
-import { AtSign, Camera, IdCard, UserRound } from "lucide-solid";
+import { revalidate } from "@solidjs/router";
+import { Camera, IdCard, UserRound } from "lucide-solid";
 import HomeMainAreaHeader from "~/components/chat/ChatMainAreaHeader";
 import FieldTextInput from "~/components/form/FieldTextInput";
 import BaseButton from "~/components/ui/button/BaseButton";
@@ -14,6 +15,7 @@ import UserProfileImage from "~/components/ui/image/UserProfileImage";
 import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { UserUpdateRequestSchema } from "~/models/users.schemas";
 import { routes } from "~/RouteManifest";
+import UsersRpc from "~/rpc/users";
 
 export default function EditProfileInterfacePage() {
 	const userProfile = createUserProfile();
@@ -30,7 +32,15 @@ export default function EditProfileInterfacePage() {
 
 	const onSubmitEditProfileForm: SubmitEventHandler<
 		typeof UserUpdateRequestSchema
-	> = (formData, e) => {};
+	> = async (formData, _) => {
+		const user = userProfile();
+
+		const res = await UsersRpc.put(user.id, formData);
+
+		if (res.success) {
+			await revalidate(UsersRpc.get.key);
+		}
+	};
 
 	const onAvatarUpload = (url: string) => {
 		setInput(editProfileForm, { input: url, path: ["avatar_url"] });

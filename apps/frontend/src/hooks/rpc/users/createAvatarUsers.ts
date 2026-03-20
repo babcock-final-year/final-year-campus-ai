@@ -11,7 +11,7 @@ import UsersRpc from "~/rpc/users";
  * @returns AccessorWithLatest<AvatarUploadResponseOutput | null | undefined>
  */
 export default function createAvatarUsers(
-	userId: number | string,
+	userId: string,
 	file: File | Blob,
 ): AccessorWithLatest<AvatarUploadResponseOutput | null | undefined> {
 	const result = createAsync(async () => {

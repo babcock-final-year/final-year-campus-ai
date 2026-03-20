@@ -14,7 +14,7 @@ import UsersRpc from "~/rpc/users";
  * @returns AccessorWithLatest<UserUpdateResponseOutput | null | undefined>
  */
 export default function createPutUsers(
-	userId: number | string,
+	userId: string,
 	updateRequest: UserUpdateRequestInput,
 ): AccessorWithLatest<UserUpdateResponseOutput | null | undefined> {
 	const result = createAsync(async () => {

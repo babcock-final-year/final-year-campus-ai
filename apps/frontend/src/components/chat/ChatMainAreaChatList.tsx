@@ -2,35 +2,115 @@ import { Image } from "@kobalte/core/image";
 import clsx from "clsx/lite";
 import { Copy, ThumbsDown, ThumbsUp } from "lucide-solid";
 import { createMemo, createSignal, For, Show } from "solid-js";
-import createUserChatHistory from "~/hooks/chat/createUserChatHistory";
+import { reconcile } from "solid-js/store";
+import createGetChat from "~/hooks/rpc/chat/createGetChat";
+import type { ChatMessageOutput } from "~/models/chat.schemas";
+import HistoryRpc from "~/rpc/history";
 import BaseButton from "../ui/button/BaseButton";
 import UserProfileImage from "../ui/image/UserProfileImage";
 import AppLogo from "../ui/svg/AppLogo";
 
-function AssistantReplyButtons(props: { txt: string }) {
+function AssistantReplyButtons(props: {
+	txt: string;
+	chatId?: number | string;
+	msgId?: number | string;
+}) {
 	const [likeState, setLikeState] = createSignal<"like" | "dislike" | "null">(
 		"null",
 	);
 
-	const handleLike = () => {
-		switch (likeState()) {
-			case "like":
-				setLikeState("null");
-				return;
-			default:
-				setLikeState("like");
-				return;
+	const handleLike = async () => {
+		// If chatId/msgId not provided, fall back to local toggle only
+		if (!props.chatId || !props.msgId) {
+			switch (likeState()) {
+				case "like":
+					setLikeState("null");
+					return;
+				default:
+					setLikeState("like");
+					return;
+			}
+		}
+
+		try {
+			const current = likeState();
+
+			// If currently liked, unset (send like: false)
+			if (current === "like") {
+				const res = await HistoryRpc.message.like.post(
+					props.chatId,
+					props.msgId,
+					{ like: false },
+				);
+				if (res.success) {
+					setLikeState("null");
+				}
+			} else {
+				// Otherwise set like: true
+				const res = await HistoryRpc.message.like.post(
+					props.chatId,
+					props.msgId,
+					{ like: true },
+				);
+				if (res.success) {
+					setLikeState("like");
+				}
+			}
+		} catch (e) {
+			// Best-effort local fallback
+			switch (likeState()) {
+				case "like":
+					setLikeState("null");
+					return;
+				default:
+					setLikeState("like");
+					return;
+			}
 		}
 	};
 
-	const handleDislike = () => {
-		switch (likeState()) {
-			case "dislike":
-				setLikeState("null");
-				return;
-			default:
-				setLikeState("dislike");
-				return;
+	const handleDislike = async () => {
+		// If chatId/msgId not provided, fall back to local toggle only
+		if (!props.chatId || !props.msgId) {
+			switch (likeState()) {
+				case "dislike":
+					setLikeState("null");
+					return;
+				default:
+					setLikeState("dislike");
+					return;
+			}
+		}
+
+		try {
+			const current = likeState();
+
+			// Backend only stores is_liked boolean, so we map 'dislike' to sending like:false.
+			if (current === "dislike") {
+				const res = await HistoryRpc.message.like.post(
+					props.chatId,
+					props.msgId,
+					{ like: false },
+				);
+				if (res.success) setLikeState("null");
+			} else {
+				const res = await HistoryRpc.message.like.post(
+					props.chatId,
+					props.msgId,
+					{ like: false },
+				);
+				if (res.success) setLikeState("dislike");
+			}
+		} catch (e) {
+			// Best-effort local fallback
+			switch (likeState()) {
+				case "dislike":
+					setLikeState("null");
+					return;
+				default:
+					setLikeState("dislike");
+					return;
+			}
 		}
 	};
 
@@ -44,7 +124,6 @@ function AssistantReplyButtons(props: { txt: string }) {
 				<Copy />
 			</BaseButton>
 
-			{/* TODO: connect to the like / dislike api */}
 			<BaseButton aria-label="Like the assistant's reply" onClick={handleLike}>
 				<ThumbsUp
 					class={clsx(
@@ -69,12 +148,30 @@ function AssistantReplyButtons(props: { txt: string }) {
 	);
 }
 
-export default function ChatMainAreaChatList() {
-	const userChatHistory = createUserChatHistory();
+export default function ChatMainAreaChatList(props: {
+	chatId?: number | string | null;
+}) {
+	const chatAccessor = createMemo(() => {
+		if (!props.chatId) return null;
+		return createGetChat(props.chatId);
+	});
+
+	const messages = createMemo<ChatMessageOutput[]>((_prev) => {
+		const prev = _prev ?? [];
+
+		const accessor = chatAccessor();
+		if (!accessor) return prev;
+
+		const val = accessor();
+		if (!val || !val.success || !val.res) return prev;
+
+		// TODO: check if this works
+		return reconcile(val.res.messages, { merge: true })(_prev);
+	});
 
 	return (
 		<main class="my-4 overflow-auto px-4 py-4 sm:px-8">
-			<For each={userChatHistory()?.messages}>
+			<For each={messages()}>
 				{(val) => {
 					const isUser = createMemo(() => val.role === "user");
 
@@ -118,7 +215,11 @@ export default function ChatMainAreaChatList() {
 
 								{/* Extra btns for assistant chat bubbles */}
 								<Show when={!isUser()}>
-									<AssistantReplyButtons txt={val.content} />
+									<AssistantReplyButtons
+										chatId={val.chat_id}
+										msgId={val.id}
+										txt={val.content}
+									/>
 								</Show>
 							</div>
 						</div>

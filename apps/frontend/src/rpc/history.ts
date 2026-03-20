@@ -1,6 +1,10 @@
 import { query } from "@solidjs/router";
 import * as v from "valibot";
 import {
+	type ChatMessageResponseOutput,
+	ChatMessageResponseSchema,
+} from "~/models/chat.schemas";
+import {
 	type ChatsListResponseOutput,
 	ChatsListResponseSchema,
 } from "~/models/history.schemas";
@@ -38,6 +42,47 @@ const HistoryRpc = {
 			},
 			"HistoryRpc.chats.get",
 		),
+	},
+
+	/**
+	 * Like or unlike a specific message in a chat.
+	 * POST /history/chat/:chat_id/message/:msg_id/like
+	 * Body: { like: boolean }
+	 */
+	message: {
+		like: {
+			post: query(
+				async (
+					chatId: number | string,
+					msgId: number | string,
+					likeRequest: { like: boolean },
+				): Promise<ServerResultResponse<ChatMessageResponseOutput>> => {
+					try {
+						const body = JSON.stringify(
+							v.parse(v.object({ like: v.boolean() }), likeRequest),
+						);
+						const res = await fetchWithAuth(
+							`${BASE_PATH}/chat/${encodeURIComponent(String(chatId))}/message/${encodeURIComponent(
+								String(msgId),
+							)}/like`,
+							{
+								body,
+								headers: { "Content-Type": "application/json" },
+								method: "POST",
+							},
+						);
+
+						return {
+							res: v.parse(ChatMessageResponseSchema, await res.json()),
+							success: true,
+						};
+					} catch (e) {
+						return { err: coerceToError(e), success: false };
+					}
+				},
+				"HistoryRpc.message.like.post",
+			),
+		},
 	},
 } as const;
 

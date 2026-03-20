@@ -1,12 +1,16 @@
 import { Link } from "@kobalte/core/link";
+import { revalidate } from "@solidjs/router";
 import clsx from "clsx/lite";
 import { Camera, Dot } from "lucide-solid";
+import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { routes } from "~/RouteManifest";
-import BaseButton from "../ui/button/BaseButton";
+import UsersRpc from "~/rpc/users";
 import UploadImageButton from "../ui/button/UploadImageButton";
 import UserProfileImage from "../ui/image/UserProfileImage";
 
 export default function SettingsProfileSummaryCard(props: { class?: string }) {
+	const userProfile = createUserProfile();
+
 	return (
 		<div
 			class={clsx(
@@ -21,21 +25,26 @@ export default function SettingsProfileSummaryCard(props: { class?: string }) {
 						"row-span-3 aspect-square h-5/6 max-h-[25vw] place-self-center rounded-full shadow-lg outline-3 outline-base-100",
 				}}
 				cornerBtn={
-					// TODO: make api for talking to backend
-					<UploadImageButton class="btn-circle btn-sm absolute -right-1 -bottom-1 p-1.5">
+					<UploadImageButton
+						class="btn-circle btn-sm absolute -right-1 -bottom-1 p-1.5"
+						onUpload={async (url: string) => {
+							const user = userProfile();
+							if (!user?.id) return;
+							await UsersRpc.put(user.id, { avatar_url: url });
+							await revalidate(UsersRpc.get.key);
+						}}
+					>
 						<Camera />
 					</UploadImageButton>
 				}
 			/>
 
-			{/* TODO: Get user name */}
 			<h2 class="col-start-2 flex items-center truncate font-semibold text-xl md:text-2xl">
-				Phenomenan 69420
+				{userProfile().full_name}
 			</h2>
 
-			{/* TODO: Initials and matric no */}
 			<p class="col-start-2 row-start-2 flex opacity-75">
-				P_6 <Dot /> 22/1224
+				{userProfile().username} <Dot /> {userProfile().matric_no}
 			</p>
 
 			<div class="mt-1 flex size-full items-center">
