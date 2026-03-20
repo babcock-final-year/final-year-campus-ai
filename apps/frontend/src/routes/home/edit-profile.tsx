@@ -12,7 +12,7 @@ import BaseButton from "~/components/ui/button/BaseButton";
 import UploadImageButton from "~/components/ui/button/UploadImageButton";
 import UserProfileImage from "~/components/ui/image/UserProfileImage";
 import createUserProfile from "~/hooks/rpc/users/createUserProfile";
-import { UserProfileSchema } from "~/models/user-profile";
+import { UserUpdateRequestSchema } from "~/models/users.schemas";
 import { routes } from "~/RouteManifest";
 
 export default function EditProfileInterfacePage() {
@@ -21,15 +21,15 @@ export default function EditProfileInterfacePage() {
 	const editProfileForm = createForm({
 		initialInput: {
 			avatar_url: userProfile().avatar_url ?? undefined,
-			email: userProfile().email ?? undefined,
 			full_name: userProfile().full_name,
 			matric_no: userProfile().matric_no ?? undefined,
+			username: userProfile().username ?? undefined,
 		},
-		schema: UserProfileSchema,
+		schema: UserUpdateRequestSchema,
 	});
 
 	const onSubmitEditProfileForm: SubmitEventHandler<
-		typeof UserProfileSchema
+		typeof UserUpdateRequestSchema
 	> = (formData, e) => {};
 
 	const onAvatarUpload = (url: string) => {
@@ -115,17 +115,17 @@ export default function EditProfileInterfacePage() {
 						)}
 					</Field>
 
-					<Field of={editProfileForm} path={["email"]}>
+					{/*<Field of={editProfileForm} path={["avatar_url"]}>
 						{(field) => (
 							<FieldTextInput
 								{...field}
 								icon={<AtSign class="opacity-75" />}
 								inputClass="bg-base-200"
-								label="Email"
-								type="email"
+								label="Avatar Url"
+								type="text"
 							/>
 						)}
-					</Field>
+					</Field>*/}
 				</div>
 
 				<div class="ml-auto flex gap-4">

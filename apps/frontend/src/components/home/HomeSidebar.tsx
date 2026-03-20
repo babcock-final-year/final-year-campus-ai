@@ -171,11 +171,11 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 					/>
 
 					<h3 class="col-start-2 row-start-1 truncate font-semibold text-secondary">
-						{userProfile()?.full_name}
+						{userProfile().full_name}
 					</h3>
 
 					<p class="col-start-2 row-start-2 truncate text-secondary opacity-25">
-						{userProfile()?.email}
+						{userProfile().email}
 					</p>
 				</div>
 			</Show>
