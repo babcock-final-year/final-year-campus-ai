@@ -48,3 +48,4 @@ data/
 *.db
 uploads/
 chroma_db/
+public/*.png
