@@ -150,7 +150,7 @@ function SignUpForm() {
 
 			<BaseButton
 				class="btn-primary mx-auto w-full"
-				disabled={isRegistering()}
+				disabled={isRegistering() || !hasAcceptedTerms()}
 				type="submit"
 			>
 				{isRegistering() ? (
