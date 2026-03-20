@@ -1,4 +1,5 @@
 import { useAuth } from "~/context/AuthContextProvider";
+import AuthRpc from "./auth";
 
 /**
  * Performs a fetch, attaching Authorization header from `useAuth()` if available.
@@ -26,6 +27,18 @@ export default async function fetchWithAuth(
 		...init,
 		headers,
 	};
+
+	// run the request to check if the token is expired
+	const res = await fetch(input, { ...finalInit, method: "HEAD" });
+
+	if (!res.ok && res.status >= 500) {
+		// Refresh the token
+		const res = await AuthRpc.refresh.post();
+
+		if (!res.success) throw Error("Could not refresh session");
+
+		auth.setAccessToken(res.res.access_token);
+	}
 
 	return fetch(input, finalInit);
 }
