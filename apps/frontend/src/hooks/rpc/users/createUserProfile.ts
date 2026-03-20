@@ -6,23 +6,31 @@ import type {
 import AuthRpc from "~/rpc/auth";
 import UsersRpc from "~/rpc/users";
 
-export default function createUserProfile(): AccessorWithLatest<
-	UserBaseOutput | null | undefined
-> {
-	const profile = createAsync(async () => {
-		const meAuth = await AuthRpc.me.get();
+const DEFAULT_USER_BASE = {
+	email: "foobar@student.babcock.edu.ng",
+	full_name: "Foo Bar",
+	id: "foobar",
+	matric_no: "??/????",
+	username: "foo-bar",
+} as const satisfies UserBaseOutput;
 
-		if (!meAuth.success) return null;
+export default function createUserProfile(): AccessorWithLatest<UserBaseOutput> {
+	const profile = createAsync(
+		async () => {
+			const meAuth = await AuthRpc.me.get();
 
-		console.log("createUserProfile user =", meAuth.res.user);
+			if (!meAuth.success) return DEFAULT_USER_BASE;
 
-		const res = await UsersRpc.get(meAuth.res.user?.id);
+			const res = await UsersRpc.get(meAuth.res.user?.id);
 
-		if (res.success) {
-			return res.res.user;
-		}
-		return null;
-	});
+			if (res.success) {
+				return res.res.user;
+			}
+
+			return DEFAULT_USER_BASE;
+		},
+		{ initialValue: DEFAULT_USER_BASE },
+	);
 
 	return profile;
 }
