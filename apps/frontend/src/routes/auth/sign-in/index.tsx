@@ -19,9 +19,9 @@ import {
 import { createSignal } from "solid-js";
 import FieldTextInput from "~/components/form/FieldTextInput";
 import BaseButton from "~/components/ui/button/BaseButton";
+import GoogleLoginButton from "~/components/ui/button/GoogleLoginButton";
 import GuestLoginButton from "~/components/ui/button/GuestLoginButton";
 import AppLogo from "~/components/ui/svg/AppLogo";
-import GoogleLogo from "~/components/ui/svg/GoogleLogo";
 import { useAuth } from "~/context/AuthContextProvider";
 import { SignInCredentialsSchema } from "~/models/credentials";
 import { routes } from "~/RouteManifest";
@@ -145,9 +145,7 @@ function SignInForm() {
 			<div class="divider m-0 text-xs opacity-50">Or continue with</div>
 
 			<div class="*:btn-secondary flex gap-4 *:grow">
-				<BaseButton disabled={isLoggingIn()}>
-					<GoogleLogo /> Google
-				</BaseButton>
+				<GoogleLoginButton shouldDisable={isLoggingIn()} />
 
 				<GuestLoginButton shouldDisable={isLoggingIn()} />
 			</div>
