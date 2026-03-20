@@ -1,3 +1,4 @@
+import { googleLogout } from "google-oauth-gsi";
 import {
 	createContext,
 	createSignal,
@@ -5,7 +6,7 @@ import {
 	type Setter,
 	useContext,
 } from "solid-js";
-import type { UserBaseOutput } from "~/models/auth.schemas";
+import type { UserBaseOutput } from "~/models/users.schemas";
 import AuthRpc from "~/rpc/auth";
 
 interface AuthContextData {
@@ -27,6 +28,8 @@ export function AuthProvider(props: { children: JSXElement }) {
 	async function logout() {
 		setAccessToken(null);
 		setUserProfile(null);
+
+		googleLogout();
 
 		await AuthRpc.logout.post();
 	}
