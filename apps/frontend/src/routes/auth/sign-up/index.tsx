@@ -163,11 +163,11 @@ function SignUpForm() {
 			<div class="divider m-0 text-xs opacity-50">Or continue with</div>
 
 			<div class="*:btn-secondary flex w-full gap-4 *:grow">
-				<BaseButton>
+				<BaseButton disabled={isRegistering()}>
 					<GoogleLogo /> Google
 				</BaseButton>
 
-				<GuestLoginButton />
+				<GuestLoginButton shouldDisable={isRegistering()} />
 			</div>
 
 			<p class="mx-auto mt-2 text-xs">

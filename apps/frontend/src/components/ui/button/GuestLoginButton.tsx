@@ -7,7 +7,11 @@ import { routes } from "~/RouteManifest";
 import AuthRpc from "~/rpc/auth";
 import BaseButton from "./BaseButton";
 
-export default function GuestLoginButton() {
+interface GuestLoginButtonProps {
+	shouldDisable?: boolean;
+}
+
+export default function GuestLoginButton(props: GuestLoginButtonProps) {
 	const [isLoggingIn, setIsLoggingIn] = createSignal(false);
 	const authContext = useAuth();
 
@@ -35,7 +39,10 @@ export default function GuestLoginButton() {
 	}
 
 	return (
-		<BaseButton disabled={isLoggingIn()} onClick={handleGuestLogin}>
+		<BaseButton
+			disabled={props.shouldDisable || isLoggingIn()}
+			onClick={handleGuestLogin}
+		>
 			{isLoggingIn() ? (
 				<span class="loading loading-spinner"></span>
 			) : (

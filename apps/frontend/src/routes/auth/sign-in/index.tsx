@@ -145,11 +145,11 @@ function SignInForm() {
 			<div class="divider m-0 text-xs opacity-50">Or continue with</div>
 
 			<div class="*:btn-secondary flex gap-4 *:grow">
-				<BaseButton>
+				<BaseButton disabled={isLoggingIn()}>
 					<GoogleLogo /> Google
 				</BaseButton>
 
-				<GuestLoginButton />
+				<GuestLoginButton shouldDisable={isLoggingIn()} />
 			</div>
 
 			<p class="mx-auto text-xs">
