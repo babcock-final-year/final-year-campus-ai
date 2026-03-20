@@ -5,7 +5,7 @@ import {
 	type SubmitEventHandler,
 } from "@formisch/solid";
 import { Link } from "@kobalte/core/link";
-import { A } from "@solidjs/router";
+import { A, useNavigate } from "@solidjs/router";
 import {
 	Calendar,
 	GraduationCap,
@@ -22,12 +22,18 @@ import BaseButton from "~/components/ui/button/BaseButton";
 import GuestLoginButton from "~/components/ui/button/GuestLoginButton";
 import AppLogo from "~/components/ui/svg/AppLogo";
 import GoogleLogo from "~/components/ui/svg/GoogleLogo";
+import { useAuth } from "~/context/AuthContextProvider";
 import { SignInCredentialsSchema } from "~/models/credentials";
 import { routes } from "~/RouteManifest";
+import AuthRpc from "~/rpc/auth";
 
 function SignInForm() {
 	//TODO: do something with this
 	const [shouldRememberSignIn, setShouldRememberSignIn] = createSignal(false);
+	const [isLoggingIn, setIsLoggingIn] = createSignal(false);
+
+	const authContext = useAuth();
+	const navigate = useNavigate();
 
 	const signInForm = createForm({
 		initialInput: {
@@ -39,8 +45,26 @@ function SignInForm() {
 
 	const signInFormSubmitHandler: SubmitEventHandler<
 		typeof SignInCredentialsSchema
-	> = async (_signInInfo, _ev) => {
-		// TODO: add functionality
+	> = async ({ pass, user }, _ev) => {
+		setIsLoggingIn(true);
+
+		const res = await AuthRpc.login.post({ email: user, password: pass });
+
+		// TODO: show error toast
+		if (!res.success) {
+			setIsLoggingIn(false);
+
+			return;
+		}
+
+		const { access_token, refresh_token, user: res_user_data } = res.res;
+
+		authContext?.setAccessToken(access_token);
+		authContext?.setUserProfile(res_user_data);
+
+		setIsLoggingIn(false);
+
+		navigate(routes().home.chat.index);
 	};
 
 	return (
@@ -105,8 +129,17 @@ function SignInForm() {
 				</A>
 			</div>
 
-			<BaseButton class="btn-primary mx-auto w-full" type="submit">
-				Sign In
+			<BaseButton
+				class="btn-primary mx-auto w-full"
+				disabled={isLoggingIn()}
+				type="submit"
+			>
+				{" "}
+				{isLoggingIn() ? (
+					<span class="loading loading-spinner"></span>
+				) : (
+					"Sign In"
+				)}
 			</BaseButton>
 
 			<div class="divider m-0 text-xs opacity-50">Or continue with</div>
