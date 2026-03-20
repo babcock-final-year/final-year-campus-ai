@@ -59,9 +59,9 @@ function SignInForm() {
 
 		const { access_token, refresh_token, user: res_user_data } = res.res;
 
-		authContext?.setAccessToken(access_token);
-		authContext?.setRefreshToken(refresh_token);
-		authContext?.setUserProfile(res_user_data);
+		authContext.setAccessToken(access_token);
+		authContext.setRefreshToken(refresh_token);
+		authContext.setUserProfile(res_user_data);
 
 		setIsLoggingIn(false);
 

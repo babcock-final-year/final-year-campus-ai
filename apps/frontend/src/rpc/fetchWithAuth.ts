@@ -9,7 +9,7 @@ export default async function fetchWithAuth(
 	init?: RequestInit,
 ): Promise<Response> {
 	const auth = useAuth();
-	const token = auth?.accessToken ?? null;
+	const token = auth.accessToken();
 
 	// Build headers from whatever was passed in so we can set/merge safely.
 	const headers = new Headers(init?.headers);
@@ -21,13 +21,9 @@ export default async function fetchWithAuth(
 		headers.set("Authorization", `Bearer ${token}`);
 	}
 
-	// Default credentials to include to preserve cookie-based refresh flows.
-	const credentials = init?.credentials ?? "include";
-
 	// Compose final init. We keep other fields from init as-is.
 	const finalInit: RequestInit = {
 		...init,
-		credentials,
 		headers,
 	};
 

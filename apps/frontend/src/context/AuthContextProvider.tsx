@@ -1,27 +1,14 @@
 import { googleLogout } from "google-oauth-gsi";
 import {
-	createContext,
 	createEffect,
 	createSignal,
 	type JSXElement,
 	onMount,
-	type Setter,
 	useContext,
 } from "solid-js";
 import type { UserBaseOutput } from "~/models/users.schemas";
 import AuthRpc from "~/rpc/auth";
-
-interface AuthContextData {
-	accessToken: string | null;
-	setAccessToken: Setter<string | null>;
-	refreshToken: string | null;
-	setRefreshToken: Setter<string | null>;
-	userProfile: UserBaseOutput | null;
-	setUserProfile: Setter<UserBaseOutput | null>;
-	logout(): Promise<void>;
-}
-
-const AuthContext = createContext<AuthContextData>();
+import { AuthContext } from "./AuthContext";
 
 export function AuthProvider(props: { children: JSXElement }) {
 	const [accessToken, setAccessToken] = createSignal<string | null>(null);
@@ -64,13 +51,13 @@ export function AuthProvider(props: { children: JSXElement }) {
 	return (
 		<AuthContext.Provider
 			value={{
-				accessToken: accessToken(),
+				accessToken,
 				logout,
-				refreshToken: refreshToken(),
+				refreshToken,
 				setAccessToken,
 				setRefreshToken,
 				setUserProfile,
-				userProfile: userProfile(),
+				userProfile,
 			}}
 		>
 			{props.children}
@@ -79,5 +66,9 @@ export function AuthProvider(props: { children: JSXElement }) {
 }
 
 export function useAuth() {
-	return useContext(AuthContext);
+	const auth = useContext(AuthContext);
+
+	if (!auth) throw Error("useAuth: cannot find AuthContext");
+
+	return auth;
 }

@@ -56,9 +56,9 @@ function SignUpForm() {
 
 		const { access_token, refresh_token, user } = res.res;
 
-		authContext?.setAccessToken(access_token);
-		authContext?.setRefreshToken(refresh_token);
-		authContext?.setUserProfile(user);
+		authContext.setAccessToken(access_token);
+		authContext.setRefreshToken(refresh_token);
+		authContext.setUserProfile(user);
 
 		setIsRegistering(false);
 
