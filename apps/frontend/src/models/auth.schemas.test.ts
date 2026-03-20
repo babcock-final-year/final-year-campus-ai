@@ -8,10 +8,10 @@ import {
 	MessageResponseSchema,
 	PasswordResetConfirmRequestSchema,
 	PasswordResetRequestSchema,
-	UserBaseSchema,
 	UserLoginRequestSchema,
 	UserRegisterRequestSchema,
 } from "./auth.schemas";
+import { UserBaseSchema } from "./users.schemas";
 
 describe("Auth Schemas", () => {
 	it("validates UserRegisterRequestSchema", () => {
@@ -70,7 +70,7 @@ describe("Auth Schemas", () => {
 			avatar_url: "http://example.com/avatar.png",
 			email: "jane@example.com",
 			full_name: "Jane Doe",
-			id: 1,
+			id: "1",
 			is_confirmed: true,
 			is_guest: false,
 			matric_no: "A12345",
@@ -90,7 +90,7 @@ describe("Auth Schemas", () => {
 			user: {
 				email: "jane@example.com",
 				full_name: "Jane Doe",
-				id: 1,
+				id: "1",
 				username: "jane",
 			},
 		};

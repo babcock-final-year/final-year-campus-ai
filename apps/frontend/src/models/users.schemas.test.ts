@@ -12,7 +12,7 @@ describe("User Schemas", () => {
 			avatar_url: "https://example.com/avatar.png",
 			email: "alice@example.com",
 			full_name: "Alice Example",
-			id: 42,
+			id: "42",
 			is_confirmed: true,
 			is_guest: false,
 			matric_no: "U1234567",
