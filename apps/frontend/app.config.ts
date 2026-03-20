@@ -7,6 +7,7 @@ export default defineConfig({
 	server: {
 		prerender: { crawlLinks: true },
 	},
+	ssr: false,
 	vite: {
 		plugins: [
 			lucidePreprocess(),
