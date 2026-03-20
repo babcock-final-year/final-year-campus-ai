@@ -31,6 +31,7 @@ export default function GuestLoginButton(props: GuestLoginButtonProps) {
 		const { access_token, refresh_token, user } = res.res;
 
 		authContext?.setAccessToken(access_token);
+		authContext?.setRefreshToken(refresh_token);
 		authContext?.setUserProfile(user);
 
 		setIsLoggingIn(false);

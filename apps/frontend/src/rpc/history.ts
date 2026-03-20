@@ -7,6 +7,7 @@ import {
 import { getClientEnv } from "~/utils/env";
 import { coerceToError } from "~/utils/error";
 import type { ServerResultResponse } from "./_shared";
+import fetchWithAuth from "./fetchWithAuth";
 
 /**
  * HistoryRpc provides type-safe, ergonomic methods for all history-related backend routes.
@@ -24,8 +25,7 @@ const HistoryRpc = {
 		get: query(
 			async (): Promise<ServerResultResponse<ChatsListResponseOutput>> => {
 				try {
-					const res = await fetch(`${BASE_PATH}/chats`, {
-						credentials: "include",
+					const res = await fetchWithAuth(`${BASE_PATH}/chats`, {
 						method: "GET",
 					});
 					return {

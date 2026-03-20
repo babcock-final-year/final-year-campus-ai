@@ -13,6 +13,7 @@ import {
 import { getClientEnv } from "~/utils/env";
 import { coerceToError } from "~/utils/error";
 import type { ServerResultResponse } from "./_shared";
+import fetchWithAuth from "./fetchWithAuth";
 
 /**
  * UsersRpc provides type-safe, ergonomic methods for all user-related backend routes.
@@ -37,13 +38,9 @@ const UsersRpc = {
 				try {
 					const formData = new FormData();
 					formData.append("avatar", file);
-					const res = await fetch(
+					const res = await fetchWithAuth(
 						`${BASE_PATH}/${encodeURIComponent(String(userId))}/avatar`,
-						{
-							body: formData,
-							credentials: "include",
-							method: "POST",
-						},
+						{ body: formData, method: "POST" },
 					);
 
 					return {
@@ -67,12 +64,9 @@ const UsersRpc = {
 			userId: number | string,
 		): Promise<ServerResultResponse<UserProfileResponseOutput>> => {
 			try {
-				const res = await fetch(
+				const res = await fetchWithAuth(
 					`${BASE_PATH}/${encodeURIComponent(String(userId))}`,
-					{
-						credentials: "include",
-						method: "GET",
-					},
+					{ method: "GET" },
 				);
 				return {
 					res: v.parse(UserProfileResponseSchema, await res.json()),
@@ -97,13 +91,12 @@ const UsersRpc = {
 			updateRequest: UserUpdateRequestInput,
 		): Promise<ServerResultResponse<UserUpdateResponseOutput>> => {
 			try {
-				const res = await fetch(
+				const res = await fetchWithAuth(
 					`${BASE_PATH}/${encodeURIComponent(String(userId))}`,
 					{
 						body: JSON.stringify(
 							v.parse(UserUpdateRequestSchema, updateRequest),
 						),
-						credentials: "include",
 						headers: { "Content-Type": "application/json" },
 						method: "PUT",
 					},

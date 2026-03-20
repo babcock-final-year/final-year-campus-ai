@@ -15,6 +15,7 @@ import {
 import { getClientEnv } from "~/utils/env";
 import { coerceToError } from "~/utils/error";
 import type { ServerResultResponse } from "./_shared";
+import fetchWithAuth from "./fetchWithAuth";
 
 /**
  * ChatRpc provides type-safe, ergonomic methods for all chat-related backend routes.
@@ -34,12 +35,9 @@ const ChatRpc = {
 			chatId: number | string,
 		): Promise<ServerResultResponse<ChatHistoryResponseOutput>> => {
 			try {
-				const res = await fetch(
+				const res = await fetchWithAuth(
 					`${BASE_PATH}/${encodeURIComponent(String(chatId))}`,
-					{
-						credentials: "include",
-						method: "GET",
-					},
+					{ method: "GET" },
 				);
 				return {
 					res: v.parse(ChatHistoryResponseSchema, await res.json()),
@@ -65,13 +63,12 @@ const ChatRpc = {
 				messageRequest: ChatMessageRequestInput,
 			): Promise<ServerResultResponse<ChatMessageResponseOutput>> => {
 				try {
-					const res = await fetch(
+					const res = await fetchWithAuth(
 						`${BASE_PATH}/${encodeURIComponent(String(chatId))}/message`,
 						{
 							body: JSON.stringify(
 								v.parse(ChatMessageRequestSchema, messageRequest),
 							),
-							credentials: "include",
 							headers: { "Content-Type": "application/json" },
 							method: "POST",
 						},
@@ -98,9 +95,8 @@ const ChatRpc = {
 			createRequest: ChatCreateRequestInput,
 		): Promise<ServerResultResponse<ChatCreateResponseOutput>> => {
 			try {
-				const res = await fetch(`${BASE_PATH}`, {
+				const res = await fetchWithAuth(`${BASE_PATH}`, {
 					body: JSON.stringify(v.parse(ChatCreateRequestSchema, createRequest)),
-					credentials: "include",
 					headers: { "Content-Type": "application/json" },
 					method: "POST",
 				});

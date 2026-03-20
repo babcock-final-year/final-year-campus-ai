@@ -24,6 +24,7 @@ import { type UserBaseOutput, UserBaseSchema } from "~/models/users.schemas";
 import { getClientEnv } from "~/utils/env";
 import { coerceToError } from "~/utils/error";
 import type { ServerResultResponse } from "./_shared";
+import fetchWithAuth from "./fetchWithAuth";
 
 /**
  * AuthRpc provides type-safe, ergonomic methods for all authentication-related backend routes.
@@ -44,11 +45,10 @@ const AuthRpc = {
 				changeRequest: EmailChangeRequestInput,
 			): Promise<ServerResultResponse<MessageResponseOutput>> => {
 				try {
-					const res = await fetch(`${BASE_PATH}/change-email`, {
+					const res = await fetchWithAuth(`${BASE_PATH}/change-email`, {
 						body: JSON.stringify(
 							v.parse(EmailChangeRequestSchema, changeRequest),
 						),
-						credentials: "include",
 						headers: { "Content-Type": "application/json" },
 						method: "POST",
 					});
@@ -208,8 +208,7 @@ const AuthRpc = {
 		post: query(
 			async (): Promise<ServerResultResponse<MessageResponseOutput>> => {
 				try {
-					const res = await fetch(`${BASE_PATH}/logout`, {
-						credentials: "include",
+					const res = await fetchWithAuth(`${BASE_PATH}/logout`, {
 						method: "POST",
 					});
 					return {
@@ -232,8 +231,7 @@ const AuthRpc = {
 		get: query(
 			async (): Promise<ServerResultResponse<{ user: UserBaseOutput }>> => {
 				try {
-					const res = await fetch(`${BASE_PATH}/me`, {
-						credentials: "include",
+					const res = await fetchWithAuth(`${BASE_PATH}/me`, {
 						method: "GET",
 					});
 					return {
@@ -248,7 +246,7 @@ const AuthRpc = {
 		),
 	},
 
-	/**
+	/** TODO: fix this by using the refresh token
 	 * Refresh the access token using a refresh token.
 	 * @returns The new access token.
 	 */
@@ -256,8 +254,7 @@ const AuthRpc = {
 		post: query(
 			async (): Promise<ServerResultResponse<AccessTokenResponseOutput>> => {
 				try {
-					const res = await fetch(`${BASE_PATH}/refresh`, {
-						credentials: "include",
+					const res = await fetchWithAuth(`${BASE_PATH}/refresh`, {
 						method: "POST",
 					});
 					return {

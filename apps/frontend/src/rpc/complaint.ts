@@ -11,6 +11,7 @@ import {
 import { getClientEnv } from "~/utils/env";
 import { coerceToError } from "~/utils/error";
 import type { ServerResultResponse } from "./_shared";
+import fetchWithAuth from "./fetchWithAuth";
 
 /**
  * ComplaintRpc provides type-safe, ergonomic methods for all complaint-related backend routes.
@@ -31,12 +32,9 @@ const ComplaintRpc = {
 				complaintId: number | string,
 			): Promise<ServerResultResponse<ComplaintResponseOutput>> => {
 				try {
-					const res = await fetch(
+					const res = await fetchWithAuth(
 						`${BASE_PATH}/${encodeURIComponent(String(complaintId))}`,
-						{
-							credentials: "include",
-							method: "GET",
-						},
+						{ method: "GET" },
 					);
 					return {
 						res: v.parse(ComplaintResponseSchema, await res.json()),
@@ -57,10 +55,7 @@ const ComplaintRpc = {
 	get: query(
 		async (): Promise<ServerResultResponse<ComplaintListResponseOutput>> => {
 			try {
-				const res = await fetch(BASE_PATH, {
-					credentials: "include",
-					method: "GET",
-				});
+				const res = await fetchWithAuth(BASE_PATH, { method: "GET" });
 				return {
 					res: v.parse(ComplaintListResponseSchema, await res.json()),
 					success: true,
@@ -82,11 +77,10 @@ const ComplaintRpc = {
 			createRequest: ComplaintCreateRequestInput,
 		): Promise<ServerResultResponse<ComplaintResponseOutput>> => {
 			try {
-				const res = await fetch(BASE_PATH, {
+				const res = await fetchWithAuth(BASE_PATH, {
 					body: JSON.stringify(
 						v.parse(ComplaintCreateRequestSchema, createRequest),
 					),
-					credentials: "include",
 					headers: { "Content-Type": "application/json" },
 					method: "POST",
 				});

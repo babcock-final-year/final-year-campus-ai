@@ -47,6 +47,7 @@ export default function GoogleLoginButton(props: GoogleLoginButtonProps) {
 			} = res.res;
 
 			authContext?.setAccessToken(backend_access_token);
+			authContext?.setRefreshToken(refresh_token);
 			authContext?.setUserProfile(user);
 
 			setIsProcessing(false);
