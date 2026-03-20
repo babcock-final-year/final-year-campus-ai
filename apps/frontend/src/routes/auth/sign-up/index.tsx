@@ -5,7 +5,7 @@ import {
 	type SubmitEventHandler,
 } from "@formisch/solid";
 import { Link } from "@kobalte/core/link";
-import { A } from "@solidjs/router";
+import { A, useNavigate } from "@solidjs/router";
 import {
 	HatGlasses,
 	LockKeyhole,
@@ -19,11 +19,17 @@ import BaseButton from "~/components/ui/button/BaseButton";
 import GuestLoginButton from "~/components/ui/button/GuestLoginButton";
 import AppLogo from "~/components/ui/svg/AppLogo";
 import GoogleLogo from "~/components/ui/svg/GoogleLogo";
+import { useAuth } from "~/context/AuthContextProvider";
 import { SignUpCredentialsSchema } from "~/models/credentials";
 import { routes } from "~/RouteManifest";
+import AuthRpc from "~/rpc/auth";
 
 function SignUpForm() {
 	const [hasAcceptedTerms, setHasAcceptedTerms] = createSignal(false);
+	const [isRegistering, setIsRegistering] = createSignal(false);
+
+	const authContext = useAuth();
+	const navigate = useNavigate();
 
 	const signUpForm = createForm({
 		initialInput: { confirmPass: "", email: "", pass: "", username: "" },
@@ -32,8 +38,30 @@ function SignUpForm() {
 
 	const signUpFormSubmitHandler: SubmitEventHandler<
 		typeof SignUpCredentialsSchema
-	> = async (_signUpInfo, _ev) => {
-		// TODO: add functionality
+	> = async ({ email, pass, username }, _ev) => {
+		setIsRegistering(true);
+
+		const res = await AuthRpc.register.post({
+			email,
+			full_name: username,
+			password: pass,
+		});
+
+		// TODO: add error toast
+		if (!res.success) {
+			setIsRegistering(false);
+
+			return;
+		}
+
+		const { access_token, refresh_token, user } = res.res;
+
+		authContext?.setAccessToken(access_token);
+		authContext?.setUserProfile(user);
+
+		setIsRegistering(false);
+
+		navigate(routes().home.chat.index);
 	};
 
 	return (
@@ -120,8 +148,16 @@ function SignUpForm() {
 				</span>
 			</label>
 
-			<BaseButton class="btn-primary mx-auto w-full" type="submit">
-				Create Account
+			<BaseButton
+				class="btn-primary mx-auto w-full"
+				disabled={isRegistering()}
+				type="submit"
+			>
+				{isRegistering() ? (
+					<span class="loading loading-spinner"></span>
+				) : (
+					"Create Account"
+				)}
 			</BaseButton>
 
 			<div class="divider m-0 text-xs opacity-50">Or continue with</div>
