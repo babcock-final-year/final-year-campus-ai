@@ -257,15 +257,12 @@ const AuthRpc = {
 				try {
 					const refreshToken = sessionStorage.getItem("refreshToken");
 					if (!refreshToken) {
-						return {
-							err: new Error("No refresh token available"),
-							success: false,
-						};
+						return { err: new Error("No refresh token available"), success: false };
 					}
 
 					const res = await fetch(`${BASE_PATH}/refresh`, {
-						headers: { Authorization: `Bearer ${refreshToken}` },
 						method: "POST",
+						headers: { Authorization: `Bearer ${refreshToken}` },
 					});
 
 					if (!res.ok) {

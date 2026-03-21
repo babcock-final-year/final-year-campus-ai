@@ -43,9 +43,9 @@ export function AuthProvider(props: { children: JSXElement }) {
 		const accessTkn = accessToken(),
 			refreshTkn = refreshToken();
 
-		if (accessTkn) sessionStorage.setItem("accessToken", accessTkn);
+    if (accessTkn) sessionStorage.setItem("accessToken", accessTkn);
 
-		if (refreshTkn) sessionStorage.setItem("refreshToken", refreshTkn);
+    if (refreshTkn) sessionStorage.setItem("refreshToken", refreshTkn);
 	});
 
 	return (
@@ -59,7 +59,7 @@ export function AuthProvider(props: { children: JSXElement }) {
 				setUserProfile,
 				userProfile,
 			}}
-		>
+    >
 			{props.children}
 		</AuthContext.Provider>
 	);

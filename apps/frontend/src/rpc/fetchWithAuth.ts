@@ -1,6 +1,6 @@
 import { useAuth } from "~/context/AuthContextProvider";
-import { getClientEnv } from "~/utils/env";
 import AuthRpc from "./auth";
+import { getClientEnv } from "~/utils/env";
 
 /**
  * Performs a fetch, attaching Authorization header from `useAuth()` if available.
@@ -11,7 +11,7 @@ export default async function fetchWithAuth(
 	init?: RequestInit,
 ): Promise<Response> {
 	const auth = useAuth();
-	const token = auth.accessToken();
+  const token = auth.accessToken();
 
 	// Build headers from whatever was passed in so we can set/merge safely.
 	const headers = new Headers(init?.headers);

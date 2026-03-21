@@ -26,6 +26,23 @@ const HistoryRpc = {
 	 * @returns An array of chat summaries for the authenticated user.
 	 */
 	chats: {
+		get: query(
+			async (): Promise<ServerResultResponse<ChatsListResponseOutput>> => {
+				try {
+					const res = await fetchWithAuth(`${BASE_PATH}/chats`, {
+						method: "GET",
+					});
+					return {
+						res: v.parse(ChatsListResponseSchema, await res.json()),
+						success: true,
+					};
+				} catch (e) {
+					return { err: coerceToError(e), success: false };
+				}
+			},
+			"HistoryRpc.chats.get",
+		),
+
 		/**
 		 * Delete all chats for the current user.
 		 * DELETE /history/chats
@@ -46,22 +63,6 @@ const HistoryRpc = {
 				}
 			},
 			"HistoryRpc.chats.delete",
-		),
-		get: query(
-			async (): Promise<ServerResultResponse<ChatsListResponseOutput>> => {
-				try {
-					const res = await fetchWithAuth(`${BASE_PATH}/chats`, {
-						method: "GET",
-					});
-					return {
-						res: v.parse(ChatsListResponseSchema, await res.json()),
-						success: true,
-					};
-				} catch (e) {
-					return { err: coerceToError(e), success: false };
-				}
-			},
-			"HistoryRpc.chats.get",
 		),
 	},
 

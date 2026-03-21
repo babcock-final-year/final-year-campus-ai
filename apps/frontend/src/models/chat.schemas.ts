@@ -31,8 +31,8 @@ export type ChatMessageOutput = v.InferOutput<typeof ChatMessageSchema>;
  */
 export const ChatCreateResponseSchema = v.object({
 	chat_id: v.string(),
-	messages: v.array(ChatMessageSchema),
-	title: v.string(),
+  title: v.string(),
+	messages: v.array(ChatMessageSchema)
 });
 export type ChatCreateResponseInput = v.InferInput<
 	typeof ChatCreateResponseSchema

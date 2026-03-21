@@ -10,6 +10,7 @@ import {
 import FieldTextInput from "~/components/form/FieldTextInput";
 import BaseButton from "~/components/ui/button/BaseButton";
 import LimitCounter from "~/components/ui/indicator/LimitCounter";
+import ComplaintRpc from "~/rpc/complaint";
 import {
 	FILE_COMPLAINT_FORM_DESCRIPTION_MAX_LENGTH,
 	FILE_COMPLAINT_FORM_TITLE_MAX_LENGTH,
@@ -23,10 +24,31 @@ export default function SettingsInterfaceComplaintPage() {
 		validate: "input",
 	});
 
+	// TODO: display a success toast and clear the form
+	// TODO: add a place where users can view their complaints.
 	const handleSubmitFileComplaintForm: SubmitEventHandler<
 		typeof FileComplaintFormSchema
-	> = (formData, e) => {
-		// TODO: Sumbit file complaint
+	> = async (formData, _) => {
+		// Use raw RPC call in event handler to submit the complaint.
+		// formData shape matches FileComplaintFormSchema: { title, description }
+		try {
+			const res = await ComplaintRpc.post({
+				title: formData.title,
+				description: formData.description,
+			});
+
+			if (res.success) {
+				// Reset the form on success.
+				reset(fileComplaintForm);
+			} else {
+				// eslint-disable-next-line no-console
+				console.error("Failed to submit complaint:", res.err);
+			}
+		} catch (err) {
+			// Best-effort logging only.
+			// eslint-disable-next-line no-console
+			console.error("Error submitting complaint:", err);
+		}
 	};
 
 	return (
