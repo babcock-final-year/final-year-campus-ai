@@ -5,7 +5,8 @@ import { ChatHistoryResponseSchema } from "./chat.schemas";
  * Schema for a single chat summary in the user's history list.
  */
 export const ChatSummarySchema = v.object({
-	id: v.number(),
+	created_at: v.pipe(v.string(), v.toDate()),
+	id: v.string(),
 	title: v.string(),
 });
 export type ChatSummaryInput = v.InferInput<typeof ChatSummarySchema>;

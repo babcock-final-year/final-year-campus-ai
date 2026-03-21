@@ -1,5 +1,4 @@
 import * as v from "valibot";
-import { UserBaseSchema } from "./users.schemas";
 
 /**
  * Schema for the request body of POST /chat
@@ -15,10 +14,24 @@ export type ChatCreateRequestOutput = v.InferOutput<
 >;
 
 /**
+ * Schema for a single chat message (user or assistant)
+ */
+export const ChatMessageSchema = v.object({
+	chat_id: v.string(),
+	content: v.string(),
+	id: v.string(),
+	role: v.picklist(["assistant", "user"]),
+	timestamp: v.string(), // ISO string
+});
+export type ChatMessageInput = v.InferInput<typeof ChatMessageSchema>;
+export type ChatMessageOutput = v.InferOutput<typeof ChatMessageSchema>;
+
+/**
  * Schema for the response of POST /chat
  */
 export const ChatCreateResponseSchema = v.object({
-	chat_id: v.number(),
+	chat_id: v.string(),
+	messages: v.array(ChatMessageSchema),
 	title: v.string(),
 });
 export type ChatCreateResponseInput = v.InferInput<
@@ -27,19 +40,6 @@ export type ChatCreateResponseInput = v.InferInput<
 export type ChatCreateResponseOutput = v.InferOutput<
 	typeof ChatCreateResponseSchema
 >;
-
-/**
- * Schema for a single chat message (user or assistant)
- */
-export const ChatMessageSchema = v.object({
-	chat_id: v.number(),
-	content: v.string(),
-	id: v.number(),
-	role: v.union([v.literal("user"), v.literal("assistant")]),
-	timestamp: v.string(), // ISO string
-});
-export type ChatMessageInput = v.InferInput<typeof ChatMessageSchema>;
-export type ChatMessageOutput = v.InferOutput<typeof ChatMessageSchema>;
 
 /**
  * Schema for the request body of POST /chat/<chat_id>/message
@@ -58,10 +58,10 @@ export type ChatMessageRequestOutput = v.InferOutput<
  * Schema for the response of POST /chat/<chat_id>/message
  */
 export const ChatMessageResponseSchema = v.object({
-	chat_id: v.number(),
+	chat_id: v.string(),
 	content: v.string(),
-	id: v.number(),
-	role: v.literal("assistant"),
+	id: v.string(),
+	role: v.picklist(["assistant", "user"]),
 	timestamp: v.string(),
 });
 export type ChatMessageResponseInput = v.InferInput<
@@ -75,7 +75,7 @@ export type ChatMessageResponseOutput = v.InferOutput<
  * Schema for the response of GET /chat/<chat_id>
  */
 export const ChatHistoryResponseSchema = v.object({
-	chat_id: v.number(),
+	chat_id: v.string(),
 	messages: v.array(ChatMessageSchema),
 	title: v.string(),
 });
