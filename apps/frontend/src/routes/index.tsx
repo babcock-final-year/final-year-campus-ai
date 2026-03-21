@@ -8,7 +8,7 @@ import {
 	UserRoundPlus,
 } from "lucide-solid";
 import type { JSXElement } from "solid-js";
-import AppLogo from "~/components/svg/AppLogo";
+import AppLogo from "~/components/ui/svg/AppLogo";
 import { routes } from "~/RouteManifest";
 
 function ListWithIcon(props: { children: JSXElement; icon: JSXElement }) {
@@ -23,12 +23,12 @@ function ListWithIcon(props: { children: JSXElement; icon: JSXElement }) {
 
 export default function Home() {
 	return (
-		<div class="hero size-full overflow-auto bg-linear-to-bl from-accent/90 to-accent p-8">
+		<div class="hero size-full overflow-auto bg-linear-to-bl from-primary/90 to-accent p-8">
 			<div class="hero-content flex-col gap-8 text-center sm:flex-row sm:gap-16">
 				<AppLogo class="hidden *:h-auto *:w-2xs *:fill-secondary sm:block" />
 
 				<div>
-					<AppLogo class="mx-auto block *:h-auto *:w-24 *:place-self-center *:fill-secondary sm:hidden" />
+					<AppLogo class="mx-auto block *:h-auto *:w-24 *:place-self-center *:fill-neutral sm:hidden" />
 
 					<h1 class="py-4 font-bold text-5xl text-secondary">Unipal</h1>
 
@@ -51,7 +51,7 @@ export default function Home() {
 					<div class="flex flex-col items-center justify-center gap-4 py-4">
 						<Link
 							as={A}
-							class="btn btn-wide btn-lg btn-secondary"
+							class="btn btn-wide btn-lg btn-primary"
 							href={routes().auth.signUp.index}
 						>
 							Get Started <UserRoundPlus />

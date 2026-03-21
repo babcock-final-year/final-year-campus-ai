@@ -6,7 +6,7 @@ import {
 	SYMBOL_REGEX,
 	UPPER_CASE_REGEX,
 } from "~/constants/regex";
-import { NonEmptyStringSchema } from "./shared";
+import { EmailSchema, NonEmptyStringSchema } from "./shared";
 
 export const MatricNumberSchema = v.pipe(
 	v.string("Matric number must be a string"),
@@ -41,14 +41,33 @@ export type SignInCredentialsOutput = v.InferOutput<
 	typeof SignInCredentialsSchema
 >;
 
-export const SignUpCredentialsSchema = v.object({
-	email: v.pipe(NonEmptyStringSchema, v.email()),
-	pass: PasswordSchema,
-	username: NonEmptyStringSchema,
-});
+export const SignUpCredentialsSchema = v.pipe(
+	v.object({
+		confirmPass: PasswordSchema,
+		email: EmailSchema,
+		pass: PasswordSchema,
+		username: NonEmptyStringSchema,
+	}),
+	v.forward(
+		v.check(
+			({ pass, confirmPass }) => pass === confirmPass,
+			"Passwords do not match.",
+		),
+		["confirmPass"],
+	),
+	v.transform(({ email, pass, username }) => ({ email, pass, username })),
+);
 export type SignUpCredentialsInput = v.InferInput<
-	typeof SignInCredentialsSchema
+	typeof SignUpCredentialsSchema
 >;
 export type SignUpCredentialsOutput = v.InferOutput<
-	typeof SignInCredentialsSchema
+	typeof SignUpCredentialsSchema
+>;
+
+export const SendPasswordResetLinkSchema = v.object({ email: EmailSchema });
+export type SendPasswordResetLinkInput = v.InferInput<
+	typeof SendPasswordResetLinkSchema
+>;
+export type SendPasswordResetLinkOutput = v.InferOutput<
+	typeof SendPasswordResetLinkSchema
 >;

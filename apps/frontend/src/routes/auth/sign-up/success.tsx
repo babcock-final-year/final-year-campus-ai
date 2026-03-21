@@ -1,16 +1,10 @@
 import { A, useNavigate } from "@solidjs/router";
 import { Check } from "lucide-solid";
-import { onMount } from "solid-js";
 import { routes } from "~/RouteManifest";
 
+// Tell the user to
 export default function SignUpSuccessPage() {
 	const navigate = useNavigate();
-
-	onMount(() => {
-		// Redirect to the chat page after 3 seconds
-
-		navigate(routes().chat.index);
-	});
 
 	return (
 		<main class="grid h-9/10 w-full grid-rows-3 place-items-center gap-8 p-4">
@@ -23,14 +17,17 @@ export default function SignUpSuccessPage() {
 			</div>
 
 			<div class="flex flex-col items-center justify-center gap-2 text-center text-sm">
-				<p>Your account has been sucessfully created.</p>
+				<p>
+					Your account has been sucessfully created. Check your email for the
+					verification link.
+				</p>
 
 				<p>
-					Click this{" "}
-					<A class="link link-primary" href={routes().chat.index}>
+					If you're already verified, click this{" "}
+					<A class="link link-primary" href={routes().auth.signIn.index}>
 						link
 					</A>{" "}
-					if you aren't redirected automatically.
+					.
 				</p>
 			</div>
 		</main>

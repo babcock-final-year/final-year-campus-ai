@@ -7,10 +7,22 @@ export function routes(searchParams) {
   return {
     index: `/${query}` ,
     _404: (_404) => ({index: `/${_404}${query}`}),
-    chat: {index: `/chat${query}`},
     about: {index: `/about${query}`},
+    home: {
+      chat: {index: `/home/chat${query}`},
+      editProfile: {index: `/home/edit-profile${query}`},
+      settings: {
+        theme: {index: `/home/settings/theme${query}`},
+        contact: {index: `/home/settings/contact${query}`},
+        profile: {index: `/home/settings/profile${query}`},
+        complaint: {index: `/home/settings/complaint${query}`},
+      },
+    },
     auth: {
-      signIn: {index: `/auth/sign-in${query}`},
+      signIn: {
+        index: `/auth/sign-in${query}`,
+        forgotPassword: {index: `/auth/sign-in/forgot-password${query}`},
+      },
       signUp: {
         index: `/auth/sign-up${query}`,
         success: {index: `/auth/sign-up/success${query}`},

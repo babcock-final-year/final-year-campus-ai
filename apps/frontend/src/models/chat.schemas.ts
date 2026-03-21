@@ -1,0 +1,87 @@
+import * as v from "valibot";
+
+/**
+ * Schema for the request body of POST /chat
+ */
+export const ChatCreateRequestSchema = v.object({
+	title: v.nullish(v.string()),
+});
+export type ChatCreateRequestInput = v.InferInput<
+	typeof ChatCreateRequestSchema
+>;
+export type ChatCreateRequestOutput = v.InferOutput<
+	typeof ChatCreateRequestSchema
+>;
+
+/**
+ * Schema for a single chat message (user or assistant)
+ */
+export const ChatMessageSchema = v.object({
+	content: v.string(),
+	id: v.number(),
+	is_liked: v.nullish(v.boolean()),
+	role: v.picklist(["assistant", "user"]),
+	timestamp: v.pipe(v.string(), v.toDate()),
+});
+export type ChatMessageInput = v.InferInput<typeof ChatMessageSchema>;
+export type ChatMessageOutput = v.InferOutput<typeof ChatMessageSchema>;
+
+/**
+ * Schema for the response of POST /chat
+ */
+export const ChatCreateResponseSchema = v.object({
+	chat_id: v.string(),
+	messages: v.nullish(v.array(ChatMessageSchema), []),
+	title: v.string(),
+});
+export type ChatCreateResponseInput = v.InferInput<
+	typeof ChatCreateResponseSchema
+>;
+export type ChatCreateResponseOutput = v.InferOutput<
+	typeof ChatCreateResponseSchema
+>;
+
+/**
+ * Schema for the request body of POST /chat/<chat_id>/message
+ */
+export const ChatMessageRequestSchema = v.object({
+	content: v.string(),
+});
+export type ChatMessageRequestInput = v.InferInput<
+	typeof ChatMessageRequestSchema
+>;
+export type ChatMessageRequestOutput = v.InferOutput<
+	typeof ChatMessageRequestSchema
+>;
+
+/**
+ * Schema for the response of POST /chat/<chat_id>/message
+ */
+export const ChatMessageResponseSchema = v.object({
+	content: v.string(),
+	id: v.number(),
+	is_liked: v.nullish(v.boolean()),
+	role: v.picklist(["assistant", "user"]),
+	timestamp: v.pipe(v.string(), v.toDate()),
+});
+export type ChatMessageResponseInput = v.InferInput<
+	typeof ChatMessageResponseSchema
+>;
+export type ChatMessageResponseOutput = v.InferOutput<
+	typeof ChatMessageResponseSchema
+>;
+
+/**
+ * Schema for the response of GET /chat/<chat_id>
+ */
+export const ChatHistoryResponseSchema = v.object({
+	chat_id: v.string(),
+	messages: v.nullish(v.array(ChatMessageSchema), []),
+	title: v.string(),
+});
+export type ChatHistoryResponseInput = v.InferInput<
+	typeof ChatHistoryResponseSchema
+>;
+export type ChatHistoryResponseOutput = v.InferOutput<
+	typeof ChatHistoryResponseSchema
+>;
