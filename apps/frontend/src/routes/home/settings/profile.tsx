@@ -18,16 +18,18 @@ function TitleAndValue(props: TitleAndValueProps) {
 }
 
 export default function SettingsInterfaceProfilePage() {
-  const userProfile = createUserProfile();
+	const userProfile = createUserProfile();
 
-	const profileDataArray = () => ([
-		{ children: userProfile().full_name, title: "Full Name" },
-		{ children: userProfile().matric_no , title: "Matric Number" },
-		{
-			children: userProfile().email ,
-			title: "School Email",
-    },
-	] as const satisfies TitleAndValueProps[]);
+	const profileDataArray = () =>
+		[
+			{ children: userProfile().full_name, title: "Full Name" },
+			{ children: userProfile().username, title: "Username" },
+			{ children: userProfile().matric_no, title: "Matric Number" },
+			{
+				children: userProfile().email,
+				title: "School Email",
+			},
+		] as const satisfies TitleAndValueProps[];
 
 	return (
 		<div class="flex size-full flex-col rounded-box border border-base-300 bg-secondary p-4">
