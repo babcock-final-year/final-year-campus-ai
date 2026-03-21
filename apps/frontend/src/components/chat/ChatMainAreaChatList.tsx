@@ -236,10 +236,7 @@ export default function ChatMainAreaChatList() {
 										: "bg-base-200",
 								)}
 							>
-								<div
-									class="space-y-4"
-									innerHTML={parsedMarkdownContent.latest}
-								/>
+								<div class="prose" innerHTML={parsedMarkdownContent.latest} />
 
 								{/* Extra btns for assistant chat bubbles */}
 								<Show when={!isUser()}>
