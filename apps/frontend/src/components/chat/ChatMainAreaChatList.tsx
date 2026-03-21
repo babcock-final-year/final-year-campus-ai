@@ -1,6 +1,8 @@
 import { Image } from "@kobalte/core/image";
+import { createAsync } from "@solidjs/router";
 import clsx from "clsx/lite";
 import { Copy, ThumbsDown, ThumbsUp } from "lucide-solid";
+import { marked } from "marked";
 import {
 	createEffect,
 	createMemo,
@@ -193,6 +195,10 @@ export default function ChatMainAreaChatList() {
 			<Index each={messages()}>
 				{(val) => {
 					const isUser = createMemo(() => val().role === "user");
+					const parsedMarkdownContent = createAsync(
+						async () => marked.parse(val().content),
+						{ initialValue: "" },
+					);
 
 					return (
 						<div
@@ -230,7 +236,10 @@ export default function ChatMainAreaChatList() {
 										: "bg-base-200",
 								)}
 							>
-								{val().content}
+								<div
+									class="space-y-4"
+									innerHTML={parsedMarkdownContent.latest}
+								/>
 
 								{/* Extra btns for assistant chat bubbles */}
 								<Show when={!isUser()}>
