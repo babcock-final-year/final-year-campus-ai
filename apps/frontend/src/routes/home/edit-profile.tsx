@@ -14,6 +14,7 @@ import FieldTextInput from "~/components/form/FieldTextInput";
 import BaseButton from "~/components/ui/button/BaseButton";
 import UploadImageButton from "~/components/ui/button/UploadImageButton";
 import UserProfileImage from "~/components/ui/image/UserProfileImage";
+import { useToastContext } from "~/context/ToastContextProvider";
 import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { UserUpdateRequestSchema } from "~/models/users.schemas";
 import { routes } from "~/RouteManifest";
@@ -24,6 +25,7 @@ export default function EditProfileInterfacePage() {
 	const userProfile = createUserProfile();
 
 	const navigate = useNavigate();
+	const toastContext = useToastContext();
 
 	const editProfileForm = createForm({
 		initialInput: {
@@ -44,6 +46,11 @@ export default function EditProfileInterfacePage() {
 		const res = await UsersRpc.put(user.id, formData);
 
 		if (res.success) {
+			toastContext.showToast({
+				class: { alert: "alert-success", closeBtn: "btn-success" },
+				description: "Updating your data with changes...",
+				title: "Profile edited sucessfully",
+			});
 			await revalidateUserData();
 		}
 
@@ -62,15 +69,34 @@ export default function EditProfileInterfacePage() {
 		(
 			document.querySelector(`input[name='["avatar_url"]']`) as HTMLInputElement
 		).value = userProfile()?.avatar_url || "";
+		setInput(editProfileForm, {
+			input: userProfile()?.avatar_url || "",
+			path: ["avatar_url"],
+		});
+
 		(
 			document.querySelector(`input[name='["full_name"]']`) as HTMLInputElement
-		).value = userProfile().full_name;
+		).value = userProfile()?.full_name || "";
+		setInput(editProfileForm, {
+			input: userProfile()?.full_name || "",
+			path: ["full_name"],
+		});
+
 		(
 			document.querySelector(`input[name='["matric_no"]']`) as HTMLInputElement
-		).value = userProfile().matric_no;
+		).value = userProfile()?.matric_no || "";
+		setInput(editProfileForm, {
+			input: userProfile()?.matric_no || "",
+			path: ["matric_no"],
+		});
+
 		(
 			document.querySelector(`input[name='["username"]']`) as HTMLInputElement
-		).value = userProfile().username;
+		).value = userProfile()?.username || "";
+		setInput(editProfileForm, {
+			input: userProfile()?.username || "",
+			path: ["username"],
+		});
 	});
 
 	return (
