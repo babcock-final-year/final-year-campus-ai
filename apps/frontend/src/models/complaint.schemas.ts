@@ -18,11 +18,11 @@ export type ComplaintCreateRequestOutput = v.InferOutput<
  * Schema for a single complaint object
  */
 export const ComplaintResponseSchema = v.object({
-	created_at: v.string(), // ISO string
-	description: v.string(),
+	created_at: v.pipe(v.string(), v.toDate()),
+	description: v.pipe(v.string(), v.minLength(3)),
 	id: v.number(),
-	title: v.string(),
-	user_id: v.number(),
+	title: v.pipe(v.string(), v.minLength(3)),
+	user_id: v.string(),
 });
 export type ComplaintResponseInput = v.InferInput<
 	typeof ComplaintResponseSchema

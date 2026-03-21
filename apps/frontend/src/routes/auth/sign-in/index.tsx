@@ -23,6 +23,7 @@ import GoogleLoginButton from "~/components/ui/button/GoogleLoginButton";
 import GuestLoginButton from "~/components/ui/button/GuestLoginButton";
 import AppLogo from "~/components/ui/svg/AppLogo";
 import { useAuth } from "~/context/AuthContextProvider";
+import { useToastContext } from "~/context/ToastContextProvider";
 import { SignInCredentialsSchema } from "~/models/credentials";
 import { routes } from "~/RouteManifest";
 import AuthRpc from "~/rpc/auth";
@@ -33,6 +34,7 @@ function SignInForm() {
 	const [isLoggingIn, setIsLoggingIn] = createSignal(false);
 
 	const authContext = useAuth();
+	const toast = useToastContext();
 	const navigate = useNavigate();
 
 	const signInForm = createForm({
@@ -50,10 +52,14 @@ function SignInForm() {
 
 		const res = await AuthRpc.login.post({ email: user, password: pass });
 
-		// TODO: show error toast
 		if (!res.success) {
 			setIsLoggingIn(false);
 
+			toast.showToast({
+				class: { alert: "alert-error", closeBtn: "btn-error" },
+				description: String(res.err ?? "Unknown error"),
+				title: "Sign in failed",
+			});
 			return;
 		}
 

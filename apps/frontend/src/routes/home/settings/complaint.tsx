@@ -10,12 +10,14 @@ import {
 import FieldTextInput from "~/components/form/FieldTextInput";
 import BaseButton from "~/components/ui/button/BaseButton";
 import LimitCounter from "~/components/ui/indicator/LimitCounter";
+import { useToastContext } from "~/context/ToastContextProvider";
 import {
 	FILE_COMPLAINT_FORM_DESCRIPTION_MAX_LENGTH,
 	FILE_COMPLAINT_FORM_TITLE_MAX_LENGTH,
 	FileComplaintFormSchema,
 } from "~/models/file-complaint-form";
 import ComplaintRpc from "~/rpc/complaint";
+import { coerceToError } from "~/utils/error";
 
 export default function SettingsInterfaceComplaintPage() {
 	const fileComplaintForm = createForm({
@@ -24,7 +26,6 @@ export default function SettingsInterfaceComplaintPage() {
 		validate: "input",
 	});
 
-	// TODO: display a success toast and clear the form
 	// TODO: add a place where users can view their complaints.
 	const toast = useToastContext();
 
@@ -33,8 +34,6 @@ export default function SettingsInterfaceComplaintPage() {
 	const handleSubmitFileComplaintForm: SubmitEventHandler<
 		typeof FileComplaintFormSchema
 	> = async (formData, _) => {
-		// Use raw RPC call in event handler to submit the complaint.
-		// formData shape matches FileComplaintFormSchema: { title, description }
 		try {
 			const res = await ComplaintRpc.post({
 				description: formData.description,
@@ -53,13 +52,22 @@ export default function SettingsInterfaceComplaintPage() {
 					title: "Complaint submitted",
 				});
 			} else {
-				// eslint-disable-next-line no-console
 				console.error("Failed to submit complaint:", res.err);
+
+				toast.showToast({
+					class: { alert: "alert-error", closeBtn: "btn-error" },
+					description: res.err.message ?? "Unknown error",
+					title: "Failed to submit complaint",
+				});
 			}
 		} catch (err) {
-			// Best-effort logging only.
-			// eslint-disable-next-line no-console
 			console.error("Error submitting complaint:", err);
+
+			toast.showToast({
+				class: { alert: "alert-error", closeBtn: "btn-error" },
+				description: coerceToError(err).message ?? "Unknown error",
+				title: "Error submitting complaint",
+			});
 		}
 	};
 

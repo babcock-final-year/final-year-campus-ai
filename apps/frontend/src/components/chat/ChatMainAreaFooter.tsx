@@ -1,6 +1,7 @@
 import { TextField } from "@kobalte/core/text-field";
 import { Mic, Plus, SendHorizontal } from "lucide-solid";
 import { createSignal } from "solid-js";
+import { useToastContext } from "~/context/ToastContextProvider";
 import ChatRpc from "~/rpc/chat";
 import BaseButton from "../ui/button/BaseButton";
 
@@ -9,6 +10,7 @@ export default function ChatMainAreaFooter(props: {
 }) {
 	const [text, setText] = createSignal("");
 	const [isSending, setIsSending] = createSignal(false);
+	const toast = useToastContext();
 
 	const send = async () => {
 		const content = text().trim();
@@ -28,7 +30,12 @@ export default function ChatMainAreaFooter(props: {
 			// clear input on success
 			setText("");
 		} else {
-			// TODO: add error toast
+			// show error toast
+			toast.showToast({
+				class: { alert: "alert-error", closeBtn: "btn-error" },
+				description: res.err.message ?? "Unknown error",
+				title: "Failed to send chat message",
+			});
 			console.error("Failed to send chat message:", res.err);
 		}
 	};

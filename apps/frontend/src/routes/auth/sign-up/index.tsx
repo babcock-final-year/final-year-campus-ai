@@ -20,6 +20,7 @@ import GoogleLoginButton from "~/components/ui/button/GoogleLoginButton";
 import GuestLoginButton from "~/components/ui/button/GuestLoginButton";
 import AppLogo from "~/components/ui/svg/AppLogo";
 import { useAuth } from "~/context/AuthContextProvider";
+import { useToastContext } from "~/context/ToastContextProvider";
 import { SignUpCredentialsSchema } from "~/models/credentials";
 import { routes } from "~/RouteManifest";
 import AuthRpc from "~/rpc/auth";
@@ -29,6 +30,7 @@ function SignUpForm() {
 	const [isRegistering, setIsRegistering] = createSignal(false);
 
 	const authContext = useAuth();
+	const toastContext = useToastContext();
 	const navigate = useNavigate();
 
 	const signUpForm = createForm({
@@ -47,10 +49,16 @@ function SignUpForm() {
 			password: pass,
 		});
 
-		// TODO: add error toast
+		// Show error toast on failure
 		if (!res.success) {
-			setIsRegistering(false);
+			toastContext.showToast({
+				class: { alert: "alert-error", closeBtn: "btn-error" },
+				description:
+					res.err.message ?? "Unable to create account. Please try again.",
+				title: "Registration failed",
+			});
 
+			setIsRegistering(false);
 			return;
 		}
 

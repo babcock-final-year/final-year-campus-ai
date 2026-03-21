@@ -3,6 +3,7 @@ import { useNavigate } from "@solidjs/router";
 import { HatGlasses } from "lucide-solid";
 import { createSignal } from "solid-js";
 import { useAuth } from "~/context/AuthContextProvider";
+import { useToastContext } from "~/context/ToastContextProvider";
 import { routes } from "~/RouteManifest";
 import AuthRpc from "~/rpc/auth";
 import BaseButton from "./BaseButton";
@@ -16,15 +17,20 @@ export default function GuestLoginButton(props: GuestLoginButtonProps) {
 	const authContext = useAuth();
 
 	const navigate = useNavigate();
+	const toastContext = useToastContext();
 
 	async function handleGuestLogin() {
 		setIsLoggingIn(true);
 
 		const res = await AuthRpc.guest.post();
 
-		// TODO: Add error toast
 		if (!res.success) {
 			setIsLoggingIn(false);
+			toastContext.showToast({
+				class: { alert: "alert-error", closeBtn: "btn-error" },
+				description: res.err.message ?? "Unable to login as guest",
+				title: "Guest login failed",
+			});
 			return;
 		}
 

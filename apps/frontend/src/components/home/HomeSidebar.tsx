@@ -13,6 +13,7 @@ import {
 import { createSignal, For, Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { useChatContext } from "~/context/ChatContextProvider";
+import { useToastContext } from "~/context/ToastContextProvider";
 import createChatsHistory from "~/hooks/rpc/history/createChatsHistory";
 import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { routes } from "~/RouteManifest";
@@ -43,6 +44,8 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 	const {
 		chat: [_, setChat],
 	} = useChatContext();
+
+	const toast = useToastContext();
 
 	const [isSidebarHiddenInDesktopMode, setIsSidebarHiddenInDesktopMode] =
 		createSignal(false);
@@ -82,8 +85,16 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 		const res = await ChatRpc.post({ title: getNewChatName() });
 		console.log(res);
 
-		// TODO: Add error toast
-		if (!res.success) return;
+		if (!res.success) {
+			toast.showToast({
+				class: { alert: "alert-error", closeBtn: "btn-error" },
+				description:
+					res.err.message ??
+					"An unexpected error occurred while creating the chat.",
+				title: "Failed to create chat",
+			});
+			return;
+		}
 
 		await revalidateChatData();
 
