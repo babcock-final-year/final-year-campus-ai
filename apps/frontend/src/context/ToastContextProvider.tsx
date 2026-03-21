@@ -46,6 +46,7 @@ export function ToastProvider(props: { children: JSXElement }) {
 			}}
 		>
 			<Toast.Region duration={3000}>
+				{/*TODO: add slide in and slide out anims alongside the swipe anim*/}
 				<Toast.List class="toast toast-top toast-end [data-swipe=move]:translate-x-(--kb-toast-swipe-move-x)" />
 			</Toast.Region>
 			{props.children}
