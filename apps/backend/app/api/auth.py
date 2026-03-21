@@ -233,7 +233,7 @@ def google_auth():
     data = request.context.json
     try:
         idinfo = id_token.verify_oauth2_token(
-            data.token, google_requests.Request(), os.environ.get("GOOGLE_CLIENT_ID")
+            data.credential, google_requests.Request(), os.environ.get("GOOGLE_CLIENT_ID")
         )
 
         user = User.query.filter_by(email=idinfo["email"]).first()

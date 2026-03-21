@@ -32,7 +32,7 @@ class UserLoginRequest(BaseModel):
 
 
 class GoogleAuthRequest(BaseModel):
-    token: str
+    credential: str
 
 
 # Auth schema (Outgoing)
