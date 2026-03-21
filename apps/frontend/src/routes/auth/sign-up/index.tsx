@@ -4,16 +4,10 @@ import {
 	Form,
 	type SubmitEventHandler,
 } from "@formisch/solid";
-import { Link } from "@kobalte/core/link";
-import { A, useNavigate } from "@solidjs/router";
-import {
-	HatGlasses,
-	LockKeyhole,
-	Mail,
-	RotateCcwKey,
-	UserRoundPlus,
-} from "lucide-solid";
-import { createSignal } from "solid-js";
+import { A, useNavigate, useSearchParams } from "@solidjs/router";
+import { LockKeyhole, Mail, RotateCcwKey, UserRoundPlus } from "lucide-solid";
+import { createMemo, createSignal, onMount } from "solid-js";
+import * as v from "valibot";
 import FieldTextInput from "~/components/form/FieldTextInput";
 import BaseButton from "~/components/ui/button/BaseButton";
 import GoogleLoginButton from "~/components/ui/button/GoogleLoginButton";
@@ -22,6 +16,11 @@ import AppLogo from "~/components/ui/svg/AppLogo";
 import { useAuth } from "~/context/AuthContextProvider";
 import { useToastContext } from "~/context/ToastContextProvider";
 import { SignUpCredentialsSchema } from "~/models/credentials";
+import {
+	type SignUpSearchParamsInput,
+	type SignUpSearchParamsOutput,
+	SignUpSearchParamsSchema,
+} from "~/models/sign-up-search-params.schemas";
 import { routes } from "~/RouteManifest";
 import AuthRpc from "~/rpc/auth";
 
@@ -32,6 +31,11 @@ function SignUpForm() {
 	const authContext = useAuth();
 	const toastContext = useToastContext();
 	const navigate = useNavigate();
+	const [_searchParams] = useSearchParams<SignUpSearchParamsInput>();
+
+	const searchParams = createMemo<SignUpSearchParamsOutput>(() =>
+		v.parse(SignUpSearchParamsSchema, _searchParams),
+	);
 
 	const signUpForm = createForm({
 		initialInput: { confirmPass: "", email: "", pass: "", username: "" },
@@ -72,6 +76,16 @@ function SignUpForm() {
 
 		navigate(routes().auth.signUp.success.index);
 	};
+
+	onMount(() => {
+		if (searchParams().verification_expired) {
+			toastContext.showToast({
+				class: { alert: "alert-error" },
+				description: "Verification url expired. Please try signing up again.",
+				title: "Verification Expired",
+			});
+		}
+	});
 
 	return (
 		<Form
