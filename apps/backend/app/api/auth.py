@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 
-from flask import current_app, jsonify, request
+from flask import current_app, jsonify, redirect, request
 from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
@@ -111,7 +111,10 @@ def confirm(token):
 
     if user is None:
         logger.warning("Email confirmation failed: Invalid or expired token")
-        abort_bad_request("Invalid or expired link")
+        frontend = current_app.config.get("BASE_URL", "http://localhost:3030")
+        login_path = current_app.config.get("FRONTEND_LOGIN_PATH", "/sign-up")
+        redirect_url = f"{frontend.rstrip('/')}{login_path}?invalid=2"
+        return redirect(redirect_url)
 
     if user.is_confirmed:
         logger.info(
@@ -121,8 +124,12 @@ def confirm(token):
 
     if user.confirm_email(token):
         db.session.commit()
+
         logger.info(f"Email confirmed successfully for user: {user.email} (ID: {user.id})")
-        return jsonify({"message": "Account confirmed successfully"}), 200
+        frontend = current_app.config.get("BASE_URL", "http://localhost:3030")
+        login_path = current_app.config.get("FRONTEND_LOGIN_PATH", "/sign-up")
+        redirect_url = f"{frontend.rstrip('/')}{login_path}?confirmed=1"
+        return redirect(redirect_url)
 
     logger.warning(
         f"Email confirmation failed for user: {user.email} (ID: {user.id}) - Token verification failed"
