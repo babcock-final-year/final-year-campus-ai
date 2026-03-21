@@ -109,3 +109,25 @@ def post_message(chat_id, current_user=None):
 
     resp = ChatMessageResponse.model_validate(assistant_msg).model_dump()
     return jsonify(resp), 201
+
+
+@api.route("/chat/<chat_id>", methods=["DELETE"])
+@jwt_required()
+def delete_chat(chat_id):
+    """Delete a chat and its messages. Only the chat owner may delete."""
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    if not user:
+        abort_not_found("User not found")
+
+    chat = Chat.query.get(chat_id)
+    if not chat:
+        abort_not_found("Chat not found")
+
+    if chat.user_id != user.id:
+        abort_forbidden("You are not allowed to delete this chat")
+
+    db.session.delete(chat)
+    db.session.commit()
+    logger.info(f"Deleted chat {chat_id} for user {user.id}")
+    return jsonify({"message": "Chat deleted"}), 200

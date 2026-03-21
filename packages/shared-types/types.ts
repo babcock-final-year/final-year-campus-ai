@@ -14,6 +14,7 @@ export interface AuthResponse {
 export interface UserBase {
 	id: string;
 	full_name: string;
+	username?: string | null;
 	email?: string | null;
 	is_guest: boolean;
 	matric_no?: string | null;

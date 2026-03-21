@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 
-from flask import current_app, jsonify, redirect, request
+from flask import abort, current_app, jsonify, redirect, request
 from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
@@ -78,22 +78,28 @@ def register():
 
     user.password = data.password
 
-    db.session.add(user)
-    db.session.commit()
+    try:
+        db.session.add(user)
+        db.session.flush()
 
-    token = user.generate_confirmation_token()
+        token = user.generate_confirmation_token()
 
-    base = current_app.config.get("BASE_URL", "http://localhost:5000")
-    confirm_url = f"{base}/api/v1/auth/confirm/{token}"
+        base = current_app.config.get("BASE_URL", "http://localhost:5000")
+        confirm_url = f"{base}/api/v1/auth/confirm/{token}"
 
-    send_email(
-        user.email,
-        "Confirm Your Account",
-        "auth/email/confirm",
-        user=user,
-        token=token,
-        confirm_url=confirm_url,
-    )
+        send_email(
+            user.email,
+            "Confirm Your Account",
+            "auth/email/confirm",
+            user=user,
+            token=token,
+            confirm_url=confirm_url,
+        )
+
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        abort(500, "Failed to send verification email.")
 
     logger.info(f"New user registered: {user.email} (ID: {user.id})")
     return jsonify(
