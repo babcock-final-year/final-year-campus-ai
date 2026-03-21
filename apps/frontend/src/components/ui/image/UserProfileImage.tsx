@@ -1,6 +1,6 @@
 import { Image } from "@kobalte/core/image";
 import clsx from "clsx/lite";
-import { type JSXElement, Show } from "solid-js";
+import { type JSXElement, Show, Suspense } from "solid-js";
 import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { getCapitalizedWordInitials } from "~/utils/string";
 import type { _ImageProps } from "./_shared";
@@ -15,14 +15,16 @@ export default function UserProfileImage(props: UserProfileImageProps) {
 
 	return (
 		<Image class={clsx("avatar", props.class?.wrapper)}>
-			<Show when={userProfile().avatar_url}>
-				{(url) => (
-					<Image.Img
-						class={clsx("rounded-full", props.class?.img)}
-						src={url()}
-					/>
-				)}
-			</Show>
+			<Suspense>
+				<Show when={userProfile().avatar_url}>
+					{(url) => (
+						<Image.Img
+							class={clsx("rounded-full", props.class?.img)}
+							src={url()}
+						/>
+					)}
+				</Show>
+			</Suspense>
 
 			{/* TODO: fetch the user's name and use their intials to build this */}
 			<Image.Fallback
@@ -31,7 +33,9 @@ export default function UserProfileImage(props: UserProfileImageProps) {
 					props.class?.fallback,
 				)}
 			>
-				{getCapitalizedWordInitials(userProfile().full_name)}
+				<Suspense fallback="FO">
+					{getCapitalizedWordInitials(userProfile().full_name)}
+				</Suspense>
 			</Image.Fallback>
 
 			{props.cornerBtn}
