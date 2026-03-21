@@ -5,7 +5,6 @@ import {
 	type SubmitEventHandler,
 	setInput,
 } from "@formisch/solid";
-import { revalidate } from "@solidjs/router";
 import { Camera, IdCard, UserRound } from "lucide-solid";
 import HomeMainAreaHeader from "~/components/chat/ChatMainAreaHeader";
 import FieldTextInput from "~/components/form/FieldTextInput";
@@ -15,6 +14,7 @@ import UserProfileImage from "~/components/ui/image/UserProfileImage";
 import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { UserUpdateRequestSchema } from "~/models/users.schemas";
 import AuthRpc from "~/rpc/auth";
+import { revalidateUserData } from "~/rpc/revalidate-query";
 import UsersRpc from "~/rpc/users";
 
 export default function EditProfileInterfacePage() {
@@ -39,8 +39,7 @@ export default function EditProfileInterfacePage() {
 		const res = await UsersRpc.put(user.id, formData);
 
 		if (res.success) {
-			await revalidate(UsersRpc.get.key);
-			await revalidate(AuthRpc.me.get.key);
+			await revalidateUserData();
 		}
 	};
 

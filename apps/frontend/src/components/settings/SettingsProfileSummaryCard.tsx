@@ -1,9 +1,9 @@
 import { Link } from "@kobalte/core/link";
-import { revalidate } from "@solidjs/router";
 import clsx from "clsx/lite";
 import { Camera, Dot } from "lucide-solid";
 import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { routes } from "~/RouteManifest";
+import { revalidateUserData } from "~/rpc/revalidate-query";
 import UsersRpc from "~/rpc/users";
 import { getCapitalizedWordInitials } from "~/utils/string";
 import UploadImageButton from "../ui/button/UploadImageButton";
@@ -32,7 +32,7 @@ export default function SettingsProfileSummaryCard(props: { class?: string }) {
 							const user = userProfile();
 							if (!user?.id) return;
 							await UsersRpc.put(user.id, { avatar_url: url });
-							await revalidate(UsersRpc.get.key);
+							await revalidateUserData();
 						}}
 					>
 						<Camera />

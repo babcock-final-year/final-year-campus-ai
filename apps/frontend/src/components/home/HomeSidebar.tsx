@@ -1,5 +1,4 @@
 import { Link } from "@kobalte/core/link";
-import { revalidate } from "@solidjs/router";
 import clsx from "clsx/lite";
 import Drawer from "corvu/drawer";
 import {
@@ -19,6 +18,7 @@ import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { routes } from "~/RouteManifest";
 import ChatRpc from "~/rpc/chat";
 import HistoryRpc from "~/rpc/history";
+import { revalidateChatData } from "~/rpc/revalidate-query";
 import BaseButton from "../ui/button/BaseButton";
 import UserProfileImage from "../ui/image/UserProfileImage";
 import AppLogo from "../ui/svg/AppLogo";
@@ -85,7 +85,7 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 		// TODO: Add error toast
 		if (!res.success) return;
 
-		await revalidate(HistoryRpc.chats.get.key);
+		await revalidateChatData();
 
 		setChat(res.res);
 	}
