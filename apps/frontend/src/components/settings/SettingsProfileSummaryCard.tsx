@@ -30,7 +30,6 @@ export default function SettingsProfileSummaryCard(props: { class?: string }) {
 						class="btn-circle btn-sm absolute -right-1 -bottom-1 p-1.5"
 						onUpload={async (url: string) => {
 							const user = userProfile();
-							if (!user?.id) return;
 							await UsersRpc.put(user.id, { avatar_url: url });
 							await revalidateUserData();
 						}}

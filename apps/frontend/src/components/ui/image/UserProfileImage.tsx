@@ -16,7 +16,12 @@ export default function UserProfileImage(props: UserProfileImageProps) {
 	return (
 		<Image class={clsx("avatar", props.class?.wrapper)}>
 			<Show when={userProfile().avatar_url}>
-				{(url) => <Image.Img class={clsx("", props.class?.img)} src={url()} />}
+				{(url) => (
+					<Image.Img
+						class={clsx("rounded-full", props.class?.img)}
+						src={url()}
+					/>
+				)}
 			</Show>
 
 			{/* TODO: fetch the user's name and use their intials to build this */}
