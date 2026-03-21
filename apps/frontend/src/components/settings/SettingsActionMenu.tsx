@@ -11,9 +11,9 @@ import {
 	UserRound,
 } from "lucide-solid";
 import { createMemo, For } from "solid-js";
-import HistoryRpc from "~/rpc/history";
-import AuthRpc from "~/rpc/auth";
 import { routes } from "~/RouteManifest";
+import AuthRpc from "~/rpc/auth";
+import HistoryRpc from "~/rpc/history";
 
 interface ActionMenuItemProps {
 	icon: LucideIcon;
@@ -34,12 +34,12 @@ function ActionMenuItem(props: ActionMenuItemProps) {
 				isErrBtn() ? "btn-error" : "btn-primary",
 			)}
 			end
-			onClick={props.onClick}
 			href={props.route}
 			inactiveClass={clsx(
 				"btn-ghost not-hover:border-base-300 not-hover:bg-secondary",
 				!isErrBtn() && "not-hover:text-neutral",
 			)}
+			onClick={props.onClick}
 		>
 			<props.icon class="size-5 opacity-50" />
 
@@ -55,8 +55,8 @@ function ActionMenuItem(props: ActionMenuItemProps) {
 
 /** Will be to the side on desktop, and a horizontal scollable list on mobile */
 export default function SettingsActionMenu(props: { class?: string }) {
-  const settingsRoutes = routes().home.settings;
-	const navigate = useNavigate()
+	const settingsRoutes = routes().home.settings;
+	const navigate = useNavigate();
 
 	const actionMenuItemProps = [
 		{
@@ -87,15 +87,11 @@ export default function SettingsActionMenu(props: { class?: string }) {
 				try {
 					await HistoryRpc.chats.delete();
 				} catch (e) {
-					// ignore errors; continue to logout
-					// eslint-disable-next-line no-console
 					console.error("Failed to clear chats:", e);
 				}
 				try {
 					await AuthRpc.logout.post();
 				} catch (e) {
-					// ignore logout errors
-					// eslint-disable-next-line no-console
 					console.error("Failed to logout:", e);
 				}
 				navigate(routes().auth.signIn.index);
