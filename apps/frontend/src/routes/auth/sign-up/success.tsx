@@ -1,10 +1,20 @@
 import { A, useNavigate } from "@solidjs/router";
 import { Check } from "lucide-solid";
+import { onCleanup, onMount } from "solid-js";
 import { routes } from "~/RouteManifest";
 
 // Tell the user to
 export default function SignUpSuccessPage() {
 	const navigate = useNavigate();
+
+	onMount(() => {
+		const timeoutId = setTimeout(
+			() => navigate(routes().auth.signIn.index),
+			1000 * 30,
+		);
+
+		onCleanup(() => clearTimeout(timeoutId));
+	});
 
 	return (
 		<main class="grid h-8/10 w-full grid-rows-3 place-items-center gap-8 p-4">
