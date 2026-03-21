@@ -46,9 +46,9 @@ function showRpcError(err: unknown, title = "Request failed") {
 		const toast = useToastContext();
 		const coerced = coerceToError(err);
 		toast.showToast({
-			class: { alert: "alert-error", closeBtn: "btn-error" },
 			description: coerced.message ?? "Unknown error",
 			title,
+			type: "error",
 		});
 	} catch (e) {
 		// If toast context isn't available, log the error. Do not throw.

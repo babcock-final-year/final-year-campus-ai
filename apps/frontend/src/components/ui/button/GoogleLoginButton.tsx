@@ -23,9 +23,9 @@ export default function GoogleLoginButton(props: GoogleLoginButtonProps) {
 		cancel_on_tap_outside: true,
 		onError() {
 			toast.showToast({
-				class: { alert: "alert-error", closeBtn: "btn-error" },
 				description: "An error occurred during Google sign-in.",
 				title: "Google One-Tap Error",
+				type: "error",
 			});
 			console.error("Error on google onetap login");
 			setIsProcessing(false);
@@ -33,9 +33,9 @@ export default function GoogleLoginButton(props: GoogleLoginButtonProps) {
 		async onSuccess({ credential }) {
 			if (!credential) {
 				toast.showToast({
-					class: { alert: "alert-error", closeBtn: "btn-error" },
 					description: "No credential returned from Google.",
 					title: "Google Sign-In Failed",
+					type: "error",
 				});
 				console.error("Couldn't get google one tap credential");
 
@@ -47,9 +47,9 @@ export default function GoogleLoginButton(props: GoogleLoginButtonProps) {
 
 			if (!res.success) {
 				toast.showToast({
-					class: { alert: "alert-error", closeBtn: "btn-error" },
 					description: "Could not sign in with Google. Please try again.",
 					title: "Sign-In Failed",
+					type: "error",
 				});
 				setIsProcessing(false);
 				return;
@@ -68,9 +68,9 @@ export default function GoogleLoginButton(props: GoogleLoginButtonProps) {
 			setIsProcessing(false);
 
 			toast.showToast({
-				class: { alert: "alert-success", closeBtn: "btn-success" },
 				description: "Welcome back!",
 				title: "Signed in",
+				type: "success",
 			});
 
 			navigate(routes().home.chat.index);

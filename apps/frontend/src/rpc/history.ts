@@ -38,9 +38,9 @@ function showRpcError(
 		const toast = useToastContext();
 		const err = coerceToError(e);
 		toast.showToast({
-			class: { alert: "alert-error", closeBtn: "btn-error" },
 			description: err.message ?? fallback,
 			title,
+			type: "error",
 		});
 	} catch (err) {
 		// If toast context isn't available, don't throw - just log.

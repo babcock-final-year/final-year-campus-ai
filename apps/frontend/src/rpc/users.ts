@@ -35,9 +35,9 @@ function tryShowToast(title: string, e: unknown) {
 		const toast = useToastContext();
 		const err = coerceToError(e);
 		toast.showToast({
-			class: { alert: "alert-error", closeBtn: "btn-error" },
 			description: err.message ?? "Unknown error",
 			title,
+			type: "error",
 		});
 	} catch (toastErr) {
 		// If we can't show a toast (no provider / outside reactive root), log to console and continue.

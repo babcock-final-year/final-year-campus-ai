@@ -27,9 +27,9 @@ export default function GuestLoginButton(props: GuestLoginButtonProps) {
 		if (!res.success) {
 			setIsLoggingIn(false);
 			toastContext.showToast({
-				class: { alert: "alert-error", closeBtn: "btn-error" },
 				description: res.err.message ?? "Unable to login as guest",
 				title: "Guest login failed",
+				type: "error",
 			});
 			return;
 		}

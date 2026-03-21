@@ -88,11 +88,11 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 
 		if (!res.success) {
 			toast.showToast({
-				class: { alert: "alert-error", closeBtn: "btn-error" },
 				description:
 					res.err.message ??
 					"An unexpected error occurred while creating the chat.",
 				title: "Failed to create chat",
+				type: "error",
 			});
 			return;
 		}

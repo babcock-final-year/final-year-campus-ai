@@ -1,13 +1,9 @@
-import { createContext, createSignal, type Signal } from "solid-js";
+import { createContext, type Signal } from "solid-js";
 
 interface ShowToastProps {
 	title: string;
 	description?: string;
-	class?: {
-		/** Alert class like `alert-error` */
-		alert?: string;
-		closeBtn?: string;
-	};
+	type: "success" | "error";
 }
 
 interface ToastContextData {

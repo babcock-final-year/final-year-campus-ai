@@ -56,9 +56,9 @@ function SignInForm() {
 			setIsLoggingIn(false);
 
 			toast.showToast({
-				class: { alert: "alert-error", closeBtn: "btn-error" },
 				description: String(res.err ?? "Unknown error"),
 				title: "Sign in failed",
+				type: "error",
 			});
 			return;
 		}

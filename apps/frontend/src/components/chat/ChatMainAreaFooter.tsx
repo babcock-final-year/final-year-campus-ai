@@ -36,9 +36,9 @@ export default function ChatMainAreaFooter() {
 
 		if (!refreshedChatRes.success) {
 			toast.showToast({
-				class: { alert: "alert-error", closeBtn: "btn-error" },
 				description: refreshedChatRes.err.message ?? "Unknown error",
 				title: "Failed to send chat message",
+				type: "error",
 			});
 			console.error("Failed to send chat message:", refreshedChatRes.err);
 			setIsSending(false);
@@ -55,9 +55,9 @@ export default function ChatMainAreaFooter() {
 		} else {
 			// show error toast
 			toast.showToast({
-				class: { alert: "alert-error", closeBtn: "btn-error" },
 				description: res.err.message ?? "Unknown error",
 				title: "Failed to send chat message",
+				type: "error",
 			});
 			console.error("Failed to send chat message:", res.err);
 		}

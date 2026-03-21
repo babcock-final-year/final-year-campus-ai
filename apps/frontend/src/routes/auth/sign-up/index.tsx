@@ -56,10 +56,10 @@ function SignUpForm() {
 		// Show error toast on failure
 		if (!res.success) {
 			toastContext.showToast({
-				class: { alert: "alert-error", closeBtn: "btn-error" },
 				description:
 					res.err.message ?? "Unable to create account. Please try again.",
 				title: "Registration failed",
+				type: "error",
 			});
 
 			setIsRegistering(false);
@@ -80,9 +80,9 @@ function SignUpForm() {
 	onMount(() => {
 		if (searchParams().verification_expired) {
 			toastContext.showToast({
-				class: { alert: "alert-error" },
 				description: "Verification url expired. Please try signing up again.",
 				title: "Verification Expired",
+				type: "error",
 			});
 		}
 	});
