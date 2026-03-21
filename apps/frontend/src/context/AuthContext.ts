@@ -13,11 +13,11 @@ interface AuthContextData {
 
 export const AuthContext = createContext<AuthContextData>({
 	accessToken() {
-		return null;
+		return sessionStorage.getItem("accessToken");
 	},
 	async logout() {},
 	refreshToken() {
-		return null;
+		return sessionStorage.getItem("refreshToken");
 	},
 	setAccessToken() {},
 	setRefreshToken() {},
