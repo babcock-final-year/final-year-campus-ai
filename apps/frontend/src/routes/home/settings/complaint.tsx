@@ -10,12 +10,12 @@ import {
 import FieldTextInput from "~/components/form/FieldTextInput";
 import BaseButton from "~/components/ui/button/BaseButton";
 import LimitCounter from "~/components/ui/indicator/LimitCounter";
-import ComplaintRpc from "~/rpc/complaint";
 import {
 	FILE_COMPLAINT_FORM_DESCRIPTION_MAX_LENGTH,
 	FILE_COMPLAINT_FORM_TITLE_MAX_LENGTH,
 	FileComplaintFormSchema,
 } from "~/models/file-complaint-form";
+import ComplaintRpc from "~/rpc/complaint";
 
 export default function SettingsInterfaceComplaintPage() {
 	const fileComplaintForm = createForm({
@@ -26,6 +26,10 @@ export default function SettingsInterfaceComplaintPage() {
 
 	// TODO: display a success toast and clear the form
 	// TODO: add a place where users can view their complaints.
+	const toast = useToastContext();
+
+	let form!: HTMLFormElement;
+
 	const handleSubmitFileComplaintForm: SubmitEventHandler<
 		typeof FileComplaintFormSchema
 	> = async (formData, _) => {
@@ -33,13 +37,21 @@ export default function SettingsInterfaceComplaintPage() {
 		// formData shape matches FileComplaintFormSchema: { title, description }
 		try {
 			const res = await ComplaintRpc.post({
-				title: formData.title,
 				description: formData.description,
+				title: formData.title,
 			});
 
 			if (res.success) {
 				// Reset the form on success.
 				reset(fileComplaintForm);
+				form.reset();
+
+				toast.showToast({
+					class: { alert: "alert-success", closeBtn: "btn-success" },
+					description:
+						"Thank you. We've received your report and will review it shortly.",
+					title: "Complaint submitted",
+				});
 			} else {
 				// eslint-disable-next-line no-console
 				console.error("Failed to submit complaint:", res.err);
@@ -56,6 +68,7 @@ export default function SettingsInterfaceComplaintPage() {
 			class="flex size-full flex-col rounded-box border border-base-300 bg-secondary p-4"
 			of={fileComplaintForm}
 			onSubmit={handleSubmitFileComplaintForm}
+			ref={form}
 		>
 			<h2 class="font-semibold">File Complaint</h2>
 			<div class="divider my-2" />
@@ -111,11 +124,20 @@ export default function SettingsInterfaceComplaintPage() {
 				</Field>
 
 				<div class="flex gap-4">
-					<BaseButton class="btn-primary" type="submit">
-						Send Report
+					<BaseButton
+						class="btn-primary"
+						disabled={fileComplaintForm.isSubmitting}
+						type="submit"
+					>
+						{fileComplaintForm.isSubmitting ? (
+							<div class="loading loading-spinner" />
+						) : (
+							"Send Report"
+						)}
 					</BaseButton>
 					<BaseButton
 						class="btn-ghost"
+						disabled={fileComplaintForm.isSubmitting}
 						onClick={() => reset(fileComplaintForm)}
 						type="reset"
 					>
