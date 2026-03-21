@@ -8,7 +8,7 @@ import {
 } from "@formisch/solid";
 import { useNavigate } from "@solidjs/router";
 import { Camera, IdCard, Image, UserRound } from "lucide-solid";
-import { createEffect } from "solid-js";
+import { createEffect, Suspense } from "solid-js";
 import HomeMainAreaHeader from "~/components/chat/ChatMainAreaHeader";
 import FieldTextInput from "~/components/form/FieldTextInput";
 import BaseButton from "~/components/ui/button/BaseButton";
@@ -29,10 +29,10 @@ export default function EditProfileInterfacePage() {
 
 	const editProfileForm = createForm({
 		initialInput: {
-			avatar_url: userProfile().avatar_url,
-			full_name: userProfile().full_name,
-			matric_no: userProfile().matric_no,
-			username: userProfile().username,
+			avatar_url: userProfile.latest.avatar_url,
+			full_name: userProfile.latest.full_name,
+			matric_no: userProfile.latest.matric_no,
+			username: userProfile.latest.username,
 		},
 		schema: UserUpdateRequestSchema,
 	});
@@ -41,7 +41,7 @@ export default function EditProfileInterfacePage() {
 	const onSubmitEditProfileForm: SubmitEventHandler<
 		typeof UserUpdateRequestSchema
 	> = async (formData, _) => {
-		const user = userProfile();
+		const user = userProfile.latest;
 
 		const res = await UsersRpc.put(user.id, formData);
 
@@ -68,33 +68,33 @@ export default function EditProfileInterfacePage() {
 	createEffect(() => {
 		(
 			document.querySelector(`input[name='["avatar_url"]']`) as HTMLInputElement
-		).value = userProfile()?.avatar_url || "";
+		).value = userProfile.latest.avatar_url || "";
 		setInput(editProfileForm, {
-			input: userProfile()?.avatar_url || "",
+			input: userProfile.latest.avatar_url || "",
 			path: ["avatar_url"],
 		});
 
 		(
 			document.querySelector(`input[name='["full_name"]']`) as HTMLInputElement
-		).value = userProfile()?.full_name || "";
+		).value = userProfile.latest.full_name || "";
 		setInput(editProfileForm, {
-			input: userProfile()?.full_name || "",
+			input: userProfile.latest.full_name || "",
 			path: ["full_name"],
 		});
 
 		(
 			document.querySelector(`input[name='["matric_no"]']`) as HTMLInputElement
-		).value = userProfile()?.matric_no || "";
+		).value = userProfile.latest.matric_no || "";
 		setInput(editProfileForm, {
-			input: userProfile()?.matric_no || "",
+			input: userProfile.latest.matric_no || "",
 			path: ["matric_no"],
 		});
 
 		(
 			document.querySelector(`input[name='["username"]']`) as HTMLInputElement
-		).value = userProfile()?.username || "";
+		).value = userProfile.latest.username || "";
 		setInput(editProfileForm, {
-			input: userProfile()?.username || "",
+			input: userProfile.latest.username || "",
 			path: ["username"],
 		});
 	});
@@ -109,21 +109,23 @@ export default function EditProfileInterfacePage() {
 				onSubmit={onSubmitEditProfileForm}
 			>
 				<div class="flex h-28 justify-center gap-8 sm:h-32 sm:justify-start">
-					<UserProfileImage
-						class={{
-							fallback: "text-3xl",
-							wrapper:
-								"row-span-3 aspect-square h-24 place-self-center rounded-full shadow-lg outline-3 outline-base-100 sm:h-28",
-						}}
-						cornerBtn={
-							<UploadImageButton
-								class="btn-circle btn-sm absolute -right-1 -bottom-1 p-1.5"
-								onUpload={onAvatarUpload}
-							>
-								<Camera />
-							</UploadImageButton>
-						}
-					/>
+					<Suspense>
+						<UserProfileImage
+							class={{
+								fallback: "text-3xl",
+								wrapper:
+									"row-span-3 aspect-square h-24 place-self-center rounded-full shadow-lg outline-3 outline-base-100 sm:h-28",
+							}}
+							cornerBtn={
+								<UploadImageButton
+									class="btn-circle btn-sm absolute -right-1 -bottom-1 p-1.5"
+									onUpload={onAvatarUpload}
+								>
+									<Camera />
+								</UploadImageButton>
+							}
+						/>
+					</Suspense>
 
 					<div class="hidden h-full flex-col justify-center gap-2 sm:flex">
 						<h2 class="font-semibold text-lg">Profile Photo</h2>

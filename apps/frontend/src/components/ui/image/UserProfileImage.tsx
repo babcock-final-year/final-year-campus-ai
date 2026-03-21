@@ -16,7 +16,7 @@ export default function UserProfileImage(props: UserProfileImageProps) {
 	return (
 		<Image class={clsx("avatar", props.class?.wrapper)}>
 			<Suspense>
-				<Show when={userProfile().avatar_url}>
+				<Show when={userProfile.latest.avatar_url}>
 					{(url) => (
 						<Image.Img
 							class={clsx("rounded-full", props.class?.img)}
@@ -26,7 +26,6 @@ export default function UserProfileImage(props: UserProfileImageProps) {
 				</Show>
 			</Suspense>
 
-			{/* TODO: fetch the user's name and use their intials to build this */}
 			<Image.Fallback
 				class={clsx(
 					"grid size-full place-items-center rounded-full bg-base-300",
@@ -34,7 +33,7 @@ export default function UserProfileImage(props: UserProfileImageProps) {
 				)}
 			>
 				<Suspense fallback="FO">
-					{getCapitalizedWordInitials(userProfile().full_name)}
+					{getCapitalizedWordInitials(userProfile.latest.full_name)}
 				</Suspense>
 			</Image.Fallback>
 

@@ -11,7 +11,7 @@ import {
 	PanelLeftOpen,
 	Settings,
 } from "lucide-solid";
-import { createSignal, For, Show } from "solid-js";
+import { createSignal, For, Show, Suspense } from "solid-js";
 import { Dynamic } from "solid-js/web";
 import { useChatContext } from "~/context/ChatContextProvider";
 import { useToastContext } from "~/context/ToastContextProvider";
@@ -33,7 +33,7 @@ const NEW_CHAT_NAMES = [
 
 function getNewChatName() {
 	return (
-		NEW_CHAT_NAMES[(NEW_CHAT_NAMES.length - 1) * Math.random()] ??
+		NEW_CHAT_NAMES[Math.round((NEW_CHAT_NAMES.length - 1) * Math.random())] ??
 		NEW_CHAT_NAMES[0]
 	);
 }
@@ -149,27 +149,29 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 					<h3 class="px-4 text-sm">Recent Chats</h3>
 
 					<ul class="menu w-full px-0">
-						<For each={chatHistory()?.chats}>
-							{(chat) => (
-								<li class="w-full">
-									<BaseButton
-										class="btn-secondary btn-ghost group w-full justify-start gap-2 text-left font-normal"
-										onClick={async () => {
-											const res = await ChatRpc.get(chat.id);
+						<Suspense>
+							<For each={chatHistory.latest?.chats}>
+								{(chat) => (
+									<li class="w-full">
+										<BaseButton
+											class="btn-secondary btn-ghost group w-full justify-start gap-2 text-left font-normal"
+											onClick={async () => {
+												const res = await ChatRpc.get(chat.id);
 
-											if (!res.success) return;
+												if (!res.success) return;
 
-											setChat(res.res);
+												setChat(res.res);
 
-											navigate(routes().home.chat.index);
-										}}
-									>
-										<span class="grow truncate">{chat.title}</span>
-										<Ellipsis class="hidden min-w-6 group-hover:block" />
-									</BaseButton>
-								</li>
-							)}
-						</For>
+												navigate(routes().home.chat.index);
+											}}
+										>
+											<span class="grow truncate">{chat.title}</span>
+											<Ellipsis class="hidden min-w-6 group-hover:block" />
+										</BaseButton>
+									</li>
+								)}
+							</For>
+						</Suspense>
 					</ul>
 				</div>
 
@@ -197,19 +199,21 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 
 				{/* User profile shortcut */}
 				<div class="grid grid-cols-[3rem_1fr] grid-rows-2 place-content-center gap-x-4 px-2 contain-content">
-					<UserProfileImage
-						class={{
-							fallback: "bg-secondary/25 font-semibold text-secondary",
-							wrapper: "col-start-1 row-span-2 aspect-square h-auto w-full",
-						}}
-					/>
+					<Suspense>
+						<UserProfileImage
+							class={{
+								fallback: "bg-secondary/25 font-semibold text-secondary",
+								wrapper: "col-start-1 row-span-2 aspect-square h-auto w-full",
+							}}
+						/>
+					</Suspense>
 
 					<h3 class="col-start-2 row-start-1 truncate font-semibold text-secondary">
-						{userProfile().full_name}
+						<Suspense>{userProfile.latest.full_name}</Suspense>
 					</h3>
 
 					<p class="col-start-2 row-start-2 truncate text-secondary opacity-25">
-						{userProfile().email}
+						<Suspense>{userProfile.latest.email}</Suspense>
 					</p>
 				</div>
 			</Show>

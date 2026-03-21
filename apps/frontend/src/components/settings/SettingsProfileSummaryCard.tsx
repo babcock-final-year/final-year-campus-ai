@@ -1,6 +1,7 @@
 import { Link } from "@kobalte/core/link";
 import clsx from "clsx/lite";
 import { Camera, Dot } from "lucide-solid";
+import { Suspense } from "solid-js";
 import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { routes } from "~/RouteManifest";
 import { revalidateUserData } from "~/rpc/revalidate-query";
@@ -29,7 +30,7 @@ export default function SettingsProfileSummaryCard(props: { class?: string }) {
 					<UploadImageButton
 						class="btn-circle btn-sm absolute -right-1 -bottom-1 p-1.5"
 						onUpload={async (url: string) => {
-							const user = userProfile();
+							const user = userProfile.latest;
 							await UsersRpc.put(user.id, { avatar_url: url });
 							await revalidateUserData();
 						}}
@@ -40,12 +41,14 @@ export default function SettingsProfileSummaryCard(props: { class?: string }) {
 			/>
 
 			<h2 class="col-start-2 flex items-center truncate font-semibold text-xl md:text-2xl">
-				{userProfile().full_name}
+				<Suspense>{userProfile.latest.full_name}</Suspense>
 			</h2>
 
 			<p class="col-start-2 row-start-2 flex opacity-75">
-				{userProfile().username}
-				<Dot /> {userProfile().matric_no}
+				<Suspense>
+					{userProfile.latest.username}
+					<Dot /> {userProfile.latest.matric_no}
+				</Suspense>
 			</p>
 
 			<div class="mt-1 flex size-full items-center">
