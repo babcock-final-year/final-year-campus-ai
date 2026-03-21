@@ -1,13 +1,13 @@
-import os
-from typing import List
+from langchain_core.callbacks import BaseCallbackHandler
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import PromptTemplate
+from langchain_core.runnables import RunnablePassthrough
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_groq import ChatGroq
-from langchain_core.prompts import PromptTemplate
-from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnablePassthrough
-from langchain_core.callbacks import BaseCallbackHandler
+
+from config import GEMINI_API_KEY, GEMINI_LLM_MODEL, GROQ_API_KEY, GROQ_LLM_MODEL, PROMPT_PATH
+
 from ...services.logger import get_logger
-from config import GEMINI_LLM_MODEL, GEMINI_API_KEY, GROQ_LLM_MODEL, GROQ_API_KEY, PROMPT_PATH
 
 logger = get_logger(__name__)
 
@@ -15,6 +15,7 @@ logger = get_logger(__name__)
 # os.environ["GROQ_API_KEY"] = GROQ_API_KEY
 # os.environ["GOOGLE_MODEL_NAME"] = GEMINI_LLM_MODEL
 # os.environ["GROQ_LLM_MODEL"] = GROQ_LLM_MODEL
+
 
 class FallbackLoggingHandler(BaseCallbackHandler):
     """Custom handler to log when the primary LLM fails and fallback triggers."""
@@ -42,7 +43,9 @@ class LLM:
         )
 
         # Fallback LLM (Groq)
-        self.fallback_llm = ChatGroq(model_name=GROQ_LLM_MODEL, api_key=GROQ_API_KEY, temperature=0.2)
+        self.fallback_llm = ChatGroq(
+            model_name=GROQ_LLM_MODEL, api_key=GROQ_API_KEY, temperature=0.2
+        )
 
         # Chain
         self.llm_chain = self.primary_llm.with_fallbacks([self.fallback_llm]).with_config(
@@ -55,13 +58,15 @@ class LLM:
         Falls back to a minimal template when file loading fails.
         """
         try:
-            return PromptTemplate.from_file(self.prompt_path)
+            with open(self.prompt_path, encoding="utf-8") as f:
+                template = f.read()
+            return PromptTemplate.from_template(template)
         except Exception as e:
             logger.error(f"Error loading prompt template from {self.prompt_path}: {str(e)}")
             # Fallback hardcoded prompt if file loading fails
-            return PromptTemplate.from_template("Context: {context}\n\nQuestion: {question}\n\n")
+            return PromptTemplate.from_template("Context: {context}\n\nQuery: {query}\n\n")
 
-    def _format_docs(self, docs: List[str]) -> str:
+    def _format_docs(self, docs: list[str]) -> str:
         """Merge retrieved Document chunks into a single string for the prompt."""
         return "\n\n".join(doc.page_content for doc in docs)
 
