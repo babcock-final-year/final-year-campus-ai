@@ -36,7 +36,7 @@ class Config:
     CORS_HEADERS = "Content-Type"
 
     # App-specific settings
-    BASE_URL = os.environ.get("BASE_URL") or "http://localhost:5000"
+    BASE_URL = os.environ.get("BASE_URL") or "http://localhost:3030"
     CONFIRM_TOKEN_EXPIRES = int(os.environ.get("CONFIRM_TOKEN_EXPIRES") or 3600)
     RESET_TOKEN_EXPIRES = int(os.environ.get("RESET_TOKEN_EXPIRES") or 3600)
     EMAIL_CHANGE_TOKEN_EXPIRES = int(os.environ.get("EMAIL_CHANGE_TOKEN_EXPIRES") or 3600)

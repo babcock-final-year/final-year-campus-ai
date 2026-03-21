@@ -27,6 +27,7 @@ out/
 build
 dist
 .vscode
+.rmv/
 
 
 # Debug
@@ -48,4 +49,3 @@ data/
 *.db
 uploads/
 chroma_db/
-public/*.png

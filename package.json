@@ -11,7 +11,9 @@
 	},
 	"lint-staged": {
 		"*.{ts,tsx,css,json}": "biome check --write",
-		"apps/backend/**/*.py": "./scripts/lint-and-format-backend.sh"
+		"apps/backend/**/*.py": [
+			"bash ./scripts/lint-and-format-backend.sh"
+		]
 	},
 	"name": "final-year-campus-ai",
 	"packageManager": "bun@1.3.6",
