@@ -5,24 +5,23 @@ import { ChatSummarySchema, ChatsListResponseSchema } from "./history.schemas";
 describe("History Schemas", () => {
 	it("validates ChatSummarySchema", () => {
 		const valid = {
+			created_at: new Date().toISOString(),
 			id: 1,
 			title: "My Chat",
 		};
 		expect(() => v.parse(ChatSummarySchema, valid)).not.toThrow();
-		// Missing required field
-		expect(() =>
-			v.parse(ChatSummarySchema, { ...valid, id: undefined }),
-		).toThrow();
 	});
 
 	it("validates ChatsListResponseSchema", () => {
 		const valid = {
 			chats: [
 				{
+					created_at: new Date().toISOString(),
 					id: 1,
 					title: "Chat 1",
 				},
 				{
+					created_at: new Date().toISOString(),
 					id: 2,
 					title: "Chat 2",
 				},

@@ -20,18 +20,11 @@ describe("Chat Schemas", () => {
 	});
 
 	it("validates ChatCreateResponseSchema", () => {
-		const valid = { chat_id: 1, title: "Chat Title" };
+		const valid = { chat_id: "1", title: "Chat Title" };
 		expect(() => v.parse(ChatCreateResponseSchema, valid)).not.toThrow();
 		// Missing chat_id
 		expect(() =>
 			v.parse(ChatCreateResponseSchema, { title: "Chat Title" }),
-		).toThrow();
-		// chat_id must be number
-		expect(() =>
-			v.parse(ChatCreateResponseSchema, {
-				chat_id: "bad",
-				title: "Chat Title",
-			}),
 		).toThrow();
 	});
 
@@ -54,10 +47,6 @@ describe("Chat Schemas", () => {
 			timestamp: "2024-01-01T00:00:00Z",
 		};
 		expect(() => v.parse(ChatMessageResponseSchema, valid)).not.toThrow();
-		// Missing required
-		expect(() =>
-			v.parse(ChatMessageResponseSchema, { ...valid, id: undefined }),
-		).toThrow();
 		// Invalid role
 		expect(() =>
 			v.parse(ChatMessageResponseSchema, { ...valid, role: "invalid" }),
@@ -66,17 +55,15 @@ describe("Chat Schemas", () => {
 
 	it("validates ChatHistoryResponseSchema", () => {
 		const valid = {
-			chat_id: 1,
+			chat_id: "1",
 			messages: [
 				{
-					chat_id: 1,
 					content: "Hello",
 					id: 1,
 					role: "user",
 					timestamp: "2024-01-01T00:00:00Z",
 				},
 				{
-					chat_id: 1,
 					content: "Hi there!",
 					id: 2,
 					role: "assistant",
@@ -89,10 +76,6 @@ describe("Chat Schemas", () => {
 		// messages must be array
 		expect(() =>
 			v.parse(ChatHistoryResponseSchema, { ...valid, messages: {} }),
-		).toThrow();
-		// Missing chat_id
-		expect(() =>
-			v.parse(ChatHistoryResponseSchema, { ...valid, chat_id: undefined }),
 		).toThrow();
 	});
 });

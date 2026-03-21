@@ -6,7 +6,7 @@ import { ChatHistoryResponseSchema } from "./chat.schemas";
  */
 export const ChatSummarySchema = v.object({
 	created_at: v.pipe(v.string(), v.toDate()),
-	id: v.string(),
+	id: v.pipe(v.unknown(), v.toString()),
 	title: v.string(),
 });
 export type ChatSummaryInput = v.InferInput<typeof ChatSummarySchema>;

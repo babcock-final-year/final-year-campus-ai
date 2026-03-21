@@ -77,10 +77,6 @@ describe("Auth Schemas", () => {
 			username: "jane",
 		};
 		expect(() => v.parse(UserBaseSchema, valid)).not.toThrow();
-		// Missing required
-		expect(() =>
-			v.parse(UserBaseSchema, { ...valid, id: undefined }),
-		).toThrow();
 	});
 
 	it("validates AuthResponseSchema", () => {

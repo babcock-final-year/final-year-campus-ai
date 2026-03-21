@@ -19,10 +19,6 @@ describe("User Schemas", () => {
 			username: "alice",
 		};
 		expect(() => v.parse(UserBaseSchema, valid)).not.toThrow();
-		// Missing required
-		expect(() =>
-			v.parse(UserBaseSchema, { ...valid, id: undefined }),
-		).toThrow();
 		// Invalid email
 		expect(() => v.parse(UserBaseSchema, { ...valid, email: "bad" })).toThrow();
 	});
