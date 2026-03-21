@@ -21,13 +21,7 @@ export default function createUserProfile(): AccessorWithLatest<UserBaseOutput> 
 
 			if (!meAuth.success) return DEFAULT_USER_BASE;
 
-			const res = await UsersRpc.get(meAuth.res.user?.id);
-
-			if (res.success) {
-				return res.res.user;
-			}
-
-			return DEFAULT_USER_BASE;
+			return meAuth.res.user;
 		},
 		{ initialValue: DEFAULT_USER_BASE },
 	);
