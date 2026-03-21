@@ -1,4 +1,5 @@
 import { Link } from "@kobalte/core/link";
+import { useNavigate } from "@solidjs/router";
 import clsx from "clsx/lite";
 import Drawer from "corvu/drawer";
 import {
@@ -44,8 +45,8 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 	const {
 		chat: [_, setChat],
 	} = useChatContext();
-
 	const toast = useToastContext();
+	const navigate = useNavigate();
 
 	const [isSidebarHiddenInDesktopMode, setIsSidebarHiddenInDesktopMode] =
 		createSignal(false);
@@ -159,6 +160,8 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 											if (!res.success) return;
 
 											setChat(res.res);
+
+											navigate(routes().home.chat.index);
 										}}
 									>
 										<span class="grow truncate">{chat.title}</span>
