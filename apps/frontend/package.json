@@ -20,6 +20,7 @@
 		"@biomejs/biome": "^2.4.4",
 		"@corvu/tailwind": "^0.1.7",
 		"@packages/shared-types": "workspace:",
+		"@tailwindcss/typography": "^0.5.19",
 		"@tailwindcss/vite": "^4.2.0",
 		"daisyui": "^5.5.19",
 		"solid-start-typesafe-routes-plugin": "^1.2.0",
