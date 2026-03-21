@@ -1,9 +1,16 @@
 import { Image } from "@kobalte/core/image";
 import clsx from "clsx/lite";
 import { Copy, ThumbsDown, ThumbsUp } from "lucide-solid";
-import { createMemo, createSignal, For, Show } from "solid-js";
+import {
+	createEffect,
+	createMemo,
+	createSignal,
+	Index,
+	on,
+	Show,
+} from "solid-js";
 import { reconcile } from "solid-js/store";
-import createGetChat from "~/hooks/rpc/chat/createGetChat";
+import { useChatContext } from "~/context/ChatContextProvider";
 import type { ChatMessageOutput } from "~/models/chat.schemas";
 import HistoryRpc from "~/rpc/history";
 import BaseButton from "../ui/button/BaseButton";
@@ -148,32 +155,44 @@ function AssistantReplyButtons(props: {
 	);
 }
 
-export default function ChatMainAreaChatList(props: {
-	chatId?: number | string | null;
-}) {
-	const chatAccessor = createMemo(() => {
-		if (!props.chatId) return null;
-		return createGetChat(props.chatId);
-	});
+export default function ChatMainAreaChatList() {
+	const {
+		chat: [chat],
+	} = useChatContext();
 
-	const messages = createMemo<ChatMessageOutput[]>((_prev) => {
-		const prev = _prev ?? [];
+	const messages = createMemo<ChatMessageOutput[]>(
+		(_prev) => {
+			const prev = _prev ?? [];
 
-		const accessor = chatAccessor();
-		if (!accessor) return prev;
+			const _chat = chat();
+			if (!_chat) return prev;
 
-		const val = accessor();
-		if (!val || !val.success || !val.res) return prev;
+			// TODO: check if this works
+			return reconcile(_chat.messages, { merge: true })(prev);
+		},
+		[],
+		{ equals: false },
+	);
 
-		// TODO: check if this works
-		return reconcile(val.res.messages, { merge: true })(_prev);
-	});
+	let chatMessageContainer$!: HTMLDivElement;
+
+	createEffect(
+		on(messages, () => {
+			chatMessageContainer$.scrollTo({
+				behavior: "smooth",
+				top: chatMessageContainer$.scrollHeight,
+			});
+		}),
+	);
 
 	return (
-		<main class="my-4 overflow-auto px-4 py-4 sm:px-8">
-			<For each={messages()}>
+		<main
+			class="my-4 overflow-auto px-4 py-4 sm:px-8"
+			ref={chatMessageContainer$}
+		>
+			<Index each={messages()}>
 				{(val) => {
-					const isUser = createMemo(() => val.role === "user");
+					const isUser = createMemo(() => val().role === "user");
 
 					return (
 						<div
@@ -211,21 +230,21 @@ export default function ChatMainAreaChatList(props: {
 										: "bg-base-200",
 								)}
 							>
-								{val.content}
+								{val().content}
 
 								{/* Extra btns for assistant chat bubbles */}
 								<Show when={!isUser()}>
 									<AssistantReplyButtons
-										chatId={val.chat_id}
-										msgId={val.id}
-										txt={val.content}
+										chatId={chat()?.chat_id ?? ""}
+										msgId={val().id}
+										txt={val().content}
 									/>
 								</Show>
 							</div>
 						</div>
 					);
 				}}
-			</For>
+			</Index>
 		</main>
 	);
 }

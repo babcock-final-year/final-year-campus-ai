@@ -24,8 +24,8 @@ export default function ChatMainArea() {
 	return (
 		<div class="grid size-full grid-rows-[3.5rem_1fr_7rem] bg-base-200">
 			<HomeMainAreaHeader />
-			<ChatMainAreaChatList chatId={chat()?.chat_id ?? null} />
-			<ChatMainAreaFooter chatId={chat()?.chat_id ?? null} />
+			<ChatMainAreaChatList />
+			<ChatMainAreaFooter />
 		</div>
 	);
 }

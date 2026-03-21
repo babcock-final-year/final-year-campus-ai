@@ -17,11 +17,11 @@ export type ChatCreateRequestOutput = v.InferOutput<
  * Schema for a single chat message (user or assistant)
  */
 export const ChatMessageSchema = v.object({
-	chat_id: v.string(),
 	content: v.string(),
-	id: v.string(),
+	id: v.number(),
+	is_liked: v.nullish(v.boolean()),
 	role: v.picklist(["assistant", "user"]),
-	timestamp: v.string(), // ISO string
+	timestamp: v.pipe(v.string(), v.toDate()),
 });
 export type ChatMessageInput = v.InferInput<typeof ChatMessageSchema>;
 export type ChatMessageOutput = v.InferOutput<typeof ChatMessageSchema>;
@@ -58,11 +58,11 @@ export type ChatMessageRequestOutput = v.InferOutput<
  * Schema for the response of POST /chat/<chat_id>/message
  */
 export const ChatMessageResponseSchema = v.object({
-	chat_id: v.string(),
 	content: v.string(),
-	id: v.string(),
+	id: v.number(),
+	is_liked: v.nullish(v.boolean()),
 	role: v.picklist(["assistant", "user"]),
-	timestamp: v.string(),
+	timestamp: v.pipe(v.string(), v.toDate()),
 });
 export type ChatMessageResponseInput = v.InferInput<
 	typeof ChatMessageResponseSchema

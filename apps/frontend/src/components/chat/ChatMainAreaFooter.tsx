@@ -1,28 +1,51 @@
 import { TextField } from "@kobalte/core/text-field";
 import { Mic, Plus, SendHorizontal } from "lucide-solid";
 import { createSignal } from "solid-js";
+import { useChatContext } from "~/context/ChatContextProvider";
 import { useToastContext } from "~/context/ToastContextProvider";
 import ChatRpc from "~/rpc/chat";
+import { revalidateChatData } from "~/rpc/revalidate-query";
 import BaseButton from "../ui/button/BaseButton";
 
-export default function ChatMainAreaFooter(props: {
-	chatId?: number | string | null;
-}) {
+export default function ChatMainAreaFooter() {
 	const [text, setText] = createSignal("");
 	const [isSending, setIsSending] = createSignal(false);
+
 	const toast = useToastContext();
+	const {
+		chat: [chat, setChat],
+	} = useChatContext();
 
 	const send = async () => {
 		const content = text().trim();
 		if (!content) return;
-		if (!props.chatId) {
+
+		const id = chat()?.chat_id;
+		if (!id) {
 			// No chat context yet; drop the send.
 			return;
 		}
 
 		setIsSending(true);
 
-		const res = await ChatRpc.message.post(props.chatId, { content });
+		const res = await ChatRpc.message.post(id, { content });
+
+		await revalidateChatData();
+
+		const refreshedChatRes = await ChatRpc.get(id);
+
+		if (!refreshedChatRes.success) {
+			toast.showToast({
+				class: { alert: "alert-error", closeBtn: "btn-error" },
+				description: refreshedChatRes.err.message ?? "Unknown error",
+				title: "Failed to send chat message",
+			});
+			console.error("Failed to send chat message:", refreshedChatRes.err);
+			setIsSending(false);
+			return;
+		}
+
+		setChat(refreshedChatRes.res);
 
 		setIsSending(false);
 
@@ -68,7 +91,7 @@ export default function ChatMainAreaFooter(props: {
 
 				<BaseButton
 					class="btn-square btn-primary btn-sm"
-					disabled={!props.chatId || isSending()}
+					disabled={!chat()?.chat_id || isSending()}
 					onClick={() => void send()}
 				>
 					{isSending() ? (
