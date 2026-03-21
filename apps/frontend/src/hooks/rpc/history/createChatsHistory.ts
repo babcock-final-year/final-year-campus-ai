@@ -12,7 +12,7 @@ export default function createChatsHistory(): AccessorWithLatest<
 	ChatsListResponseOutput | null | undefined
 > {
 	const chats = createAsync(async () => {
-    const res = await HistoryRpc.chats.get();
+		const res = await HistoryRpc.chats.get();
 
 		if (res.success) {
 			return res.res;

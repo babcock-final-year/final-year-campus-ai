@@ -1,4 +1,5 @@
 import { Link } from "@kobalte/core/link";
+import { revalidate } from "@solidjs/router";
 import clsx from "clsx/lite";
 import Drawer from "corvu/drawer";
 import {
@@ -12,28 +13,36 @@ import {
 } from "lucide-solid";
 import { createSignal, For, Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
+import { useChatContext } from "~/context/ChatContextProvider";
 import createChatsHistory from "~/hooks/rpc/history/createChatsHistory";
 import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { routes } from "~/RouteManifest";
+import ChatRpc from "~/rpc/chat";
+import HistoryRpc from "~/rpc/history";
 import BaseButton from "../ui/button/BaseButton";
 import UserProfileImage from "../ui/image/UserProfileImage";
 import AppLogo from "../ui/svg/AppLogo";
-import ChatRpc from "~/rpc/chat";
-import { revalidate } from "@solidjs/router";
-import HistoryRpc from "~/rpc/history";
-import { useChatContext } from "~/context/ChatContextProvider";
 
-const NEW_CHAT_NAMES = ["New Chat", "New Conversation", "New Discussion"] as const
+const NEW_CHAT_NAMES = [
+	"New Chat",
+	"New Conversation",
+	"New Discussion",
+] as const;
 
 function getNewChatName() {
-  return NEW_CHAT_NAMES[(NEW_CHAT_NAMES.length - 1) * Math.random()] ?? NEW_CHAT_NAMES[0]
+	return (
+		NEW_CHAT_NAMES[(NEW_CHAT_NAMES.length - 1) * Math.random()] ??
+		NEW_CHAT_NAMES[0]
+	);
 }
 
 export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 	const userProfile = createUserProfile();
-  const chatHistory = createChatsHistory();
+	const chatHistory = createChatsHistory();
 
-  const {chat:[_, setChat]} = useChatContext()
+	const {
+		chat: [_, setChat],
+	} = useChatContext();
 
 	const [isSidebarHiddenInDesktopMode, setIsSidebarHiddenInDesktopMode] =
 		createSignal(false);
@@ -66,20 +75,20 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 				)}
 			</BaseButton>
 		);
-  }
+	}
 
-  async function handleCreateNewChat() {
-    // Todo: prompt the user for the chat name / auto-infer it later
-    const res = await ChatRpc.post({ title: getNewChatName() })
-    console.log(res)
+	async function handleCreateNewChat() {
+		// Todo: prompt the user for the chat name / auto-infer it later
+		const res = await ChatRpc.post({ title: getNewChatName() });
+		console.log(res);
 
-    // TODO: Add error toast
-    if (!res.success) return
+		// TODO: Add error toast
+		if (!res.success) return;
 
-    await revalidate(HistoryRpc.chats.get.key)
+		await revalidate(HistoryRpc.chats.get.key);
 
-    setChat(res.res)
-  }
+		setChat(res.res);
+	}
 
 	return (
 		<div
@@ -107,7 +116,10 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 			<Show when={!isSidebarHiddenInDesktopMode()}>
 				<ul class="menu w-full px-0">
 					<li>
-						<BaseButton class="btn-secondary btn-ghost justify-start gap-4" onClick={handleCreateNewChat}>
+						<BaseButton
+							class="btn-secondary btn-ghost justify-start gap-4"
+							onClick={handleCreateNewChat}
+						>
 							<CirclePlus />
 							New Chat
 						</BaseButton>
@@ -130,12 +142,12 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 								<li class="w-full">
 									<BaseButton
 										class="btn-secondary btn-ghost group w-full justify-start gap-2 text-left font-normal"
-                    onClick={async () => {
-                      const res = await ChatRpc.get(chat.id)
+										onClick={async () => {
+											const res = await ChatRpc.get(chat.id);
 
-                      if (!res.success) return
+											if (!res.success) return;
 
-                      setChat(res.res)
+											setChat(res.res);
 										}}
 									>
 										<span class="grow truncate">{chat.title}</span>

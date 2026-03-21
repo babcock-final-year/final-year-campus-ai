@@ -1,17 +1,12 @@
-import { JSXElement, createSignal, useContext } from "solid-js";
+import { createSignal, type JSXElement, useContext } from "solid-js";
+import type { ChatCreateResponseOutput } from "~/models/chat.schemas";
 import { ChatContext } from "./ChatContext";
-import { ChatCreateResponseOutput } from "~/models/chat.schemas";
-
 
 export function ChatProvider(props: { children: JSXElement }) {
 	const chat = createSignal<ChatCreateResponseOutput | null>(null);
 
-
 	return (
-		<ChatContext.Provider
-			value={{ chat
-			}}
-		>
+		<ChatContext.Provider value={{ chat }}>
 			{props.children}
 		</ChatContext.Provider>
 	);
