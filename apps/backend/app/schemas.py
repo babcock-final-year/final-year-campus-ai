@@ -9,6 +9,7 @@ from pydantic import BaseModel, ConfigDict, EmailStr, Field
 class UserBase(BaseModel):
     id: str
     full_name: str
+    username: str | None = None
     email: EmailStr | None = None
     is_guest: bool
     matric_no: str | None = None
@@ -32,7 +33,7 @@ class UserLoginRequest(BaseModel):
 
 
 class GoogleAuthRequest(BaseModel):
-    token: str
+    credential: str
 
 
 # Auth schema (Outgoing)
