@@ -1,4 +1,5 @@
 import { Link } from "@kobalte/core/link";
+import { revalidate } from "@solidjs/router";
 import clsx from "clsx/lite";
 import Drawer from "corvu/drawer";
 import {
@@ -12,16 +13,36 @@ import {
 } from "lucide-solid";
 import { createSignal, For, Show } from "solid-js";
 import { Dynamic } from "solid-js/web";
+import { useChatContext } from "~/context/ChatContextProvider";
 import createChatsHistory from "~/hooks/rpc/history/createChatsHistory";
 import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { routes } from "~/RouteManifest";
+import ChatRpc from "~/rpc/chat";
+import HistoryRpc from "~/rpc/history";
 import BaseButton from "../ui/button/BaseButton";
 import UserProfileImage from "../ui/image/UserProfileImage";
 import AppLogo from "../ui/svg/AppLogo";
 
+const NEW_CHAT_NAMES = [
+	"New Chat",
+	"New Conversation",
+	"New Discussion",
+] as const;
+
+function getNewChatName() {
+	return (
+		NEW_CHAT_NAMES[(NEW_CHAT_NAMES.length - 1) * Math.random()] ??
+		NEW_CHAT_NAMES[0]
+	);
+}
+
 export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 	const userProfile = createUserProfile();
-	const chats = createChatsHistory();
+	const chatHistory = createChatsHistory();
+
+	const {
+		chat: [_, setChat],
+	} = useChatContext();
 
 	const [isSidebarHiddenInDesktopMode, setIsSidebarHiddenInDesktopMode] =
 		createSignal(false);
@@ -56,6 +77,19 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 		);
 	}
 
+	async function handleCreateNewChat() {
+		// Todo: prompt the user for the chat name / auto-infer it later
+		const res = await ChatRpc.post({ title: getNewChatName() });
+		console.log(res);
+
+		// TODO: Add error toast
+		if (!res.success) return;
+
+		await revalidate(HistoryRpc.chats.get.key);
+
+		setChat(res.res);
+	}
+
 	return (
 		<div
 			class={clsx(
@@ -82,7 +116,10 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 			<Show when={!isSidebarHiddenInDesktopMode()}>
 				<ul class="menu w-full px-0">
 					<li>
-						<BaseButton class="btn-secondary btn-ghost justify-start gap-4">
+						<BaseButton
+							class="btn-secondary btn-ghost justify-start gap-4"
+							onClick={handleCreateNewChat}
+						>
 							<CirclePlus />
 							New Chat
 						</BaseButton>
@@ -100,16 +137,22 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 					<h3 class="px-4 text-sm">Recent Chats</h3>
 
 					<ul class="menu w-full px-0">
-						<For each={chats()?.chats}>
+						<For each={chatHistory()?.chats}>
 							{(chat) => (
 								<li class="w-full">
-									<Link
-										class="btn btn-secondary btn-ghost group w-full justify-start gap-2 text-left font-normal"
-										href="#"
+									<BaseButton
+										class="btn-secondary btn-ghost group w-full justify-start gap-2 text-left font-normal"
+										onClick={async () => {
+											const res = await ChatRpc.get(chat.id);
+
+											if (!res.success) return;
+
+											setChat(res.res);
+										}}
 									>
 										<span class="grow truncate">{chat.title}</span>
 										<Ellipsis class="hidden min-w-6 group-hover:block" />
-									</Link>
+									</BaseButton>
 								</li>
 							)}
 						</For>
