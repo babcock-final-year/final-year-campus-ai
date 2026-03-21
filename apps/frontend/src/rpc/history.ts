@@ -26,6 +26,27 @@ const HistoryRpc = {
 	 * @returns An array of chat summaries for the authenticated user.
 	 */
 	chats: {
+		/**
+		 * Delete all chats for the current user.
+		 * DELETE /history/chats
+		 */
+		delete: query(
+			async (): Promise<ServerResultResponse<{ message: string }>> => {
+				try {
+					const res = await fetchWithAuth(`${BASE_PATH}/chats`, {
+						method: "DELETE",
+					});
+					// backend returns a simple { message: string } response
+					return {
+						res: await res.json(),
+						success: true,
+					};
+				} catch (e) {
+					return { err: coerceToError(e), success: false };
+				}
+			},
+			"HistoryRpc.chats.delete",
+		),
 		get: query(
 			async (): Promise<ServerResultResponse<ChatsListResponseOutput>> => {
 				try {

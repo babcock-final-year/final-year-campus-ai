@@ -246,19 +246,40 @@ const AuthRpc = {
 		),
 	},
 
-	/** TODO: fix this by using the refresh token
-	 * Refresh the access token using a refresh token.
-	 * @returns The new access token.
+	/** Refresh the access token using the stored refresh token.
+	 * This implementation reads the refresh token directly from sessionStorage
+	 * and calls the backend refresh endpoint with it (as Authorization: Bearer <refresh>).
+	 * Returns the new access token on success.
 	 */
 	refresh: {
 		post: query(
 			async (): Promise<ServerResultResponse<AccessTokenResponseOutput>> => {
 				try {
-					const res = await fetchWithAuth(`${BASE_PATH}/refresh`, {
+					const refreshToken = sessionStorage.getItem("refreshToken");
+					if (!refreshToken) {
+						return {
+							err: new Error("No refresh token available"),
+							success: false,
+						};
+					}
+
+					const res = await fetch(`${BASE_PATH}/refresh`, {
+						headers: { Authorization: `Bearer ${refreshToken}` },
 						method: "POST",
 					});
+
+					if (!res.ok) {
+						// Bubble up a consistent error shape
+						const text = await res.text().catch(() => "");
+						return {
+							err: new Error(`Refresh failed: ${res.status} ${text}`),
+							success: false,
+						};
+					}
+
+					const body = await res.json();
 					return {
-						res: v.parse(AccessTokenResponseSchema, await res.json()),
+						res: v.parse(AccessTokenResponseSchema, body),
 						success: true,
 					};
 				} catch (e) {

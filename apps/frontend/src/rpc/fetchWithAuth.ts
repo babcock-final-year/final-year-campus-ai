@@ -1,4 +1,5 @@
 import { useAuth } from "~/context/AuthContextProvider";
+import { getClientEnv } from "~/utils/env";
 import AuthRpc from "./auth";
 
 /**
@@ -29,15 +30,20 @@ export default async function fetchWithAuth(
 	};
 
 	// run the request to check if the token is expired
-	const res = await fetch(input, { ...finalInit, method: "HEAD" });
+	if (finalInit.method === "GET") {
+		const res = await fetch(input, { ...finalInit, method: "HEAD" });
 
-	if (!res.ok && res.status >= 500) {
-		// Refresh the token
-		const res = await AuthRpc.refresh.post();
+		// If the HEAD indicates an unauthorized access, try refreshing using the refresh token.
+		if (res.status === 401 || res.status === 500) {
+			const refreshRes = await AuthRpc.refresh.post();
 
-		if (!res.success) throw Error("Could not refresh session");
+			if (!refreshRes.success) throw Error("Could not refresh session");
 
-		auth.setAccessToken(res.res.access_token);
+			auth.setAccessToken(refreshRes.res.access_token);
+		} else if (!res.ok && res.status >= 500) {
+			// For server errors, bail out so the original request can handle it.
+			throw Error("Server error");
+		}
 	}
 
 	return fetch(input, finalInit);
