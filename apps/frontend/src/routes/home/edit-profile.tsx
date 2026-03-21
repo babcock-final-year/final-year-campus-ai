@@ -2,10 +2,13 @@ import {
 	createForm,
 	Field,
 	Form,
+	getInput,
 	type SubmitEventHandler,
 	setInput,
 } from "@formisch/solid";
-import { Camera, IdCard, UserRound } from "lucide-solid";
+import { useNavigate } from "@solidjs/router";
+import { Camera, IdCard, Image, UserRound } from "lucide-solid";
+import { createEffect } from "solid-js";
 import HomeMainAreaHeader from "~/components/chat/ChatMainAreaHeader";
 import FieldTextInput from "~/components/form/FieldTextInput";
 import BaseButton from "~/components/ui/button/BaseButton";
@@ -13,19 +16,21 @@ import UploadImageButton from "~/components/ui/button/UploadImageButton";
 import UserProfileImage from "~/components/ui/image/UserProfileImage";
 import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { UserUpdateRequestSchema } from "~/models/users.schemas";
-import AuthRpc from "~/rpc/auth";
+import { routes } from "~/RouteManifest";
 import { revalidateUserData } from "~/rpc/revalidate-query";
 import UsersRpc from "~/rpc/users";
 
 export default function EditProfileInterfacePage() {
 	const userProfile = createUserProfile();
 
+	const navigate = useNavigate();
+
 	const editProfileForm = createForm({
 		initialInput: {
-			avatar_url: userProfile().avatar_url ?? undefined,
+			avatar_url: userProfile().avatar_url,
 			full_name: userProfile().full_name,
-			matric_no: userProfile().matric_no ?? undefined,
-			username: userProfile().username ?? undefined,
+			matric_no: userProfile().matric_no,
+			username: userProfile().username,
 		},
 		schema: UserUpdateRequestSchema,
 	});
@@ -41,11 +46,32 @@ export default function EditProfileInterfacePage() {
 		if (res.success) {
 			await revalidateUserData();
 		}
+
+		navigate(routes().home.settings.profile.index);
 	};
 
 	const onAvatarUpload = (url: string) => {
 		setInput(editProfileForm, { input: url, path: ["avatar_url"] });
+		(
+			document.querySelector(`input[name='["avatar_url"]']`) as HTMLInputElement
+		).value = url;
 	};
+
+	// I know this is hacky >~<
+	createEffect(() => {
+		(
+			document.querySelector(`input[name='["avatar_url"]']`) as HTMLInputElement
+		).value = userProfile()?.avatar_url || "";
+		(
+			document.querySelector(`input[name='["full_name"]']`) as HTMLInputElement
+		).value = userProfile().full_name;
+		(
+			document.querySelector(`input[name='["matric_no"]']`) as HTMLInputElement
+		).value = userProfile().matric_no;
+		(
+			document.querySelector(`input[name='["username"]']`) as HTMLInputElement
+		).value = userProfile().username;
+	});
 
 	return (
 		<div class="grid size-full grid-rows-[3.5rem_1fr] bg-base-200">
@@ -82,7 +108,22 @@ export default function EditProfileInterfacePage() {
 							<UploadImageButton onUpload={onAvatarUpload}>
 								Change Photo
 							</UploadImageButton>
-							<BaseButton>Remove</BaseButton>
+							<BaseButton
+								onClick={() => {
+									setInput(editProfileForm, {
+										input: "",
+										path: ["avatar_url"],
+									});
+
+									(
+										document.querySelector(
+											`input[name='["avatar_url"]']`,
+										) as HTMLInputElement
+									).value = "";
+								}}
+							>
+								Remove
+							</BaseButton>
 						</div>
 					</div>
 				</div>
@@ -126,29 +167,38 @@ export default function EditProfileInterfacePage() {
 						)}
 					</Field>
 
-					{/*<Field of={editProfileForm} path={["avatar_url"]}>
+					<Field of={editProfileForm} path={["avatar_url"]}>
 						{(field) => (
 							<FieldTextInput
 								{...field}
-								icon={<AtSign class="opacity-75" />}
+								icon={<Image class="opacity-75" />}
 								inputClass="bg-base-200"
 								label="Avatar Url"
-								type="text"
+								type="url"
 							/>
 						)}
-					</Field>*/}
+					</Field>
 				</div>
 
 				<div class="ml-auto flex gap-4">
 					<BaseButton
 						class="btn-ghost"
+						disabled={editProfileForm.isSubmitting}
 						onClick={() => history.back()}
 						type="reset"
 					>
 						Cancel
 					</BaseButton>
-					<BaseButton class="btn-primary" type="submit">
-						Save Changes
+					<BaseButton
+						class="btn-primary"
+						disabled={editProfileForm.isSubmitting}
+						type="submit"
+					>
+						{editProfileForm.isSubmitting ? (
+							<div class="loading loading-spinner" />
+						) : (
+							"Save Changes"
+						)}
 					</BaseButton>
 				</div>
 			</Form>
