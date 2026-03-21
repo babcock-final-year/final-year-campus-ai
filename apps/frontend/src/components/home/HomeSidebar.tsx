@@ -150,7 +150,9 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 
 					<ul class="menu w-full px-0">
 						<Suspense>
-							<For each={chatHistory.latest?.chats}>
+							<For
+								each={!userProfile.latest.is_guest && chatHistory.latest?.chats}
+							>
 								{(chat) => (
 									<li class="w-full">
 										<BaseButton
