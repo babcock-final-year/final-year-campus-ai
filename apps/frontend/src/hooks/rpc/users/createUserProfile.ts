@@ -5,6 +5,7 @@ import type {
 } from "~/models/users.schemas";
 import AuthRpc from "~/rpc/auth";
 import UsersRpc from "~/rpc/users";
+import { getCapitalizedWordInitials } from "~/utils/string";
 
 const DEFAULT_USER_BASE = {
 	email: "foobar@student.babcock.edu.ng",
@@ -21,7 +22,12 @@ export default function createUserProfile(): AccessorWithLatest<UserBaseOutput> 
 
 			if (!meAuth.success) return DEFAULT_USER_BASE;
 
-			return meAuth.res.user;
+			const { user } = meAuth.res;
+
+			if (user.username === "???")
+				user.username = getCapitalizedWordInitials(user.full_name);
+
+			return user;
 		},
 		{ initialValue: DEFAULT_USER_BASE },
 	);

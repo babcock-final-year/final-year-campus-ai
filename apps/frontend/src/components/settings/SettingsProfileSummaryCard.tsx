@@ -5,6 +5,7 @@ import { Camera, Dot } from "lucide-solid";
 import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { routes } from "~/RouteManifest";
 import UsersRpc from "~/rpc/users";
+import { getCapitalizedWordInitials } from "~/utils/string";
 import UploadImageButton from "../ui/button/UploadImageButton";
 import UserProfileImage from "../ui/image/UserProfileImage";
 
@@ -44,7 +45,8 @@ export default function SettingsProfileSummaryCard(props: { class?: string }) {
 			</h2>
 
 			<p class="col-start-2 row-start-2 flex opacity-75">
-				{userProfile().username} <Dot /> {userProfile().matric_no}
+				{userProfile().username}
+				<Dot /> {userProfile().matric_no}
 			</p>
 
 			<div class="mt-1 flex size-full items-center">
