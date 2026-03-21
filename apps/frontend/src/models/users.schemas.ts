@@ -1,4 +1,5 @@
 import * as v from "valibot";
+import { MatricNumberSchema } from "./credentials";
 import { EmailSchema } from "./shared";
 
 /**
@@ -7,7 +8,7 @@ import { EmailSchema } from "./shared";
 export const UserUpdateRequestSchema = v.object({
 	avatar_url: v.nullish(v.string()),
 	full_name: v.nullish(v.string()),
-	matric_no: v.nullish(v.string()),
+	matric_no: v.nullish(MatricNumberSchema),
 	username: v.nullish(v.string()),
 });
 export type UserUpdateRequestInput = v.InferInput<
@@ -24,7 +25,7 @@ export const UserBaseSchema = v.object({
 	id: v.string(),
 	is_confirmed: v.nullish(v.boolean()),
 	is_guest: v.nullish(v.boolean()),
-	matric_no: v.nullish(v.string(), "??/????"),
+	matric_no: v.nullish(MatricNumberSchema, "00/0000"),
 	username: v.nullish(v.string(), "???"),
 });
 export type UserBaseInput = v.InferInput<typeof UserBaseSchema>;

@@ -10,7 +10,7 @@ const DEFAULT_USER_BASE = {
 	email: "foobar@student.babcock.edu.ng",
 	full_name: "Foo Bar",
 	id: "foobar",
-	matric_no: "??/????",
+	matric_no: "00/0000",
 	username: "foo-bar",
 } as const satisfies UserBaseOutput;
 

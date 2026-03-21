@@ -14,7 +14,7 @@ import UploadImageButton from "~/components/ui/button/UploadImageButton";
 import UserProfileImage from "~/components/ui/image/UserProfileImage";
 import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { UserUpdateRequestSchema } from "~/models/users.schemas";
-import { routes } from "~/RouteManifest";
+import AuthRpc from "~/rpc/auth";
 import UsersRpc from "~/rpc/users";
 
 export default function EditProfileInterfacePage() {
@@ -30,6 +30,7 @@ export default function EditProfileInterfacePage() {
 		schema: UserUpdateRequestSchema,
 	});
 
+	// Show success toast then leave the form
 	const onSubmitEditProfileForm: SubmitEventHandler<
 		typeof UserUpdateRequestSchema
 	> = async (formData, _) => {
@@ -39,6 +40,7 @@ export default function EditProfileInterfacePage() {
 
 		if (res.success) {
 			await revalidate(UsersRpc.get.key);
+			await revalidate(AuthRpc.me.get.key);
 		}
 	};
 

@@ -15,7 +15,7 @@ describe("User Schemas", () => {
 			id: "42",
 			is_confirmed: true,
 			is_guest: false,
-			matric_no: "U1234567",
+			matric_no: "00/0000",
 			username: "alice",
 		};
 		expect(() => v.parse(UserBaseSchema, valid)).not.toThrow();
@@ -31,7 +31,7 @@ describe("User Schemas", () => {
 		const valid = {
 			avatar_url: "https://example.com/avatar2.png",
 			full_name: "Bob Example",
-			matric_no: "U7654321",
+			matric_no: "00/0000",
 			username: "bob",
 		};
 		expect(() => v.parse(UserUpdateRequestSchema, valid)).not.toThrow();

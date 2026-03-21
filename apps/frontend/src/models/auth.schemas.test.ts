@@ -73,7 +73,7 @@ describe("Auth Schemas", () => {
 			id: "1",
 			is_confirmed: true,
 			is_guest: false,
-			matric_no: "A12345",
+			matric_no: "00/0000",
 			username: "jane",
 		};
 		expect(() => v.parse(UserBaseSchema, valid)).not.toThrow();
