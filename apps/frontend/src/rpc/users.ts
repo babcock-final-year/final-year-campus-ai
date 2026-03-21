@@ -1,5 +1,6 @@
 import { query } from "@solidjs/router";
 import * as v from "valibot";
+import { useToastContext } from "~/context/ToastContextProvider";
 import {
 	type AvatarUploadResponseOutput,
 	AvatarUploadResponseSchema,
@@ -18,9 +19,33 @@ import fetchWithAuth from "./fetchWithAuth";
 /**
  * UsersRpc provides type-safe, ergonomic methods for all user-related backend routes.
  * Each method abstracts fetch, validates with valibot, and returns a ServerResultResponse.
+ *
+ * Note: We attempt to show an error toast when an RPC fails. The toast call is wrapped
+ * in a try/catch because these RPC functions can be invoked outside of a Solid render
+ * context where the toast context may not be available. If the toast context isn't
+ * available we silently fall back to just returning the error response.
  */
+
 const BASE_PATH =
 	`${getClientEnv().VITE_BACKEND_BASE_URL}/api/v1/users` as const;
+
+function tryShowToast(title: string, e: unknown) {
+	try {
+		// useToastContext may throw if called outside of a provider / Solid render context.
+		const toast = useToastContext();
+		const err = coerceToError(e);
+		toast.showToast({
+			class: { alert: "alert-error", closeBtn: "btn-error" },
+			description: err.message ?? "Unknown error",
+			title,
+		});
+	} catch (toastErr) {
+		// If we can't show a toast (no provider / outside reactive root), log to console and continue.
+		// We intentionally avoid throwing here so RPCs still return the standard ServerResultResponse.
+		// eslint-disable-next-line no-console
+		console.error("Unable to show toast for RPC error:", toastErr);
+	}
+}
 
 const UsersRpc = {
 	/**
@@ -48,6 +73,7 @@ const UsersRpc = {
 						success: true,
 					};
 				} catch (e) {
+					tryShowToast("Avatar upload failed", e);
 					return { err: coerceToError(e), success: false };
 				}
 			},
@@ -73,6 +99,7 @@ const UsersRpc = {
 					success: true,
 				};
 			} catch (e) {
+				tryShowToast("Failed to fetch user profile", e);
 				return { err: coerceToError(e), success: false };
 			}
 		},
@@ -106,6 +133,7 @@ const UsersRpc = {
 					success: true,
 				};
 			} catch (e) {
+				tryShowToast("Failed to update profile", e);
 				return { err: coerceToError(e), success: false };
 			}
 		},

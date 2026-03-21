@@ -1,5 +1,6 @@
 import { query } from "@solidjs/router";
 import * as v from "valibot";
+import { useToastContext } from "~/context/ToastContextProvider";
 import {
 	type ChatMessageResponseOutput,
 	ChatMessageResponseSchema,
@@ -19,6 +20,36 @@ import fetchWithAuth from "./fetchWithAuth";
  */
 const BASE_PATH =
 	`${getClientEnv().VITE_BACKEND_BASE_URL}/api/v1/history` as const;
+
+/**
+ * showRpcError - helper to surface an error to the user's toast region.
+ *
+ * This attempts to read the toast context and show a friendly message.
+ * If the toast context is not available (e.g. called outside of a component
+ * tree that provides it) we swallow the error after logging to console so
+ * RPC callers still receive the original error object.
+ */
+function showRpcError(
+	e: unknown,
+	title: string,
+	fallback = "An unexpected error occurred",
+) {
+	try {
+		const toast = useToastContext();
+		const err = coerceToError(e);
+		toast.showToast({
+			class: { alert: "alert-error", closeBtn: "btn-error" },
+			description: err.message ?? fallback,
+			title,
+		});
+	} catch (err) {
+		// If toast context isn't available, don't throw - just log.
+		// The RPC will still return the error to the caller.
+		// This preserves backward compatibility for non-UI usages.
+		// eslint-disable-next-line no-console
+		console.error("Failed to show toast for RPC error:", err);
+	}
+}
 
 const HistoryRpc = {
 	/**
@@ -42,6 +73,11 @@ const HistoryRpc = {
 						success: true,
 					};
 				} catch (e) {
+					showRpcError(
+						e,
+						"Failed to delete chats",
+						"Could not delete chat history",
+					);
 					return { err: coerceToError(e), success: false };
 				}
 			},
@@ -58,6 +94,11 @@ const HistoryRpc = {
 						success: true,
 					};
 				} catch (e) {
+					showRpcError(
+						e,
+						"Failed to fetch chats",
+						"Could not load chat history",
+					);
 					return { err: coerceToError(e), success: false };
 				}
 			},
@@ -98,6 +139,11 @@ const HistoryRpc = {
 							success: true,
 						};
 					} catch (e) {
+						showRpcError(
+							e,
+							"Failed to like message",
+							"Could not update message like",
+						);
 						return { err: coerceToError(e), success: false };
 					}
 				},

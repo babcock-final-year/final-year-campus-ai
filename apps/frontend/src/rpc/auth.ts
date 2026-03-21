@@ -1,5 +1,6 @@
 import { query } from "@solidjs/router";
 import * as v from "valibot";
+import { useToastContext } from "~/context/ToastContextProvider";
 import {
 	type AccessTokenResponseOutput,
 	AccessTokenResponseSchema,
@@ -33,6 +34,30 @@ import fetchWithAuth from "./fetchWithAuth";
 const BASE_PATH =
 	`${getClientEnv().VITE_BACKEND_BASE_URL}/api/v1/auth` as const;
 
+/**
+ * Try to show a toast for RPC errors.
+ *
+ * We attempt to use the toast context. If for some reason the context is not
+ * available (e.g. running outside of a Solid owner), we silently fall back to
+ * console.error so we don't break the RPC contract.
+ */
+function showRpcError(err: unknown, title = "Request failed") {
+	try {
+		const toast = useToastContext();
+		const coerced = coerceToError(err);
+		toast.showToast({
+			class: { alert: "alert-error", closeBtn: "btn-error" },
+			description: coerced.message ?? "Unknown error",
+			title,
+		});
+	} catch (e) {
+		// If toast context isn't available, log the error. Do not throw.
+		// This keeps RPC functions safe to call from non-component scopes.
+		// eslint-disable-next-line no-console
+		console.error("Rpc error (toast unavailable):", err);
+	}
+}
+
 const AuthRpc = {
 	/**
 	 * Request an email change for the current user.
@@ -57,6 +82,7 @@ const AuthRpc = {
 						success: true,
 					};
 				} catch (e) {
+					showRpcError(e, "Failed to change email");
 					return { err: coerceToError(e), success: false };
 				}
 			},
@@ -86,6 +112,7 @@ const AuthRpc = {
 						success: true,
 					};
 				} catch (e) {
+					showRpcError(e, "Failed to confirm email change");
 					return { err: coerceToError(e), success: false };
 				}
 			},
@@ -115,6 +142,7 @@ const AuthRpc = {
 						success: true,
 					};
 				} catch (e) {
+					showRpcError(e, "Failed to confirm account");
 					return { err: coerceToError(e), success: false };
 				}
 			},
@@ -145,6 +173,7 @@ const AuthRpc = {
 						success: true,
 					};
 				} catch (e) {
+					showRpcError(e, "Google sign-in failed");
 					return { err: coerceToError(e), success: false };
 				}
 			},
@@ -167,6 +196,7 @@ const AuthRpc = {
 					success: true,
 				};
 			} catch (e) {
+				showRpcError(e, "Guest login failed");
 				return { err: coerceToError(e), success: false };
 			}
 		}, "AuthRpc.guest.post"),
@@ -193,6 +223,7 @@ const AuthRpc = {
 						success: true,
 					};
 				} catch (e) {
+					showRpcError(e, "Login failed");
 					return { err: coerceToError(e), success: false };
 				}
 			},
@@ -216,6 +247,7 @@ const AuthRpc = {
 						success: true,
 					};
 				} catch (e) {
+					showRpcError(e, "Logout failed");
 					return { err: coerceToError(e), success: false };
 				}
 			},
@@ -239,6 +271,7 @@ const AuthRpc = {
 						success: true,
 					};
 				} catch (e) {
+					showRpcError(e, "Fetching current user failed");
 					return { err: coerceToError(e), success: false };
 				}
 			},
@@ -257,10 +290,9 @@ const AuthRpc = {
 				try {
 					const refreshToken = sessionStorage.getItem("refreshToken");
 					if (!refreshToken) {
-						return {
-							err: new Error("No refresh token available"),
-							success: false,
-						};
+						const err = new Error("No refresh token available");
+						showRpcError(err, "Refresh token missing");
+						return { err, success: false };
 					}
 
 					const res = await fetch(`${BASE_PATH}/refresh`, {
@@ -271,8 +303,10 @@ const AuthRpc = {
 					if (!res.ok) {
 						// Bubble up a consistent error shape
 						const text = await res.text().catch(() => "");
+						const err = new Error(`Refresh failed: ${res.status} ${text}`);
+						showRpcError(err, "Refreshing session failed");
 						return {
-							err: new Error(`Refresh failed: ${res.status} ${text}`),
+							err,
 							success: false,
 						};
 					}
@@ -283,6 +317,7 @@ const AuthRpc = {
 						success: true,
 					};
 				} catch (e) {
+					showRpcError(e, "Refreshing session failed");
 					return { err: coerceToError(e), success: false };
 				}
 			},
@@ -313,6 +348,7 @@ const AuthRpc = {
 						success: true,
 					};
 				} catch (e) {
+					showRpcError(e, "Registration failed");
 					return { err: coerceToError(e), success: false };
 				}
 			},
@@ -341,6 +377,7 @@ const AuthRpc = {
 						success: true,
 					};
 				} catch (e) {
+					showRpcError(e, "Password reset request failed");
 					return { err: coerceToError(e), success: false };
 				}
 			},
@@ -376,6 +413,7 @@ const AuthRpc = {
 						success: true,
 					};
 				} catch (e) {
+					showRpcError(e, "Password reset confirmation failed");
 					return { err: coerceToError(e), success: false };
 				}
 			},

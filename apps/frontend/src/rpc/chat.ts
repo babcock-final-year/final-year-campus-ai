@@ -1,5 +1,6 @@
 import { query } from "@solidjs/router";
 import * as v from "valibot";
+import { useToastContext } from "~/context/ToastContextProvider";
 import {
 	type ChatCreateRequestInput,
 	ChatCreateRequestSchema,
@@ -44,6 +45,19 @@ const ChatRpc = {
 					success: true,
 				};
 			} catch (e) {
+				// Show a toast for visibility in the UI.
+				try {
+					const toast = useToastContext();
+					const err = coerceToError(e);
+					toast.showToast({
+						class: { alert: "alert-error", closeBtn: "btn-error" },
+						description: err.message ?? "Unknown error",
+						title: "Failed to load chat",
+					});
+				} catch {
+					// If toast cannot be shown (e.g. called outside component), swallow silently.
+				}
+
 				return { err: coerceToError(e), success: false };
 			}
 		},
@@ -78,6 +92,19 @@ const ChatRpc = {
 						success: true,
 					};
 				} catch (e) {
+					// Show a toast for visibility in the UI.
+					try {
+						const toast = useToastContext();
+						const err = coerceToError(e);
+						toast.showToast({
+							class: { alert: "alert-error", closeBtn: "btn-error" },
+							description: err.message ?? "Unknown error",
+							title: "Failed to send chat message",
+						});
+					} catch {
+						// If toast cannot be shown, continue returning the error.
+					}
+
 					return { err: coerceToError(e), success: false };
 				}
 			},
@@ -105,6 +132,21 @@ const ChatRpc = {
 					success: true,
 				};
 			} catch (e) {
+				// Show a toast for visibility in the UI.
+				try {
+					const toast = useToastContext();
+					const err = coerceToError(e);
+					toast.showToast({
+						class: { alert: "alert-error", closeBtn: "btn-error" },
+						description:
+							err.message ??
+							"An unexpected error occurred while creating the chat.",
+						title: "Failed to create chat",
+					});
+				} catch {
+					// If toast cannot be shown, ignore and return the error as usual.
+				}
+
 				return { err: coerceToError(e), success: false };
 			}
 		},
