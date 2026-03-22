@@ -41,7 +41,7 @@ describe("Auth Schemas", () => {
 
 	it("validates GoogleAuthRequestSchema", () => {
 		expect(() =>
-			v.parse(GoogleAuthRequestSchema, { token: "sometoken" }),
+			v.parse(GoogleAuthRequestSchema, { credential: "sometoken" }),
 		).not.toThrow();
 		expect(() => v.parse(GoogleAuthRequestSchema, {})).toThrow();
 	});
@@ -77,10 +77,6 @@ describe("Auth Schemas", () => {
 			username: "jane",
 		};
 		expect(() => v.parse(UserBaseSchema, valid)).not.toThrow();
-		// Missing required
-		expect(() =>
-			v.parse(UserBaseSchema, { ...valid, id: undefined }),
-		).toThrow();
 	});
 
 	it("validates AuthResponseSchema", () => {

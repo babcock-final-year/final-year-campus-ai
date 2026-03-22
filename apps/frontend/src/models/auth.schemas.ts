@@ -33,7 +33,7 @@ export type UserLoginRequestOutput = v.InferOutput<
  * Schema for the request body of /auth/google
  */
 export const GoogleAuthRequestSchema = v.object({
-	token: v.string(),
+	credential: v.string(),
 });
 export type GoogleAuthRequestInput = v.InferInput<
 	typeof GoogleAuthRequestSchema
@@ -72,6 +72,7 @@ export type PasswordResetConfirmRequestOutput = v.InferOutput<
 export const AuthResponseSchema = v.object({
 	access_token: v.string(),
 	refresh_token: v.string(),
+	token_type: v.nullish(v.string(), "Bearer"),
 	user: UserBaseSchema,
 });
 export type AuthResponseInput = v.InferInput<typeof AuthResponseSchema>;

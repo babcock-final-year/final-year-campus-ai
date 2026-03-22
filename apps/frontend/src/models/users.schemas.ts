@@ -22,7 +22,7 @@ export const UserBaseSchema = v.object({
 	avatar_url: v.nullish(v.string()),
 	email: EmailSchema,
 	full_name: v.string(),
-	id: v.string(),
+	id: v.pipe(v.unknown(), v.toString()),
 	is_confirmed: v.nullish(v.boolean()),
 	is_guest: v.nullish(v.boolean()),
 	matric_no: v.nullish(MatricNumberSchema, "00/0000"),

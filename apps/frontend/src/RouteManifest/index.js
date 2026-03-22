@@ -16,6 +16,7 @@ export function routes(searchParams) {
         contact: {index: `/home/settings/contact${query}`},
         profile: {index: `/home/settings/profile${query}`},
         complaint: {index: `/home/settings/complaint${query}`},
+        complaints: {index: `/home/settings/complaints${query}`},
       },
     },
     auth: {

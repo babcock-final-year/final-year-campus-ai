@@ -20,9 +20,9 @@ export type ComplaintCreateRequestOutput = v.InferOutput<
 export const ComplaintResponseSchema = v.object({
 	created_at: v.pipe(v.string(), v.toDate()),
 	description: v.pipe(v.string(), v.minLength(3)),
-	id: v.number(),
+	id: v.pipe(v.unknown(), v.toString()),
 	title: v.pipe(v.string(), v.minLength(3)),
-	user_id: v.string(),
+	user_id: v.pipe(v.unknown(), v.toString()),
 });
 export type ComplaintResponseInput = v.InferInput<
 	typeof ComplaintResponseSchema

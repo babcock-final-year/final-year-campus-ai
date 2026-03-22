@@ -1,16 +1,14 @@
 import { type AccessorWithLatest, createAsync } from "@solidjs/router";
-import type {
-	UserBaseOutput,
-	UserProfileResponseOutput,
-} from "~/models/users.schemas";
+import type { UserBaseOutput } from "~/models/users.schemas";
 import AuthRpc from "~/rpc/auth";
-import UsersRpc from "~/rpc/users";
 import { getCapitalizedWordInitials } from "~/utils/string";
 
 const DEFAULT_USER_BASE = {
 	email: "foobar@student.babcock.edu.ng",
 	full_name: "Foo Bar",
 	id: "foobar",
+	is_confirmed: false,
+	is_guest: true,
 	matric_no: "00/0000",
 	username: "foo-bar",
 } as const satisfies UserBaseOutput;

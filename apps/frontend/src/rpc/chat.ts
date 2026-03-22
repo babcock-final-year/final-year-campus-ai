@@ -50,9 +50,9 @@ const ChatRpc = {
 					const toast = useToastContext();
 					const err = coerceToError(e);
 					toast.showToast({
-						class: { alert: "alert-error", closeBtn: "btn-error" },
 						description: err.message ?? "Unknown error",
 						title: "Failed to load chat",
+						type: "error",
 					});
 				} catch {
 					// If toast cannot be shown (e.g. called outside component), swallow silently.
@@ -97,9 +97,9 @@ const ChatRpc = {
 						const toast = useToastContext();
 						const err = coerceToError(e);
 						toast.showToast({
-							class: { alert: "alert-error", closeBtn: "btn-error" },
 							description: err.message ?? "Unknown error",
 							title: "Failed to send chat message",
+							type: "error",
 						});
 					} catch {
 						// If toast cannot be shown, continue returning the error.
@@ -137,11 +137,11 @@ const ChatRpc = {
 					const toast = useToastContext();
 					const err = coerceToError(e);
 					toast.showToast({
-						class: { alert: "alert-error", closeBtn: "btn-error" },
 						description:
 							err.message ??
 							"An unexpected error occurred while creating the chat.",
 						title: "Failed to create chat",
+						type: "error",
 					});
 				} catch {
 					// If toast cannot be shown, ignore and return the error as usual.

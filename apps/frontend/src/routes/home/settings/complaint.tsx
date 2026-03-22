@@ -46,27 +46,27 @@ export default function SettingsInterfaceComplaintPage() {
 				form.reset();
 
 				toast.showToast({
-					class: { alert: "alert-success", closeBtn: "btn-success" },
 					description:
 						"Thank you. We've received your report and will review it shortly.",
 					title: "Complaint submitted",
+					type: "success",
 				});
 			} else {
 				console.error("Failed to submit complaint:", res.err);
 
 				toast.showToast({
-					class: { alert: "alert-error", closeBtn: "btn-error" },
 					description: res.err.message ?? "Unknown error",
 					title: "Failed to submit complaint",
+					type: "error",
 				});
 			}
 		} catch (err) {
 			console.error("Error submitting complaint:", err);
 
 			toast.showToast({
-				class: { alert: "alert-error", closeBtn: "btn-error" },
 				description: coerceToError(err).message ?? "Unknown error",
 				title: "Error submitting complaint",
+				type: "error",
 			});
 		}
 	};

@@ -6,7 +6,6 @@ import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { routes } from "~/RouteManifest";
 import { revalidateUserData } from "~/rpc/revalidate-query";
 import UsersRpc from "~/rpc/users";
-import { getCapitalizedWordInitials } from "~/utils/string";
 import UploadImageButton from "../ui/button/UploadImageButton";
 import UserProfileImage from "../ui/image/UserProfileImage";
 
@@ -52,12 +51,18 @@ export default function SettingsProfileSummaryCard(props: { class?: string }) {
 			</p>
 
 			<div class="mt-1 flex size-full items-center">
-				<Link
-					class="btn btn-primary btn-sm rounded-full"
-					href={routes().home.editProfile.index}
-				>
-					Edit Profile
-				</Link>
+				<Suspense>
+					<Link
+						class={clsx(
+							"btn btn-primary btn-sm rounded-full",
+							userProfile.latest.is_guest && "btn-disabled",
+						)}
+						disabled={!!userProfile.latest.is_guest}
+						href={routes().home.editProfile.index}
+					>
+						Edit Profile
+					</Link>
+				</Suspense>
 			</div>
 		</div>
 	);

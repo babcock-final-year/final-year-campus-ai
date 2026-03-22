@@ -33,9 +33,9 @@ function tryShowErrorToast(title: string, err: unknown) {
 		const toast = useToastContext();
 		const error = coerceToError(err);
 		toast.showToast({
-			class: { alert: "alert-error", closeBtn: "btn-error" },
 			description: error.message ?? "An unexpected error occurred.",
 			title,
+			type: "error",
 		});
 	} catch {
 		// swallow: toast context not available in current runtime context
