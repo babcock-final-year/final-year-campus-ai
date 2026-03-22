@@ -1,7 +1,7 @@
 from datetime import datetime
 import os
 
-from flask import abort, current_app, jsonify, redirect, request
+from flask import current_app, jsonify, redirect, request
 from flask_jwt_extended import (
     create_access_token,
     create_refresh_token,
@@ -78,28 +78,22 @@ def register():
 
     user.password = data.password
 
-    try:
-        db.session.add(user)
-        db.session.flush()
+    db.session.add(user)
+    db.session.commit()
 
-        token = user.generate_confirmation_token()
+    token = user.generate_confirmation_token()
 
-        base = current_app.config.get("BASE_URL", "http://localhost:5000")
-        confirm_url = f"{base}/api/v1/auth/confirm/{token}"
+    base = current_app.config.get("BASE_URL", "http://localhost:3030")
+    confirm_url = f"{base}/api/v1/auth/confirm/{token}"
 
-        send_email(
-            user.email,
-            "Confirm Your Account",
-            "auth/email/confirm",
-            user=user,
-            token=token,
-            confirm_url=confirm_url,
-        )
-
-        db.session.commit()
-    except Exception:
-        db.session.rollback()
-        abort(500, "Failed to send verification email.")
+    send_email(
+        user.email,
+        "Confirm Your Account",
+        "auth/email/confirm",
+        user=user,
+        token=token,
+        confirm_url=confirm_url,
+    )
 
     logger.info(f"New user registered: {user.email} (ID: {user.id})")
     return jsonify(
@@ -118,8 +112,8 @@ def confirm(token):
     if user is None:
         logger.warning("Email confirmation failed: Invalid or expired token")
         frontend = current_app.config.get("BASE_URL", "http://localhost:3030")
-        login_path = current_app.config.get("FRONTEND_LOGIN_PATH", "/sign-up")
-        redirect_url = f"{frontend.rstrip('/')}{login_path}?invalid=2"
+        login_path = current_app.config.get("auth/sign-in")
+        redirect_url = f"{frontend.rstrip('/')}{login_path}?verification_expired=true"
         return redirect(redirect_url)
 
     if user.is_confirmed:
@@ -133,14 +127,38 @@ def confirm(token):
 
         logger.info(f"Email confirmed successfully for user: {user.email} (ID: {user.id})")
         frontend = current_app.config.get("BASE_URL", "http://localhost:3030")
-        login_path = current_app.config.get("FRONTEND_LOGIN_PATH", "/sign-up")
-        redirect_url = f"{frontend.rstrip('/')}{login_path}?confirmed=1"
+        login_path = current_app.config.get("auth/sign-in")
+        redirect_url = f"{frontend.rstrip('/')}{login_path}?confirmed=true"
         return redirect(redirect_url)
 
     logger.warning(
         f"Email confirmation failed for user: {user.email} (ID: {user.id}) - Token verification failed"
     )
     abort_bad_request("Confirmation failed")
+
+
+@api.route("/auth/resend-confirmation", methods=["POST"])
+@jwt_required()
+def resend_confirmation():
+    user = db.session.get(User, get_jwt_identity())
+
+    if user.is_confirmed:
+        abort_conflict("Account is already confirmed")
+
+    token = user.generate_confirmation_token()
+    base = current_app.config.get("BASE_URL", "http://localhost:3030")
+    confirm_url = f"{base}/api/v1/auth/confirm/{token}"
+
+    send_email(
+        user.email,
+        "Confirm Your Account",
+        "auth/email/confirm",
+        user=user,
+        token=token,
+        confirm_url=confirm_url,
+    )
+
+    return jsonify({"message": "Confirmation email resent"}), 200
 
 
 @api.route("/auth/login", methods=["POST"])
