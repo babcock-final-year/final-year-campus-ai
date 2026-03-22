@@ -45,7 +45,6 @@ __pycache__
 
 
 # Documents
-data/
 *.db
 uploads/
 chroma_db/

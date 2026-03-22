@@ -1,0 +1,128 @@
+[
+	{
+		"answer": "Apply online through the Post-UTME portal at https://admissions.babcock.edu.ng. You will need to submit a completed application form, three letters of recommendation, photocopies of your certificates, and the required application fee. Originals of all documents must be presented at registration.",
+		"category": "Admissions",
+		"id": "adm_faq_001",
+		"question": "How do I apply to Babcock University?",
+		"subcategory": "General"
+	},
+	{
+		"answer": "The minimum UTME aggregate score for the 2025/2026 academic session is 170. Check the admissions portal or contact the Admissions Office for updates each session, as this may vary.",
+		"category": "Admissions",
+		"id": "adm_faq_002",
+		"question": "What is the minimum UTME score for Babcock University?",
+		"subcategory": "General"
+	},
+	{
+		"answer": "Yes, only UTME and Direct Entry candidates who selected Babcock University as first choice are eligible for the Post-UTME. However, if you chose another school, you can still apply by changing your institution of first choice to Babcock at any accredited JAMB CBT Centre before completing the Post-UTME application.",
+		"category": "Admissions",
+		"id": "adm_faq_003",
+		"question": "Do I need to choose Babcock as my first choice on JAMB to apply?",
+		"subcategory": "General"
+	},
+	{
+		"answer": "You need a minimum of 5 credit passes (C6 or above) at SSCE/NECO/GCE O'Level or equivalent, in not more than two sittings. English Language is required for all programmes. Mathematics at credit level is also required for Sciences, Social Sciences, Business, Management, and Law programmes.",
+		"category": "Admissions",
+		"id": "adm_faq_004",
+		"question": "What O'Level grades are required for admission?",
+		"subcategory": "General"
+	},
+	{
+		"answer": "For MBBS, you must have credits in all five required subjects — Physics, Chemistry, Biology, Mathematics, and English Language — obtained in ONE sitting only (not two). The minimum UTME aggregate is 170. There is no Direct Entry route for MBBS.",
+		"category": "Admissions",
+		"id": "adm_faq_005",
+		"question": "What are the special requirements for Medicine (MBBS)?",
+		"subcategory": "Medicine"
+	},
+	{
+		"answer": "Direct Entry allows candidates with post-secondary qualifications (A'Levels, ND, HND, NCE, or a first degree) to enter undergraduate programmes at 200 Level, bypassing 100 Level. You must still meet the O'Level requirements for your programme and all GEDS courses must be taken from entry.",
+		"category": "Admissions",
+		"id": "adm_faq_006",
+		"question": "What is Direct Entry (DE) admission?",
+		"subcategory": "Direct Entry"
+	},
+	{
+		"answer": "Yes. A National Diploma (ND) at minimum Upper Credit level in a relevant discipline qualifies you for Direct Entry into 200 Level, provided you also meet the O'Level requirements for your chosen programme.",
+		"category": "Admissions",
+		"id": "adm_faq_007",
+		"question": "Can I enter Babcock at 200 Level with an ND?",
+		"subcategory": "Direct Entry"
+	},
+	{
+		"answer": "Babcock does not normally accept transfer students, but exceptions are considered. You must follow the same application process as new applicants, submit your JAMB Admission Letter, Official Transcript, and an Attestation Letter sent directly from your previous university to the Babcock Registrar. You must also effect the inter-university transfer with JAMB. Transfer credits will not appear on your Babcock transcript or count in your CGPA. A minimum of 3 years in residence at Babcock is required before graduation.",
+		"category": "Admissions",
+		"id": "adm_faq_008",
+		"question": "Can I transfer from another university to Babcock?",
+		"subcategory": "Transfer"
+	},
+	{
+		"answer": "A student who was dismissed or is on academic or disciplinary probation from another institution may not be eligible for transfer admission to Babcock University.",
+		"category": "Admissions",
+		"id": "adm_faq_009",
+		"question": "Can a student dismissed from another school apply to Babcock?",
+		"subcategory": "Transfer"
+	},
+	{
+		"answer": "Yes. International students must have the equivalent of the Nigerian SSSC and provide original transcripts and credentials validated by national officials. English proficiency (written and oral) must be demonstrated. You should remain in your home country until you receive an official admission letter from Babcock. You will also need a student residence/study permit or visa, and must report to the International Student's Adviser at the Registry upon arrival.",
+		"category": "Admissions",
+		"id": "adm_faq_010",
+		"question": "Can international students apply to Babcock University?",
+		"subcategory": "International"
+	},
+	{
+		"answer": "Full tuition and general fees must be paid at registration each semester. No student is allowed to register without meeting the full payment requirement. Sponsored students must make acceptable financial arrangements before registration.",
+		"category": "Admissions",
+		"id": "adm_faq_011",
+		"question": "When must I pay my school fees?",
+		"subcategory": "Fees"
+	},
+	{
+		"answer": "Refunds are only available if you withdraw before the end of the fourth week of the semester. After that, no tuition refund is given. In cases of serious illness or emergency, charges may be prorated over the entire semester. No refunds are given for disciplinary dismissals or abscondment.",
+		"category": "Admissions",
+		"id": "adm_faq_012",
+		"question": "Can I get a tuition refund if I withdraw from school?",
+		"subcategory": "Fees"
+	},
+	{
+		"answer": "Yes. Babcock offers a limited number of scholarships, bursaries, and financial aid programmes including Heritage Bursary Awards, Ilishan-Remo Indigenes' Tuition Scholarships, the Olusola Akanbi Memorial Computer Science Award, Sulaimon Dauda Memorial Nursing Award, Women's Ministries Scholarships, Veronica Adeleke Social Science Female Excellence Awards, and Work-Study Scholarships. Application forms are available at the Registrar's Office. Most scholarships have closing dates, and students cannot combine two awards.",
+		"category": "Admissions",
+		"id": "adm_faq_013",
+		"question": "Are there scholarships available at Babcock University?",
+		"subcategory": "Scholarships"
+	},
+	{
+		"answer": "The Work-Study programme allows students to earn up to 20% of their tuition through on-campus employment. Resident students are expected to work 10–20 hours per week. Work departments include the Bakery, Food Services, Farm, administrative offices, and others. Earnings can be credited to your student account. Contact the Human Resources Department for more information.",
+		"category": "Admissions",
+		"id": "adm_faq_014",
+		"question": "What is the Work-Study programme?",
+		"subcategory": "Scholarships"
+	},
+	{
+		"answer": "Postgraduate applications are handled by the College of Postgraduate Studies. You can apply via https://www.babcock.edu.ng/postgraduate or email secretary.pgs@babcock.edu.ng. Requirements vary by programme and are detailed in the Postgraduate Bulletin. Generally, you need a recognised first degree (minimum Second Class Lower) and evidence of NYSC participation or exemption.",
+		"category": "Admissions",
+		"id": "adm_faq_015",
+		"question": "How do I apply for a postgraduate programme at Babcock?",
+		"subcategory": "Postgraduate"
+	},
+	{
+		"answer": "Seventh-day Adventist candidates and children of Babcock faculty/staff may be offered admission on a concessionary basis, provided they meet the minimum academic requirements for their intended programme. All other candidates are considered equally regardless of religion.",
+		"category": "Admissions",
+		"id": "adm_faq_016",
+		"question": "Are SDA students given preference in admissions?",
+		"subcategory": "General"
+	},
+	{
+		"answer": "You may apply provisionally while awaiting your SSCE/NECO/GCE results. However, you must provide authenticated results before Matriculation. If the results do not meet the required standards, your admission will be automatically withdrawn.",
+		"category": "Admissions",
+		"id": "adm_faq_017",
+		"question": "What happens if I apply before my O'Level results are out?",
+		"subcategory": "General"
+	},
+	{
+		"answer": "Yes. A 5% discount on net tuition and residential fees is available when two or more dependent children from the same family are concurrently enrolled full-time at Babcock University. The students must each be under 21, unmarried, and not in regular employment.",
+		"category": "Admissions",
+		"id": "adm_faq_018",
+		"question": "Is there a family discount on fees?",
+		"subcategory": "Fees"
+	}
+]

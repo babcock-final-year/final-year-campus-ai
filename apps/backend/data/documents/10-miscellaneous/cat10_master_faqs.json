@@ -1,0 +1,470 @@
+[
+	{
+		"answer": "The minimum UTME (JAMB) score for admission into Babcock University for the 2025/2026 session is 170. However, meeting the minimum score does not guarantee admission — you must also pass the Post-UTME screening exercise and meet the specific O'Level requirements for your chosen programme.",
+		"category": "Admissions",
+		"id": "faq_001",
+		"question": "What is the minimum UTME score to gain admission into Babcock University?",
+		"tags": ["UTME", "JAMB", "admission", "cut-off", "score"]
+	},
+	{
+		"answer": "Apply online at https://admissions.babcock.edu.ng. You will need your JAMB registration number, O'Level results, and a valid email address. After submitting your application and paying the application fee, you will be invited for the Post-UTME screening if eligible. For enquiries, call +234-805-902-6055 or email admissions@babcock.edu.ng.",
+		"category": "Admissions",
+		"id": "faq_002",
+		"question": "How do I apply to Babcock University?",
+		"tags": ["apply", "application", "portal", "admission", "how to apply"]
+	},
+	{
+		"answer": "Babcock uses a 5-point GPA scale. Letter grades are: A (70–100%, 5 points), B (60–69%, 4 points), C (50–59%, 3 points), D (45–49%, 2 points), E (40–44%, 1 point), F (0–39%, 0 points). Degree classifications are: First Class (CGPA 4.50–5.00), Second Class Upper (3.50–4.49), Second Class Lower (2.50–3.49), Third Class (2.00–2.49), Pass (1.50–1.99).",
+		"category": "Academics",
+		"id": "faq_003",
+		"question": "What is the grading system at Babcock University?",
+		"tags": ["grades", "GPA", "CGPA", "grading", "first class", "result"]
+	},
+	{
+		"answer": "The CA is worth 40% of your total score and is broken down as: Attendance 5%, Quizzes 10%, Assignments 10%, Mid-Semester Examination 15%. The remaining 60% comes from the Final Examination at the end of the semester.",
+		"category": "Academics",
+		"id": "faq_004",
+		"question": "How is the Continuous Assessment (CA) calculated?",
+		"tags": [
+			"CA",
+			"continuous assessment",
+			"attendance",
+			"quiz",
+			"assignment",
+			"mid-semester"
+		]
+	},
+	{
+		"answer": "To graduate with a First Class Honours degree at Babcock University, you need a Cumulative GPA (CGPA) of at least 4.50 on the 5-point scale. You must also have no outstanding courses and meet all other graduation requirements.",
+		"category": "Academics",
+		"id": "faq_005",
+		"question": "What CGPA do I need to graduate with a First Class?",
+		"tags": ["first class", "CGPA", "graduation", "honours", "4.50"]
+	},
+	{
+		"answer": "If your CGPA falls below 2.00, you are placed on academic probation. If your GPA remains below 2.00 for two consecutive semesters, you will be suspended. If your GPA falls to 1.00 or below, you may be withdrawn from the university. If you are on probation, you are not eligible to hold any student leadership position.",
+		"category": "Academics",
+		"id": "faq_006",
+		"question": "What happens if my CGPA falls below 2.00?",
+		"tags": [
+			"probation",
+			"CGPA",
+			"suspension",
+			"withdrawal",
+			"academic standing"
+		]
+	},
+	{
+		"answer": "The campus curfew runs from 10:00 PM to 5:45 AM daily. All students must be in their halls of residence by 9:45 PM. Returning to the hall after 9:45 PM attracts 30 demerit points. The official lights-out time is 11:00 PM.",
+		"category": "Campus Life",
+		"id": "faq_007",
+		"question": "What is the curfew time at Babcock University?",
+		"tags": ["curfew", "lights out", "hall", "9:45", "10pm", "demerit"]
+	},
+	{
+		"answer": "No. Jeans are completely prohibited on the Babcock University campus and at all BU-related activities, in any form — including jeggings, jean skirts, and jean shorts. Violation attracts demerit points under the dress code regulations.",
+		"category": "Campus Life",
+		"id": "faq_008",
+		"question": "Can I wear jeans on campus?",
+		"tags": ["jeans", "dress code", "clothing", "prohibited", "fashion"]
+	},
+	{
+		"answer": "The citizenship grading system tracks student conduct throughout the semester using merit/demerit points. Students start with 60 merit points and lose points for misconduct. Grades are: A (50–60 points), B (40–49), C (30–39), D (20–29), E (10–19), F (below 10). A minimum of Grade C is required to graduate. Exhausting all 60 points in one semester results in semester suspension.",
+		"category": "Campus Life",
+		"id": "faq_009",
+		"question": "What is the citizenship grading system?",
+		"tags": ["citizenship", "demerit", "merit", "conduct", "grading", "points"]
+	},
+	{
+		"answer": "Opposite-sex visitors are allowed at the hall reception only, Sunday through Thursday, from 8:00 AM to 6:00 PM. There are NO visitations on Fridays (hall sanitation and Sabbath preparation) or on the Sabbath (Saturday). All off-campus visitors must sign in at the porter's lodge. Overnight visitors are strictly prohibited.",
+		"category": "Campus Life",
+		"id": "faq_010",
+		"question": "What are the visiting hours at the halls of residence?",
+		"tags": [
+			"visiting hours",
+			"visitation",
+			"hall",
+			"opposite sex",
+			"guest",
+			"visitor"
+		]
+	},
+	{
+		"answer": "No. Cooking appliances of any kind — including electric cookers, hotplates, and immersion heaters — are strictly prohibited in hostel rooms. Violation attracts 60 demerit points, which is among the most severe single-offence penalties. Meals are provided through the university cafeteria.",
+		"category": "Campus Life",
+		"id": "faq_011",
+		"question": "Can I cook in my hostel room?",
+		"tags": [
+			"cooking",
+			"room",
+			"hostel",
+			"electric cooker",
+			"prohibited",
+			"demerit"
+		]
+	},
+	{
+		"answer": "Babcock University is a Seventh-day Adventist institution and observes the Sabbath from Friday sunset to Saturday sunset. During this period, social activities, entertainment, cooking, and most non-essential activities are restricted. Saturday worship services are mandatory for all resident students. Sabbath violation attracts 30 demerit points.",
+		"category": "Campus Life",
+		"id": "faq_012",
+		"question": "What is the Sabbath at Babcock University?",
+		"tags": ["Sabbath", "Saturday", "SDA", "worship", "Adventist", "Friday"]
+	},
+	{
+		"answer": "Fees vary by programme. For 2025/2026, examples include: Engineering ~₦1.48M/year (100L), Law ~₦2.00M/year (100L), Medicine (MBBS) ₦5.5M–₦7M/year (all-inclusive), Computer Science/Software Engineering ~₦1.3M/year (100L), Education programmes ~₦813K/year (100L). Accommodation ranges from ₦397,712 (Regular) to ₦564,180 (Classic Plus) per year. Feeding is ₦952K (2 meals/day) or ₦1.43M (3 meals/day) per year.",
+		"category": "Fees",
+		"id": "faq_013",
+		"question": "How much does Babcock University cost per year?",
+		"tags": ["fees", "tuition", "cost", "how much", "payment", "price"]
+	},
+	{
+		"answer": "Fees are paid via e-transact at any of the following authorised banks: UBA, WEMA Bank, Zenith Bank, or First Bank of Nigeria. Full fees must be paid before or at registration — no partial registration is allowed. Log in to the student portal to view your account balance.",
+		"category": "Fees",
+		"id": "faq_014",
+		"question": "How do I pay my school fees at Babcock University?",
+		"tags": ["fees", "payment", "bank", "how to pay", "e-transact"]
+	},
+	{
+		"answer": "Yes. Students in Agriculture, Basic Science, and Education programmes receive a 30% discount on tuition fees only. Families with two or more dependent children enrolled full-time concurrently receive a 5% discount on tuition and residential fees. Work-Study students can earn up to 20% of their tuition through on-campus employment.",
+		"category": "Fees",
+		"id": "faq_015",
+		"question": "Is there any discount on Babcock University school fees?",
+		"tags": [
+			"discount",
+			"scholarship",
+			"fees",
+			"work-study",
+			"reduction",
+			"financial aid"
+		]
+	},
+	{
+		"answer": "Refunds are only available if you withdraw before the end of Week 4 of the semester. After that, no tuition refund is given. Students dismissed for disciplinary reasons or who abscond from the university receive no refund under any circumstances.",
+		"category": "Fees",
+		"id": "faq_016",
+		"question": "Can I get a refund if I withdraw from Babcock University?",
+		"tags": ["refund", "withdrawal", "withdraw", "fees", "money back"]
+	},
+	{
+		"answer": "Exam misconduct is handled by the Senate Panel on Examination and Academic Misconduct (SPEAM) with severe penalties. Copying in the exam hall earns a failing grade in the course plus a minimum 1-year suspension. Impersonation (writing for another student) leads to expulsion and prosecution of both parties. Even bringing an unauthorized item like a phone into the exam hall earns a 1-year suspension. Repeat offenders are expelled.",
+		"category": "Discipline",
+		"id": "faq_017",
+		"question": "What happens if I cheat in an exam at Babcock University?",
+		"tags": [
+			"cheating",
+			"exam",
+			"misconduct",
+			"copy",
+			"malpractice",
+			"SPEAM",
+			"suspension"
+		]
+	},
+	{
+		"answer": "Offences that lead to automatic expulsion include: possession or use of cocaine, cultism or fraternities, possession of weapons or explosives, gangsterism, same-sex relationships, persistent suspension-level offences, gross academic dishonesty, forging university documents, writing exams for another student, physically assaulting an invigilator, and possession of cult tattoos or logos.",
+		"category": "Discipline",
+		"id": "faq_018",
+		"question": "What offences can lead to expulsion from Babcock University?",
+		"tags": [
+			"expulsion",
+			"dismissal",
+			"expelled",
+			"offence",
+			"serious misconduct"
+		]
+	},
+	{
+		"answer": "Yes. All appeals against decisions by the Students Disciplinary Committee (SDC) or the Senate Panel on Examination and Academic Misconduct (SPEAM) are directed to the President/Vice-Chancellor via the Students Appeal Committee (SAC). You must appeal within 21 clear days of receiving the written decision. For SPEAM outcomes, you can only appeal for clemency if your sanction exceeds 1 year and you have already served 1 semester of it.",
+		"category": "Discipline",
+		"id": "faq_019",
+		"question": "Can I appeal a disciplinary decision at Babcock University?",
+		"tags": ["appeal", "disciplinary", "SDC", "SPEAM", "SAC", "VC", "21 days"]
+	},
+	{
+		"answer": "Course registration is done online through the student portal (https://umis.babcock.edu.ng or via admissions.babcock.edu.ng). You must first pay your fees, then meet your Course Adviser to sign off on your course form. The minimum credit load per semester is 16 units. The add/drop deadline is typically during the first few weeks — for 2025/2026 First Semester, the last day to enter or change a class was September 26, 2025.",
+		"category": "Registration & Administration",
+		"id": "faq_020",
+		"question": "How do I register my courses at Babcock University?",
+		"tags": [
+			"registration",
+			"courses",
+			"register",
+			"credit units",
+			"portal",
+			"course adviser"
+		]
+	},
+	{
+		"answer": "Download and complete the Transcript Request Form from https://babcock.edu.ng/student-forms. Submit to the Registry office. The fee is ₦5,000 per transcript, and processing takes a minimum of 24 hours. Contact the Registry at registry@babcock.edu.ng or call 08034069393.",
+		"category": "Registration & Administration",
+		"id": "faq_021",
+		"question": "How do I get my transcript from Babcock University?",
+		"tags": ["transcript", "academic record", "Registry", "document", "request"]
+	},
+	{
+		"answer": "Download the Change of Course Form from https://babcock.edu.ng/student-forms. Get approval from your current HOD, current Dean, proposed HOD, and proposed Dean — then submit to the Registrar. The change must be done before the add/drop deadline and is subject to space availability and meeting entry requirements for the new programme.",
+		"category": "Registration & Administration",
+		"id": "faq_022",
+		"question": "How do I change my course/programme of study?",
+		"tags": [
+			"change of course",
+			"programme",
+			"transfer",
+			"switch",
+			"department"
+		]
+	},
+	{
+		"answer": "The Registry is located on the main campus of Babcock University in Ilishan-Remo, Ogun State. Contact: registry@babcock.edu.ng, phone 08034069393 or 08059026055. The Registrar is Dr. Patience Chioma.",
+		"category": "Registration & Administration",
+		"id": "faq_023",
+		"question": "Where is the Registry office?",
+		"tags": ["Registry", "location", "office", "Registrar", "where"]
+	},
+	{
+		"answer": "For 2025/2026: Returning students (200–600L) resumed September 1–4, 2025. 100L and Direct Entry students arrived October 14–16, 2025, with Orientation from October 17–23 and classes beginning October 27, 2025. Second Semester resumption for all students was January 12–14, 2026.",
+		"category": "Campus Life",
+		"id": "faq_024",
+		"question": "When is resumption for the 2025/2026 academic session?",
+		"tags": [
+			"resumption",
+			"when",
+			"return",
+			"start",
+			"semester",
+			"2025",
+			"2026"
+		]
+	},
+	{
+		"answer": "The 2026 Convocation ceremony is scheduled for Sunday, July 26, 2026 at the Babcock University Stadium. The full Graduation Week runs from approximately July 19–26, 2026. Postgraduate graduation is July 21, undergraduate Grand Finale is July 26.",
+		"category": "Campus Life",
+		"id": "faq_025",
+		"question": "When is convocation / graduation for 2025/2026?",
+		"tags": ["convocation", "graduation", "ceremony", "when", "July 2026"]
+	},
+	{
+		"answer": "The Laz Otti Memorial Library is the main library, commissioned in May 2014. It holds approximately 63,000 volumes, 630 hardcopy journals, and access to 5,000+ e-journals. There are 5 branch libraries across campus serving different schools. Hours are Monday–Thursday 8:00 AM–10:00 PM, Friday 8:00 AM–5:30 PM, Saturday and Sunday 2:00 PM–8:00 PM.",
+		"category": "Facilities",
+		"id": "faq_026",
+		"question": "What library facilities are available at Babcock University?",
+		"tags": ["library", "books", "e-library", "hours", "Laz Otti", "journals"]
+	},
+	{
+		"answer": "Yes. Babcock University Teaching Hospital (BUTH) is a full-service teaching hospital on campus with 140 beds. It features a cardiac centre that has performed over 300 open-heart surgeries with 100% success since 2015, a 600-seat auditorium, and radio diagnostic labs. BUTH also serves the surrounding community. Website: https://buth.babcock.edu.ng",
+		"category": "Facilities",
+		"id": "faq_027",
+		"question": "Does Babcock University have a hospital?",
+		"tags": ["hospital", "BUTH", "medical", "health", "sick bay", "doctor"]
+	},
+	{
+		"answer": "Yes. Babcock University has campus-wide internet access managed by the ICT/ITDS Department (led by Abraham O. Idowu). There is an MOU with UBA for internet provision via eTECK. Computer labs include 4 medium labs (50 stations each), 1 large lab (220 stations, 8 servers, smartboard), and the New Horizons Learning Centre (410 computers, 5 rooms).",
+		"category": "Facilities",
+		"id": "faq_028",
+		"question": "Is there Wi-Fi on the Babcock University campus?",
+		"tags": ["WiFi", "internet", "network", "ICT", "computer lab", "online"]
+	},
+	{
+		"answer": "Yes. Attendance at Saturday Sabbath worship is mandatory for all resident students. Every student is assigned to a specific worship centre. BU has 33 worship centres distributed across campus. Sabbath violation attracts 30 demerit points. Morning devotion also takes place in individual rooms from 5:30–5:45 AM daily.",
+		"category": "Spiritual Life",
+		"id": "faq_029",
+		"question": "Do I have to attend church at Babcock University?",
+		"tags": [
+			"church",
+			"worship",
+			"Sabbath",
+			"mandatory",
+			"attendance",
+			"SDA",
+			"devotion"
+		]
+	},
+	{
+		"answer": "The Week of Spiritual Emphasis (WSE) is a university-wide spiritual revival held every Second Semester. All academic lectures are paused during this week. A special guest speaker leads daily services. For 2025/2026, the WSE runs from Saturday, February 14 to Saturday, February 21, 2026.",
+		"category": "Spiritual Life",
+		"id": "faq_030",
+		"question": "What is the Week of Spiritual Emphasis?",
+		"tags": [
+			"week of prayer",
+			"spiritual emphasis",
+			"WSE",
+			"revival",
+			"lectures pause"
+		]
+	},
+	{
+		"answer": "Founder's Day is celebrated on September 17 every year. It commemorates the formal chartering of Babcock University on May 10, 1999. The celebration includes a special thanksgiving service, the VC's address, and recognition of long-serving staff.",
+		"category": "Admissions",
+		"id": "faq_031",
+		"question": "When does Babcock University Founder's Day hold?",
+		"tags": [
+			"Founder's Day",
+			"September 17",
+			"celebration",
+			"anniversary",
+			"1999"
+		]
+	},
+	{
+		"answer": "The Student Support Centre (SSC) provides free, confidential counselling services including academic counselling, psychosocial counselling, career guidance, substance abuse intervention, bereavement support, relationship counselling, and time management coaching. The SSC is located behind the campus banks, west of the EAH building. Contact the Director at 08060144027.",
+		"category": "Support & Wellbeing",
+		"id": "faq_032",
+		"question": "What counselling services are available at Babcock University?",
+		"tags": [
+			"counselling",
+			"support",
+			"SSC",
+			"mental health",
+			"welfare",
+			"help"
+		]
+	},
+	{
+		"answer": "Report it to the Director of the Student Support Centre (08060144027) or to the University Pastor (08036638812). Cases involving BU community members may be prosecuted. All reports are handled in a confidential and caring environment.",
+		"category": "Support & Wellbeing",
+		"id": "faq_033",
+		"question": "What do I do if I experience sexual harassment at Babcock University?",
+		"tags": [
+			"sexual harassment",
+			"assault",
+			"report",
+			"complaint",
+			"SSC",
+			"pastor"
+		]
+	},
+	{
+		"answer": "SIWES stands for Student Industrial Work Experience Scheme. It is a 6-month industrial training programme (January to June) for students in Engineering, Computer Science, and selected other programmes. After SIWES, students return for a Post-SIWES Second Semester (July–August). The SIWES office is managed by Obinna J. Okoro.",
+		"category": "Academics",
+		"id": "faq_034",
+		"question": "What is SIWES and who does it apply to?",
+		"tags": [
+			"SIWES",
+			"industrial training",
+			"internship",
+			"engineering",
+			"computing",
+			"January"
+		]
+	},
+	{
+		"answer": "The minimum credit load is 16 credit units per semester. Students wishing to register for more than the standard credit load must complete an Extra Unit Form available at https://babcock.edu.ng/student-forms, which requires approval from their Course Adviser and Dean.",
+		"category": "Academics",
+		"id": "faq_035",
+		"question": "What is the minimum credit load per semester?",
+		"tags": [
+			"credit units",
+			"course load",
+			"minimum",
+			"registration",
+			"16 units"
+		]
+	},
+	{
+		"answer": "Every Friday from 3:00–5:00 PM, all hall residents must be in their rooms for a mandatory room clean-up (3:00–4:00 PM) and inspection (4:00–5:00 PM). All sports and student activities must end by 3:00 PM on Fridays. This exercise runs every Friday, including the last Friday before exams.",
+		"category": "Campus Life",
+		"id": "faq_036",
+		"question": "What is the Friday inspection at Babcock University?",
+		"tags": ["inspection", "Friday", "room check", "clean-up", "hall"]
+	},
+	{
+		"answer": "Male halls include: Emerald 1, Emerald 2, Emerald 3, Emerald 4, Gamaliel Hall, Gideon Troopers Hall (Medical), Neal Wilson Hall, Nelson Mandela (Royal) Hall, Samuel Akande Hall, Topaz Hall, Welch Hall, Winslow 1, Winslow 2, and Bethel Splendor Hall.",
+		"category": "Campus Life",
+		"id": "faq_037",
+		"question": "What are the male halls of residence at Babcock University?",
+		"tags": [
+			"male halls",
+			"hostel",
+			"accommodation",
+			"Emerald",
+			"Welch",
+			"Winslow"
+		]
+	},
+	{
+		"answer": "Female halls include: Sapphire (Classic and Classic Plus), Crystal Hall, Diamond Hall, Felicia Adebisi Dada Hall, Havilah Gold Hall, Justice Deborah Hall (Iperu Campus), Nyberg 1, Nyberg 2, Ogden Hall, Platinum Hall, Queen Esther 1, Queen Esther 2, White 1, White 2, and Ameyo Adadevoh Hall (Medical).",
+		"category": "Campus Life",
+		"id": "faq_038",
+		"question": "What are the female halls of residence at Babcock University?",
+		"tags": [
+			"female halls",
+			"hostel",
+			"accommodation",
+			"Sapphire",
+			"Queen Esther",
+			"Crystal"
+		]
+	},
+	{
+		"answer": "Babcock University operates Hope FM 89.1 MHz, a licensed FM radio station commissioned on May 31, 2012. It is managed under Adventist World Radio (AWR) Nigeria. The station broadcasts across Ogun and Lagos States. The Director is Babafemi J. Akintayo.",
+		"category": "Miscellaneous",
+		"id": "faq_039",
+		"question": "What radio station does Babcock University operate?",
+		"tags": ["Hope FM", "radio", "89.1", "AWR", "broadcast", "station"]
+	},
+	{
+		"answer": "Notable BU alumni include: Davido (Afrobeats superstar, Music, 2015), BNXN/Buju (Theatre Arts), Priscilla Ojo (Theatre Arts, 2021), Chioma Adeleke (Economics), Debo Ogundoyin (Agronomy; Speaker Oyo State House of Assembly), Olamide Samuel (International Law & Diplomacy, 2013; youngest African PhD in National Security Studies), Yewande Adekoya (Mass Communication; Nollywood actress), and Alex Usifo (Information Resources Management, 2016; veteran Nollywood actor).",
+		"category": "Miscellaneous",
+		"id": "faq_040",
+		"question": "Who are some notable alumni of Babcock University?",
+		"tags": [
+			"alumni",
+			"notable",
+			"famous",
+			"graduates",
+			"Davido",
+			"celebrities"
+		]
+	},
+	{
+		"answer": "Yes. Babcock University's College of Postgraduate Studies (CPGS) offers Postgraduate Diplomas, Masters degrees, and PhD programmes across multiple schools. Contact CPGS at secretary.pgs@babcock.edu.ng or call 0803 4013301 / 0905 8219762. The interim CPGS Director is Olutayo S. Shokunbi.",
+		"category": "Academics",
+		"id": "faq_041",
+		"question": "Does Babcock University offer postgraduate programmes?",
+		"tags": ["postgraduate", "Masters", "PhD", "CPGS", "PGD", "graduate school"]
+	},
+	{
+		"answer": "Yes. Direct Entry (DE) candidates can enter Babcock University at 200L or 300L depending on their qualifications. Acceptable DE qualifications include: A'Level passes (IJMB, Cambridge, Nabteb), ND/HND (from accredited polytechnics), NCE, or a first degree. The specific programme determines which level you enter. Apply through https://admissions.babcock.edu.ng.",
+		"category": "Admissions",
+		"id": "faq_042",
+		"question": "Can I gain admission to Babcock University through Direct Entry?",
+		"tags": [
+			"direct entry",
+			"DE",
+			"200 level",
+			"A-Level",
+			"ND",
+			"HND",
+			"admission"
+		]
+	},
+	{
+		"answer": "Student vehicles require an official permit from the Vice President for Student Development (VPSD). Driving or parking a vehicle on campus without a permit attracts 60 demerit points. Students with cars must register with the Security Department and display the official permit at all times.",
+		"category": "Campus Life",
+		"id": "faq_043",
+		"question": "Does Babcock University allow students to keep cars on campus?",
+		"tags": ["car", "vehicle", "permit", "driving", "parking", "VPSD"]
+	},
+	{
+		"answer": "Babcock University was formally chartered on May 10, 1999, making it one of Nigeria's first three private universities. However, its institutional history dates back to 1959 when it was founded as the Adventist College of West Africa (ACWA) in Ilishan-Remo. It became ASWA (Adventist Seminary of West Africa) in 1975, and Babcock University in 1999.",
+		"category": "Miscellaneous",
+		"id": "faq_044",
+		"question": "When was Babcock University founded?",
+		"tags": [
+			"founded",
+			"history",
+			"1999",
+			"1959",
+			"ACWA",
+			"when",
+			"established"
+		]
+	},
+	{
+		"answer": "The President/Vice-Chancellor of Babcock University is Professor Afolabi Oluntunde Ojewole . He has been in office since December 2025 succeeding Prof. Ademola Tayo.",
+		"category": "Miscellaneous",
+		"id": "faq_045",
+		"question": "Who is the current Vice-Chancellor of Babcock University?",
+		"tags": ["VC", "Vice-Chancellor", "president", "who is", "head"]
+	}
+]
