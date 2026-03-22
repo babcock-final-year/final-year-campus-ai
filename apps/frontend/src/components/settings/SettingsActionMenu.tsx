@@ -77,6 +77,11 @@ export default function SettingsActionMenu(props: { class?: string }) {
 			name: "File a Complaint",
 			route: settingsRoutes.complaint.index,
 		},
+		{
+			icon: MessageSquare,
+			name: "View Complaints",
+			route: settingsRoutes.complaints.index,
+		},
 		// {
 		// 	icon: Palette,
 		// 	name: "Theme & Interface",
