@@ -1,6 +1,0 @@
-- Even when the verification email fails to send, the email is still stored in the db.
-- Plain email registration is >~<
-- Make backend serve the app and apply the refresh and auth tokens
-- Add a way to delete single chats (I could prolly just hide it in the frontend for now :p)
-- For some reason, the username is always null when I access / update it.
-- Deal with the refresh token ugliness (When it expires, instead show a ui to the user to refresh)
