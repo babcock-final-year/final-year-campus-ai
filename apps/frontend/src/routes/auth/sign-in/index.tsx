@@ -96,7 +96,7 @@ function SignInForm() {
 						{...field}
 						icon={<UserRoundPlus class="opacity-50" />}
 						inputClass="bg-base-200"
-						label="Username / Email"
+						label="Email"
 						placeholder="your-email@domain.com"
 						type="text"
 					/>
