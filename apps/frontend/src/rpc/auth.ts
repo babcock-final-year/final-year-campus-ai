@@ -137,8 +137,33 @@ const AuthRpc = {
 							method: "GET",
 						},
 					);
+
+					// If the backend redirected (Flask redirect) or returned a Location header,
+					// expose the redirect URL to the caller via the MessageResponse `message` field.
+					const location = res.headers.get("location");
+					if (res.redirected || location) {
+						const redirectUrl = location || res.url;
+						return {
+							res: v.parse(MessageResponseSchema, { message: redirectUrl }),
+							success: true,
+						};
+					}
+
+					// Try to parse a JSON body; if non-JSON (e.g. HTML), fall back to status text.
+					let payload: unknown;
+					try {
+						payload = await res.json();
+					} catch (_) {
+						return {
+							res: v.parse(MessageResponseSchema, {
+								message: res.statusText || "Redirect",
+							}),
+							success: true,
+						};
+					}
+
 					return {
-						res: v.parse(MessageResponseSchema, await res.json()),
+						res: v.parse(MessageResponseSchema, payload),
 						success: true,
 					};
 				} catch (e) {

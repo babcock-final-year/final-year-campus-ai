@@ -41,7 +41,7 @@ describe("Auth Schemas", () => {
 
 	it("validates GoogleAuthRequestSchema", () => {
 		expect(() =>
-			v.parse(GoogleAuthRequestSchema, { token: "sometoken" }),
+			v.parse(GoogleAuthRequestSchema, { credential: "sometoken" }),
 		).not.toThrow();
 		expect(() => v.parse(GoogleAuthRequestSchema, {})).toThrow();
 	});

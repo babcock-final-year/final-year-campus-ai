@@ -1,5 +1,5 @@
 import * as v from "valibot";
-import { ChatHistoryResponseSchema } from "./chat.schemas";
+import { ChatHistoryResponseSchema, ChatMessageSchema } from "./chat.schemas";
 
 /**
  * Schema for a single chat summary in the user's history list.
@@ -25,6 +25,18 @@ export type ChatsListResponseInput = v.InferInput<
 export type ChatsListResponseOutput = v.InferOutput<
 	typeof ChatsListResponseSchema
 >;
+
+export const DeleteResponseSchema = v.object({
+	message: v.string(),
+});
+export type DeleteResponseInput = v.InferInput<typeof DeleteResponseSchema>;
+export type DeleteResponseOutput = v.InferOutput<typeof DeleteResponseSchema>;
+
+export const SearchResponseSchema = v.object({
+	results: v.array(ChatMessageSchema),
+});
+export type SearchResponseInput = v.InferInput<typeof SearchResponseSchema>;
+export type SearchResponseOutput = v.InferOutput<typeof SearchResponseSchema>;
 
 /**
  * Optionally, if the backend returns full chat history objects in the list,

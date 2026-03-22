@@ -43,7 +43,7 @@ export default function GoogleLoginButton(props: GoogleLoginButtonProps) {
 				return;
 			}
 
-			const res = await AuthRpc.google.post({ token: credential });
+			const res = await AuthRpc.google.post({ credential });
 
 			if (!res.success) {
 				toast.showToast({
