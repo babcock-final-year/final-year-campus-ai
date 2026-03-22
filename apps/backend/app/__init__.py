@@ -8,8 +8,11 @@ from spectree import SpecTree
 
 from config import config
 
+from .services.logger import get_logger
+
 # API Documentation is at /apidoc/swagger/
 
+logger = get_logger(__name__)
 db = SQLAlchemy()
 jwt = JWTManager()
 mail = Mail()
@@ -59,6 +62,16 @@ def create_app(config_name="default"):
 
         token = TokenBlocklist.query.filter_by(jti=jti).first()
         return token is not None
+
+    @jwt.user_lookup_loader
+    def user_lookup_callback(_jwt_header, jwt_data):
+        identity = jwt_data["sub"]
+        from .models import User
+
+        user = db.session.get(User, identity)
+        if not user:
+            logger.warning(f"JWT identity {identity} not found in DB")
+        return user
 
     @app.route("/")
     def health_check():
