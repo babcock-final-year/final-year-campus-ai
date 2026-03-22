@@ -230,13 +230,16 @@ export default function ChatMainAreaChatList() {
 							</Show>
 							<div
 								class={clsx(
-									"chat-bubble",
+									"chat-bubble mb-2",
 									isUser()
 										? "max-w-3/4 rounded-l-field rounded-tr-none rounded-br-box border border-primary/25 bg-base-100 before:hidden"
-										: "bg-base-200",
+										: "w-[85%] bg-base-200 p-0 pl-2",
 								)}
 							>
-								<div class="prose" innerHTML={parsedMarkdownContent.latest} />
+								<div
+									class={clsx("prose", !isUser() && "min-w-full")}
+									innerHTML={parsedMarkdownContent.latest}
+								/>
 
 								{/* Extra btns for assistant chat bubbles */}
 								<Show when={!isUser()}>
