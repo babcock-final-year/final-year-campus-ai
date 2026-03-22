@@ -59,25 +59,40 @@ export default function EditProfileInterfacePage() {
 
 	function onAvatarUpload(url: string) {
 		setInput(editProfileForm, { input: url, path: ["avatar_url"] });
+		(
+			document.querySelector(`input[name='["avatar_url"]']`) as HTMLInputElement
+		).value = url;
 	}
 
 	// I know this is hacky >~<
 	createEffect(() => {
+		(
+			document.querySelector(`input[name='["avatar_url"]']`) as HTMLInputElement
+		).value = userProfile.latest.avatar_url || "";
 		setInput(editProfileForm, {
 			input: userProfile.latest.avatar_url || "",
 			path: ["avatar_url"],
 		});
 
+		(
+			document.querySelector(`input[name='["full_name"]']`) as HTMLInputElement
+		).value = userProfile.latest.full_name || "";
 		setInput(editProfileForm, {
 			input: userProfile.latest.full_name || "",
 			path: ["full_name"],
 		});
 
+		(
+			document.querySelector(`input[name='["matric_no"]']`) as HTMLInputElement
+		).value = userProfile.latest.matric_no || "";
 		setInput(editProfileForm, {
 			input: userProfile.latest.matric_no || "",
 			path: ["matric_no"],
 		});
 
+		(
+			document.querySelector(`input[name='["username"]']`) as HTMLInputElement
+		).value = userProfile.latest.username || "";
 		setInput(editProfileForm, {
 			input: userProfile.latest.username || "",
 			path: ["username"],
@@ -127,6 +142,12 @@ export default function EditProfileInterfacePage() {
 										input: "",
 										path: ["avatar_url"],
 									});
+
+									(
+										document.querySelector(
+											`input[name='["avatar_url"]']`,
+										) as HTMLInputElement
+									).value = "";
 								}}
 							>
 								Remove
