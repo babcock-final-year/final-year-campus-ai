@@ -74,11 +74,11 @@ export default function SettingsActionMenu(props: { class?: string }) {
 			name: "File a Complaint",
 			route: settingsRoutes.complaint.index,
 		},
-		{
-			icon: Palette,
-			name: "Theme & Interface",
-			route: settingsRoutes.theme.index,
-		},
+		// {
+		// 	icon: Palette,
+		// 	name: "Theme & Interface",
+		// 	route: settingsRoutes.theme.index,
+		// },
 		{
 			icon: Trash,
 			name: "Delete My Data",
