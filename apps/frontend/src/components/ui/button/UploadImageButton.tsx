@@ -1,5 +1,6 @@
 import clsx from "clsx/lite";
 import { createSignal, type JSXElement, Suspense } from "solid-js";
+import { useToastContext } from "~/context/ToastContextProvider";
 import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { uploadFile } from "~/server/file-upload";
 import BaseButton from "./BaseButton";
@@ -17,6 +18,8 @@ export default function UploadImageButton(props: UploadImageButtonProps) {
 	const [isUploading, setIsUploading] = createSignal(false);
 
 	const userProfile = createUserProfile();
+
+	const toastContext = useToastContext();
 
 	let hiddenFileinput$!: HTMLInputElement;
 
@@ -42,7 +45,14 @@ export default function UploadImageButton(props: UploadImageButtonProps) {
 
 		const possibleUrl = await uploadFile(formData);
 
-		if (possibleUrl) await props.onUpload?.(possibleUrl);
+		if (possibleUrl) {
+			toastContext.showToast({
+				title: "Image Upload Success",
+				type: "success",
+			});
+			await props.onUpload?.(possibleUrl);
+		} else
+			toastContext.showToast({ title: "Image Upload Failed", type: "error" });
 
 		setIsUploading(false);
 
