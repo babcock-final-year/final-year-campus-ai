@@ -13,6 +13,7 @@ import {
 } from "lucide-solid";
 import { createSignal, For, Show, Suspense } from "solid-js";
 import { Dynamic } from "solid-js/web";
+import { useAuth } from "~/context/AuthContextProvider";
 import { useChatContext } from "~/context/ChatContextProvider";
 import { useToastContext } from "~/context/ToastContextProvider";
 import createChatsHistory from "~/hooks/rpc/history/createChatsHistory";
@@ -47,6 +48,7 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 	} = useChatContext();
 	const toast = useToastContext();
 	const navigate = useNavigate();
+	const authContext = useAuth();
 
 	const [isSidebarHiddenInDesktopMode, setIsSidebarHiddenInDesktopMode] =
 		createSignal(false);
@@ -188,10 +190,10 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 						</Link>
 					</li>
 					<li>
-						{/* TODO: Add logout functionality */}
 						<Link
 							class="btn btn-error btn-ghost justify-start font-normal"
 							href={routes().auth.signIn.index}
+							onClick={authContext.logout}
 						>
 							<LogOut />
 							Logout
