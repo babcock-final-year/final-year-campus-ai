@@ -1,5 +1,5 @@
 import { Link } from "@kobalte/core/link";
-import { useNavigate } from "@solidjs/router";
+import { createAsync, useNavigate } from "@solidjs/router";
 import clsx from "clsx/lite";
 import Drawer from "corvu/drawer";
 import {
@@ -42,6 +42,26 @@ function getNewChatName() {
 export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 	const userProfile = createUserProfile();
 	const chatHistory = createChatsHistory();
+
+	const chatTitles = createAsync(
+		async () => {
+			const titles = await Promise.all(
+				chatHistory.latest?.chats?.map(async ({ id, title }) => {
+					const chatDataRes = await ChatRpc.get(id);
+
+					if (!chatDataRes.success) return [id, title] as [string, string];
+
+					return [id, chatDataRes.res.messages?.[0]?.content || title] as [
+						string,
+						string,
+					];
+				}) || [],
+			);
+
+			return Object.fromEntries(titles);
+		},
+		{ initialValue: {} },
+	);
 
 	const {
 		chat: [_, setChat],
@@ -169,7 +189,12 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 												navigate(routes().home.chat.index);
 											}}
 										>
-											<span class="grow truncate">{chat.title}</span>
+											<span class="grow truncate">
+												{/*Since the chat tile now is just a generic "New Chat"*/}
+												<Suspense fallback={chat.title}>
+													{chatTitles.latest[chat.id] || chat.title}
+												</Suspense>
+											</span>
 											<Ellipsis class="hidden min-w-6 group-hover:block" />
 										</BaseButton>
 									</li>
