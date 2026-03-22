@@ -11,7 +11,6 @@ from ..models import Chat, Message, User
 from ..schemas import ChatHistoryResponse, ChatMessageRequest, ChatMessageResponse
 from ..services.logger import get_logger
 from . import api
-from .decorators import member_required
 from .errors import abort_forbidden, abort_not_found
 
 logger = get_logger(__name__)
@@ -42,7 +41,6 @@ def create_chat():
 
 @api.route("/chat/<chat_id>", methods=["GET"])
 @jwt_required()
-@member_required(check_owner=True, owner_arg="user_id")
 def get_chat_history(chat_id, current_user=None):
     """Return the chat history for a chat id. Only owner may fetch."""
     chat = Chat.query.get(chat_id)
