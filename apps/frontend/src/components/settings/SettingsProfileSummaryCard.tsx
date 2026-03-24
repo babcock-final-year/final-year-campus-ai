@@ -15,7 +15,7 @@ export default function SettingsProfileSummaryCard(props: { class?: string }) {
 	return (
 		<div
 			class={clsx(
-				"grid grid-cols-[8rem_1fr] grid-rows-[1fr_1.5rem_1.25fr] gap-x-2 rounded-box border border-base-300 bg-base-100 p-4",
+				"grid grid-cols-[6.5rem_1fr] grid-rows-[1fr_1.5rem_1.25fr] gap-x-2 overflow-auto rounded-box border border-base-300 bg-base-100 p-4 sm:grid-cols-[8rem_1fr]",
 				props.class,
 			)}
 		>

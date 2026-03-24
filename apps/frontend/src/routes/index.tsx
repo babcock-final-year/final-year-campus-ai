@@ -25,40 +25,38 @@ export default function Home() {
 	return (
 		<div class="hero size-full overflow-auto bg-linear-to-bl from-primary/90 to-accent p-8">
 			<div class="hero-content flex-col gap-8 text-center sm:flex-row sm:gap-16">
-				<AppLogo class="hidden *:h-auto *:w-2xs *:fill-secondary sm:block" />
+				<div class="fixed top-6">
+					<AppLogo class="mx-auto block *:h-auto *:w-10 *:place-self-center *:fill-secondary" />
+					<span class="inline-flex gap-1 text-secondary/75 text-xs">
+						<p>U</p>
+						<p>N</p>
+						<p>I</p>
+						<p>P</p>
+						<p>A</p>
+						<p>L</p>
+					</span>
+				</div>
 
-				<div>
-					<AppLogo class="mx-auto block *:h-auto *:w-24 *:place-self-center *:fill-neutral sm:hidden" />
+				<div class="flex max-w-[80vw] flex-col items-center gap-2 sm:max-w-3xl">
+					<h1 class="py-4 font-bold text-3xl text-secondary sm:text-5xl">
+						<span class="text-blue-300">Unipal:</span> Your Conversational
+						Assistant for Student Services
+					</h1>
 
-					<h1 class="py-4 font-bold text-5xl text-secondary">Unipal</h1>
-
-					<p class="py-4 font-semibold text-secondary">
-						Your intelligent assistant for campus life.
+					<p class="max-w-4/5 py-4 text-secondary/75 sm:max-w-3/5">
+						Simplifying your academic journey with instant answers, and smart
+						campus resources.
 					</p>
 
-					<ul class="list-none space-y-4 py-4">
-						<ListWithIcon icon={<MessagesSquareIcon />}>
-							24/7 AI assistance for all your questions.
-						</ListWithIcon>
-						<ListWithIcon icon={<FileText />}>
-							Accurate and verified responses.
-						</ListWithIcon>
-						<ListWithIcon icon={<CalendarDays />}>
-							Stay organised with smart scheduling.
-						</ListWithIcon>
-					</ul>
-
-					<div class="flex flex-col items-center justify-center gap-4 py-4">
+					<div class="flex flex-col items-center justify-center gap-4 py-4 sm:flex-row">
 						<Link
-							as={A}
-							class="btn btn-wide btn-lg btn-primary"
+							class="btn btn-lg btn-secondary"
 							href={routes().auth.signUp.index}
 						>
 							Get Started <UserRoundPlus />
 						</Link>
 						<Link
-							as={A}
-							class="btn btn-ghost btn-wide btn-lg btn-secondary"
+							class="btn btn-ghost btn-lg btn-primary not-hover:text-secondary"
 							href={routes().auth.signIn.index}
 						>
 							Sign In <LogIn />

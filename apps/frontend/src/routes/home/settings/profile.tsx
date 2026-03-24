@@ -12,7 +12,7 @@ function TitleAndValue(props: TitleAndValueProps) {
 			<div class="font-semibold text-xs opacity-75">
 				{props.title.toUpperCase()}
 			</div>
-			<div>{props.children}</div>
+			<div class="wrap-break-word">{props.children}</div>
 		</div>
 	);
 }
