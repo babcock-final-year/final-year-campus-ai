@@ -23,7 +23,7 @@ TOP_K = int(os.environ.get("TOP_K") or 5)
 
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY") or secrets.token_hex(32)
-    JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY") or secrets.token_hex(32)
+    JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY")
 
     MAIL_SERVER = "smtp.googlemail.com"
     MAIL_PORT = 587

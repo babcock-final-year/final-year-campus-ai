@@ -1,0 +1,17 @@
+step,stage,action,responsible_party,notes
+1,Pre-Application,Confirm JAMB first choice is Babcock University,Applicant,Visit any accredited JAMB CBT Centre to change if not already first choice
+2,Pre-Application,Sit UTME and obtain minimum score of 170,Applicant,Required for 2025/2026 session; check current session minimum
+3,Application,Visit admissions portal and complete application form,Applicant,https://admissions.babcock.edu.ng
+4,Application,Pay application fee,Applicant,Amount as published by Admissions Office
+5,Application,Submit 3 letters of recommendation,Applicant,From credible referees — school teachers/clergy/employers
+6,Application,Submit photocopies of O'Level certificates and JAMB result,Applicant,Originals required at registration
+7,Post-UTME Screening,Sit Post-UTME screening examination,Applicant,Scheduled by Admissions Office
+8,Offer,Receive provisional admission letter,Admissions Office,Provisional until credentials are verified
+9,Pre-Registration,Submit authenticated O'Level results (if previously awaiting results),Applicant,Must be done before Matriculation; non-compliance leads to withdrawal of offer
+10,Registration,Pay full tuition and fees,Student / Sponsor,Full payment required; no partial registration allowed
+11,Registration,Complete medical examination at BUTH,Student,Required for all new students; emergency care authorisation must also be signed
+12,Registration,Submit original certificates for verification,Student,All O'Level certificates and other credentials
+13,Registration,Collect student ID card,Registry,Required for library access and campus activities
+14,Registration,Complete all registration procedures,Student,Follow instructions on Registry notice boards
+15,Orientation,Attend orientation/matriculation,Student,International students report to International Student Adviser at Registry
+16,Matriculation,Matriculate formally into the university,Student,After all credentials are verified and registration is complete

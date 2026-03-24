@@ -1,7 +1,7 @@
 [project]
 name = "backend"
 version = "0.1.0"
-description = "Add your description here"
+description = "Backend implementation for UniPal"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -13,12 +13,13 @@ dev = [
     "ruff>=0.14.13",
 ]
 
+[tool.pyright]
+venvPath = "."
+venv = ".venv"
+
 [tool.ruff]
-
 target-version = "py313"
-
 line-length = 100
-# Avoid linting common noise directories
 exclude = [
     ".venv",
     ".mypy_cache",
@@ -32,8 +33,6 @@ exclude = [
 ]
 
 [tool.ruff.lint]
-# "select" here is a sensible default set (errors + common pitfalls + style).
-# Extend/adjust as your codebase evolves.
 select = [
     "E",   # pycodestyle errors
     "F",   # pyflakes
@@ -43,24 +42,22 @@ select = [
     "UP",  # pyupgrade
     "SIM", # flake8-simplify
 ]
-# Keep the noise down on common incompatibilities with formatters or pragmatic style
 ignore = [
-    "E203", # whitespace before ':', conflicts with formatter expectations
-    "E501", # line length handled by formatter; keep as soft limit
+    "E203",
+    "E501",
 ]
-
-# If you want unused imports to be auto-fixable (commonly desired)
 fixable = ["ALL"]
 unfixable = []
 
 [tool.ruff.lint.isort]
-# Keep imports deterministic and clean
 combine-as-imports = true
 force-sort-within-sections = true
 
 [tool.ruff.format]
-# Use Ruff's formatter.
 quote-style = "double"
 indent-style = "space"
 line-ending = "auto"
 skip-magic-trailing-comma = false
+
+[tool.basedpyright]
+typeCheckingMode = "basic"

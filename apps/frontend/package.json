@@ -18,6 +18,7 @@
 		"vite-tsconfig-paths": "^6.1.1"
 	},
 	"devDependencies": {
+		"@babel/core": "^7.29.0",
 		"@biomejs/biome": "^2.4.4",
 		"@corvu/tailwind": "^0.1.7",
 		"@packages/shared-types": "workspace:",
