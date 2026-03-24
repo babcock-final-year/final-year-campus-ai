@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_jwt_extended import current_user, get_jwt_identity, jwt_required
 from spectree import Response
 
 from app import db, spec
@@ -41,7 +41,7 @@ def create_chat():
 
 @api.route("/chat/<chat_id>", methods=["GET"])
 @jwt_required()
-def get_chat_history(chat_id, current_user=None):
+def get_chat_history(chat_id):
     """Return the chat history for a chat id. Only owner may fetch."""
     chat = Chat.query.get(chat_id)
     if not chat:
@@ -61,7 +61,7 @@ def get_chat_history(chat_id, current_user=None):
 @api.route("/chat/<chat_id>/message", methods=["POST"])
 @spec.validate(json=ChatMessageRequest, resp=Response(HTTP_200=ChatMessageResponse))
 @jwt_required()
-def post_message(chat_id, current_user=None):
+def post_message(chat_id):
     """User posts a message to a chat. The server runs the RAG LLM to
     generate an assistant response and stores both messages.
     """
