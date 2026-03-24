@@ -6,7 +6,6 @@ import createUserProfile from "~/hooks/rpc/users/createUserProfile";
 import { routes } from "~/RouteManifest";
 import { revalidateUserData } from "~/rpc/revalidate-query";
 import UsersRpc from "~/rpc/users";
-import { getCapitalizedWordInitials } from "~/utils/string";
 import UploadImageButton from "../ui/button/UploadImageButton";
 import UserProfileImage from "../ui/image/UserProfileImage";
 
@@ -16,7 +15,7 @@ export default function SettingsProfileSummaryCard(props: { class?: string }) {
 	return (
 		<div
 			class={clsx(
-				"grid grid-cols-[8rem_1fr] grid-rows-[1fr_1.5rem_1.25fr] gap-x-2 rounded-box border border-base-300 bg-base-100 p-4",
+				"grid grid-cols-[6.5rem_1fr] grid-rows-[1fr_1.5rem_1.25fr] gap-x-2 overflow-auto rounded-box border border-base-300 bg-base-100 p-4 sm:grid-cols-[8rem_1fr]",
 				props.class,
 			)}
 		>
@@ -52,12 +51,18 @@ export default function SettingsProfileSummaryCard(props: { class?: string }) {
 			</p>
 
 			<div class="mt-1 flex size-full items-center">
-				<Link
-					class="btn btn-primary btn-sm rounded-full"
-					href={routes().home.editProfile.index}
-				>
-					Edit Profile
-				</Link>
+				<Suspense>
+					<Link
+						class={clsx(
+							"btn btn-primary btn-sm rounded-full",
+							userProfile.latest.is_guest && "btn-disabled",
+						)}
+						disabled={!!userProfile.latest.is_guest}
+						href={routes().home.editProfile.index}
+					>
+						Edit Profile
+					</Link>
+				</Suspense>
 			</div>
 		</div>
 	);

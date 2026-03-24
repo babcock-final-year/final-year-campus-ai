@@ -11,6 +11,7 @@
 		"google-oauth-gsi": "^4.0.1",
 		"lucide-solid": "^0.575.0",
 		"marked": "^17.0.5",
+		"node-catbox": "^4.2.0",
 		"solid-js": "^1.9.11",
 		"valibot": "^1.2.0",
 		"vinxi": "0.5.8",

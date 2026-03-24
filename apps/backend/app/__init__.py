@@ -8,10 +8,11 @@ from spectree import SpecTree
 
 from config import config
 
-from .services import logger
+from .services.logger import get_logger
 
 # API Documentation is at /apidoc/swagger/
 
+logger = get_logger(__name__)
 db = SQLAlchemy()
 jwt = JWTManager()
 mail = Mail()

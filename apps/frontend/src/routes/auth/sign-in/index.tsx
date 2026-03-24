@@ -56,9 +56,9 @@ function SignInForm() {
 			setIsLoggingIn(false);
 
 			toast.showToast({
-				class: { alert: "alert-error", closeBtn: "btn-error" },
 				description: String(res.err ?? "Unknown error"),
 				title: "Sign in failed",
+				type: "error",
 			});
 			return;
 		}
@@ -96,7 +96,7 @@ function SignInForm() {
 						{...field}
 						icon={<UserRoundPlus class="opacity-50" />}
 						inputClass="bg-base-200"
-						label="Username / Email"
+						label="Email"
 						placeholder="your-email@domain.com"
 						type="text"
 					/>

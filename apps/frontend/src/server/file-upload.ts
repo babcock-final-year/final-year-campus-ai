@@ -1,6 +1,8 @@
 "use server";
-
+import { Catbox } from "node-catbox";
 import { getServerEnv } from "~/utils/env";
+
+const catbox = new Catbox();
 
 export async function uploadFile(formData: FormData): Promise<string | null> {
 	const file = formData.get("file");
@@ -26,11 +28,19 @@ export async function uploadFile(formData: FormData): Promise<string | null> {
 		} else {
 			console.error(json.error);
 
-			return null;
+			throw Error("ImgBB not successful");
 		}
 	} catch (e) {
-		console.error("Could not upload file to catbox.moe because:", e);
+		try {
+			const url = await catbox.uploadFileStream({
+				filename: file.name,
+				stream: file.stream(),
+			});
 
-		return null;
+			return url;
+		} catch {
+			console.log("Catbox.moe not successful");
+			return null;
+		}
 	}
 }

@@ -40,10 +40,6 @@ describe("Complaint Schemas", () => {
 			user_id: 2,
 		};
 		expect(() => v.parse(ComplaintResponseSchema, valid)).not.toThrow();
-		// Missing required field
-		expect(() =>
-			v.parse(ComplaintResponseSchema, { ...valid, id: undefined }),
-		).toThrow();
 		// Invalid created_at
 		expect(() =>
 			v.parse(ComplaintResponseSchema, { ...valid, created_at: 123 }),

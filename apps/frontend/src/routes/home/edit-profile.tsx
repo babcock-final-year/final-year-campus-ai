@@ -47,9 +47,9 @@ export default function EditProfileInterfacePage() {
 
 		if (res.success) {
 			toastContext.showToast({
-				class: { alert: "alert-success", closeBtn: "btn-success" },
 				description: "Updating your data with changes...",
 				title: "Profile edited sucessfully",
+				type: "success",
 			});
 			await revalidateUserData();
 		}
@@ -57,12 +57,12 @@ export default function EditProfileInterfacePage() {
 		navigate(routes().home.settings.profile.index);
 	};
 
-	const onAvatarUpload = (url: string) => {
+	function onAvatarUpload(url: string) {
 		setInput(editProfileForm, { input: url, path: ["avatar_url"] });
 		(
 			document.querySelector(`input[name='["avatar_url"]']`) as HTMLInputElement
 		).value = url;
-	};
+	}
 
 	// I know this is hacky >~<
 	createEffect(() => {

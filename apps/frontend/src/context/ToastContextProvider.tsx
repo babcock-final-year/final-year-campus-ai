@@ -8,10 +8,17 @@ export function ToastProvider(props: { children: JSXElement }) {
 	return (
 		<ToastContext.Provider
 			value={{
-				showToast({ title, class: classes, description }) {
+				showToast({ title, type, description }) {
+					const isError = type === "error";
+					const isSuccess = type === "success";
+
 					toaster.show((props) => (
 						<Toast
-							class={clsx("alert flex", classes?.alert)}
+							class={clsx(
+								"alert flex",
+								isError && "alert-error",
+								isSuccess && "alert-success",
+							)}
 							toastId={props.toastId}
 						>
 							<div class="flex w-full items-center justify-between gap-4">
@@ -24,7 +31,11 @@ export function ToastProvider(props: { children: JSXElement }) {
 									)}
 								</div>
 								<Toast.CloseButton
-									class={clsx("btn btn-circle btn-sm", classes?.closeBtn)}
+									class={clsx(
+										"btn btn-circle btn-sm",
+										isError && "btn-error",
+										isSuccess && "btn-success",
+									)}
 								>
 									<X />
 								</Toast.CloseButton>
@@ -35,6 +46,7 @@ export function ToastProvider(props: { children: JSXElement }) {
 			}}
 		>
 			<Toast.Region duration={3000}>
+				{/*TODO: add slide in and slide out anims alongside the swipe anim*/}
 				<Toast.List class="toast toast-top toast-end [data-swipe=move]:translate-x-(--kb-toast-swipe-move-x)" />
 			</Toast.Region>
 			{props.children}

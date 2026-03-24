@@ -11,6 +11,7 @@ import {
 	UserRound,
 } from "lucide-solid";
 import { createMemo, For } from "solid-js";
+import { useAuth } from "~/context/AuthContextProvider";
 import { routes } from "~/RouteManifest";
 import AuthRpc from "~/rpc/auth";
 import HistoryRpc from "~/rpc/history";
@@ -56,7 +57,9 @@ function ActionMenuItem(props: ActionMenuItemProps) {
 /** Will be to the side on desktop, and a horizontal scollable list on mobile */
 export default function SettingsActionMenu(props: { class?: string }) {
 	const settingsRoutes = routes().home.settings;
+
 	const navigate = useNavigate();
+	const authContext = useAuth();
 
 	const actionMenuItemProps = [
 		{
@@ -75,10 +78,15 @@ export default function SettingsActionMenu(props: { class?: string }) {
 			route: settingsRoutes.complaint.index,
 		},
 		{
-			icon: Palette,
-			name: "Theme & Interface",
-			route: settingsRoutes.theme.index,
+			icon: MessageSquare,
+			name: "View Complaints",
+			route: settingsRoutes.complaints.index,
 		},
+		// {
+		// 	icon: Palette,
+		// 	name: "Theme & Interface",
+		// 	route: settingsRoutes.theme.index,
+		// },
 		{
 			icon: Trash,
 			name: "Delete My Data",
@@ -89,11 +97,7 @@ export default function SettingsActionMenu(props: { class?: string }) {
 				} catch (e) {
 					console.error("Failed to clear chats:", e);
 				}
-				try {
-					await AuthRpc.logout.post();
-				} catch (e) {
-					console.error("Failed to logout:", e);
-				}
+				await authContext.logout();
 				navigate(routes().auth.signIn.index);
 			},
 			route: routes().auth.signIn.index,

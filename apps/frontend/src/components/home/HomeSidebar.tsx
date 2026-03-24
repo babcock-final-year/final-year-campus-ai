@@ -1,5 +1,5 @@
 import { Link } from "@kobalte/core/link";
-import { useNavigate } from "@solidjs/router";
+import { createAsync, useNavigate } from "@solidjs/router";
 import clsx from "clsx/lite";
 import Drawer from "corvu/drawer";
 import {
@@ -13,6 +13,7 @@ import {
 } from "lucide-solid";
 import { createSignal, For, Show, Suspense } from "solid-js";
 import { Dynamic } from "solid-js/web";
+import { useAuth } from "~/context/AuthContextProvider";
 import { useChatContext } from "~/context/ChatContextProvider";
 import { useToastContext } from "~/context/ToastContextProvider";
 import createChatsHistory from "~/hooks/rpc/history/createChatsHistory";
@@ -42,11 +43,32 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 	const userProfile = createUserProfile();
 	const chatHistory = createChatsHistory();
 
+	const chatTitles = createAsync(
+		async () => {
+			const titles = await Promise.all(
+				chatHistory.latest?.chats?.map(async ({ id, title }) => {
+					const chatDataRes = await ChatRpc.get(id);
+
+					if (!chatDataRes.success) return [id, title] as [string, string];
+
+					return [id, chatDataRes.res.messages?.[0]?.content || title] as [
+						string,
+						string,
+					];
+				}) || [],
+			);
+
+			return Object.fromEntries(titles);
+		},
+		{ initialValue: {} },
+	);
+
 	const {
 		chat: [_, setChat],
 	} = useChatContext();
 	const toast = useToastContext();
 	const navigate = useNavigate();
+	const authContext = useAuth();
 
 	const [isSidebarHiddenInDesktopMode, setIsSidebarHiddenInDesktopMode] =
 		createSignal(false);
@@ -88,11 +110,11 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 
 		if (!res.success) {
 			toast.showToast({
-				class: { alert: "alert-error", closeBtn: "btn-error" },
 				description:
 					res.err.message ??
 					"An unexpected error occurred while creating the chat.",
 				title: "Failed to create chat",
+				type: "error",
 			});
 			return;
 		}
@@ -150,7 +172,9 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 
 					<ul class="menu w-full px-0">
 						<Suspense>
-							<For each={chatHistory.latest?.chats}>
+							<For
+								each={!userProfile.latest.is_guest && chatHistory.latest?.chats}
+							>
 								{(chat) => (
 									<li class="w-full">
 										<BaseButton
@@ -165,7 +189,12 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 												navigate(routes().home.chat.index);
 											}}
 										>
-											<span class="grow truncate">{chat.title}</span>
+											<span class="grow truncate">
+												{/*Since the chat tile now is just a generic "New Chat"*/}
+												<Suspense fallback={chat.title}>
+													{chatTitles.latest[chat.id] || chat.title}
+												</Suspense>
+											</span>
 											<Ellipsis class="hidden min-w-6 group-hover:block" />
 										</BaseButton>
 									</li>
@@ -186,10 +215,10 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 						</Link>
 					</li>
 					<li>
-						{/* TODO: Add logout functionality */}
 						<Link
 							class="btn btn-error btn-ghost justify-start font-normal"
 							href={routes().auth.signIn.index}
+							onClick={authContext.logout}
 						>
 							<LogOut />
 							Logout

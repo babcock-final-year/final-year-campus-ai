@@ -18,7 +18,7 @@ export type ChatCreateRequestOutput = v.InferOutput<
  */
 export const ChatMessageSchema = v.object({
 	content: v.string(),
-	id: v.number(),
+	id: v.pipe(v.unknown(), v.toString()),
 	is_liked: v.nullish(v.boolean()),
 	role: v.picklist(["assistant", "user"]),
 	timestamp: v.pipe(v.string(), v.toDate()),
@@ -30,7 +30,7 @@ export type ChatMessageOutput = v.InferOutput<typeof ChatMessageSchema>;
  * Schema for the response of POST /chat
  */
 export const ChatCreateResponseSchema = v.object({
-	chat_id: v.string(),
+	chat_id: v.pipe(v.unknown(), v.toString()),
 	messages: v.nullish(v.array(ChatMessageSchema), []),
 	title: v.string(),
 });
@@ -59,7 +59,7 @@ export type ChatMessageRequestOutput = v.InferOutput<
  */
 export const ChatMessageResponseSchema = v.object({
 	content: v.string(),
-	id: v.number(),
+	id: v.pipe(v.unknown(), v.toString()),
 	is_liked: v.nullish(v.boolean()),
 	role: v.picklist(["assistant", "user"]),
 	timestamp: v.pipe(v.string(), v.toDate()),
@@ -75,7 +75,7 @@ export type ChatMessageResponseOutput = v.InferOutput<
  * Schema for the response of GET /chat/<chat_id>
  */
 export const ChatHistoryResponseSchema = v.object({
-	chat_id: v.string(),
+	chat_id: v.pipe(v.unknown(), v.toString()),
 	messages: v.nullish(v.array(ChatMessageSchema), []),
 	title: v.string(),
 });
