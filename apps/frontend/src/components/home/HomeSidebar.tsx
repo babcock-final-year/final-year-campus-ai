@@ -22,6 +22,7 @@ import { routes } from "~/RouteManifest";
 import ChatRpc from "~/rpc/chat";
 import HistoryRpc from "~/rpc/history";
 import { revalidateChatData } from "~/rpc/revalidate-query";
+import ChatDropdown from "../chat/ChatDropdown";
 import BaseButton from "../ui/button/BaseButton";
 import UserProfileImage from "../ui/image/UserProfileImage";
 import AppLogo from "../ui/svg/AppLogo";
@@ -64,7 +65,7 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 	);
 
 	const {
-		chat: [_, setChat],
+		chat: [chatContext, setChatContext],
 	} = useChatContext();
 	const toast = useToastContext();
 	const navigate = useNavigate();
@@ -121,7 +122,30 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 
 		await revalidateChatData();
 
-		setChat(res.res);
+		setChatContext(res.res);
+	}
+
+	async function handleDeleteChat(chatId: string) {
+		const res = await HistoryRpc.chat.delete(chatId);
+
+		await revalidateChatData();
+
+		if (!res.success) {
+			toast.showToast({
+				description:
+					res.err.message ??
+					"An unexpected error occurred while deleting the chat.",
+				title: "Failed to delete chat",
+				type: "error",
+			});
+			return;
+		} else {
+			toast.showToast({
+				description: "Chat deleted successfully.",
+				title: "Chat Deleted",
+				type: "success",
+			});
+		}
 	}
 
 	return (
@@ -184,7 +208,7 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 
 												if (!res.success) return;
 
-												setChat(res.res);
+												setChatContext(res.res);
 
 												navigate(routes().home.chat.index);
 											}}
@@ -195,7 +219,20 @@ export default function HomeSidebar(props: { isInDrawer?: boolean }) {
 													{chatTitles.latest[chat.id] || chat.title}
 												</Suspense>
 											</span>
-											<Ellipsis class="hidden min-w-6 group-hover:block" />
+											<Show when={chat.id !== chatContext()?.chat_id}>
+												{
+													<ChatDropdown
+														class={{
+															trigger:
+																"btn btn-ghost btn-accent btn-sm btn-circle",
+														}}
+														onDelete={() => handleDeleteChat(chat.id)}
+														trigger={
+															<Ellipsis class="hidden min-w-6 group-hover:block" />
+														}
+													/>
+												}
+											</Show>
 										</BaseButton>
 									</li>
 								)}

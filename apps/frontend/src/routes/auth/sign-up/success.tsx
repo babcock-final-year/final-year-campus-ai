@@ -20,7 +20,7 @@ export default function SignUpSuccessPage() {
 		<main class="grid h-8/10 w-full grid-rows-3 place-items-center gap-8 p-4">
 			<h1 class="font-bold text-2xl">Sign up sucessful!</h1>
 
-			<div class="grid size-36 place-items-center rounded-full bg-primary/50 shadow-lg shadow-primary/50 md:size-44">
+			<div class="motion-safe:motion-scale-in-75 grid size-36 place-items-center rounded-full bg-primary/50 shadow-lg shadow-primary/50 md:size-44">
 				<div class="grid size-8/10 place-items-center rounded-full bg-primary">
 					<Check class="size-6/10 text-base-100" strokeWidth={4} />
 				</div>

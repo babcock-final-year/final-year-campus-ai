@@ -19,6 +19,20 @@ import BaseButton from "../ui/button/BaseButton";
 import UserProfileImage from "../ui/image/UserProfileImage";
 import AppLogo from "../ui/svg/AppLogo";
 
+function UserReplyButtons(props: { txt: string }) {
+	return (
+		<div class="absolute right-0 mt-2 pt-2">
+			<BaseButton
+				aria-label="Copy your message"
+				class="btn-ghost btn-xs btn-square"
+				onClick={() => navigator.clipboard.writeText(props.txt)}
+			>
+				<Copy />
+			</BaseButton>
+		</div>
+	);
+}
+
 function AssistantReplyButtons(props: {
 	txt: string;
 	chatId?: number | string;
@@ -204,7 +218,7 @@ export default function ChatMainAreaChatList() {
 						<div
 							class={clsx(
 								"chat",
-								isUser() ? "chat-end mb-4" : "chat-start mb-8",
+								isUser() ? "chat-end mb-8" : "chat-start mb-8",
 							)}
 						>
 							<Show
@@ -241,13 +255,17 @@ export default function ChatMainAreaChatList() {
 									innerHTML={parsedMarkdownContent.latest}
 								/>
 
-								{/* Extra btns for assistant chat bubbles */}
-								<Show when={!isUser()}>
-									<AssistantReplyButtons
-										chatId={chat()?.chat_id ?? ""}
-										msgId={val().id}
-										txt={val().content}
-									/>
+								<Show
+									fallback={
+										<AssistantReplyButtons
+											chatId={chat()?.chat_id ?? ""}
+											msgId={val().id}
+											txt={val().content}
+										/>
+									}
+									when={isUser()}
+								>
+									<UserReplyButtons txt={val().content} />
 								</Show>
 							</div>
 						</div>
